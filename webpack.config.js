@@ -13,12 +13,11 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   context: sourcePath,
   entry: {
-    main: './index.ts',
+    main: './index.tsx',
     vendor: [
       'react',
       'react-dom',
       'react-redux',
-      'react-router',
       'redux'
     ]
   },
