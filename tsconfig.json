@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "sourceMap": true,
+        "baseUrl": "src",
         "target": "es5",
         "jsx": "react",
         "module": "commonjs",
