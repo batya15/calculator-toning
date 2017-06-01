@@ -16,6 +16,7 @@ import SvgIcon from 'material-ui/SvgIcon';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import {stripLeadingSlash} from "history/PathUtils";
+import {Scene} from "components/scene/scene";
 import deleteProperty = Reflect.deleteProperty;
 
 injectTapEventPlugin();
@@ -340,6 +341,7 @@ export class Main extends React.Component<any, any> {
 							<div>Выбор машины</div>
 							<div>Выбор цвета</div>
 						</div>
+						<Scene/>
 					</Paper>
 				</div>
 			</MuiThemeProvider>
