@@ -1,0 +1,109 @@
+{
+  "places" : [
+    {
+      "id": "1",
+      "caption": "Заднее стекло",
+      "serviceIDs": []
+    },
+    {
+      "id": "2",
+      "caption": "Задние боковые",
+      "serviceIDs": []
+    },
+    {
+      "id": "3",
+      "caption": "Лобовое",
+      "serviceIDs": []
+    },
+    {
+      "id": "4",
+      "caption": "Передние боковые",
+      "serviceIDs": []
+    },
+    {
+      "id": "5",
+      "caption": "Передние боковые",
+      "serviceIDs": []
+    }
+  ],
+  "services" : [
+    {
+      "id": "1",
+      "caption": "Затемнение",
+      "description": ""
+    },
+    {
+      "id": "2",
+      "caption": "Атермальная",
+      "description": ""
+    },
+    {
+      "id": "3",
+      "caption": "Атермальная хамелион",
+      "description": ""
+    },
+    {
+      "id": "4",
+      "caption": "Съемная",
+      "description": ""
+    },
+    {
+      "id": "5",
+      "caption": "Цветными",
+      "description": ""
+    },
+    {
+      "id": "6",
+      "caption": "Зеркальная",
+      "description": ""
+    },
+    {
+      "id": "7",
+      "caption": "Бронирование",
+      "description": ""
+    },
+    {
+      "id": "8",
+      "caption": "Защита от сколов",
+      "description": ""
+    }
+  ],
+  "producers" : [
+    {
+      "id": "1",
+      "caption": "uv-85%"
+    },
+    {
+      "id": "2",
+      "caption": "spectrum-80%"
+    },
+    {
+      "id": "3",
+      "caption": "suncontrol"
+    },
+    {
+      "id": "4",
+      "caption": "llumar"
+    },
+    {
+      "id": "5",
+      "caption": "Comfort Light 90%"
+    },
+    {
+      "id": "6",
+      "caption": "Deep light 90%"
+    },
+    {
+      "id": "7",
+      "caption": "Clima comfort 80%"
+    },
+    {
+      "id": "8",
+      "caption": "Optimum 70%"
+    },
+    {
+      "id": "8",
+      "caption": "uv"
+    }
+  ]
+}
