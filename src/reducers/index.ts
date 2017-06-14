@@ -1,24 +1,14 @@
 import {combineReducers, Reducer} from 'redux';
-
-
-import {handleActions} from 'redux-actions';
-const ADD_TODO = 'ADD_TODO';
-
-const initialState = [{
-	id: 0,
-	text: 'Use Redux',
-	completed: false
-}];
-
-
-let r =  handleActions<any, any>({
-
-}, initialState);
+import step from "./step";
+import {STEP} from "./step";
 
 export interface RootState {
-	todos: any
+	step: STEP,
+	places: any[],
+	services: any[],
+	properties: any
 }
 
 export default combineReducers<RootState>({
-	todos: r
+	step
 });

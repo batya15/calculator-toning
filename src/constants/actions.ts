@@ -1,0 +1,8 @@
+enum ACTIONS {
+	EDIT_PLACES,
+	SELECT_SERVICE,
+	SELECT_MATERIAL,
+	SAVE
+}
+
+export default ACTIONS;
