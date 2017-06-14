@@ -18,9 +18,10 @@ import Paper from 'material-ui/Paper';
 import {stripLeadingSlash} from "history/PathUtils";
 import {Scene} from "components/scene/scene";
 import deleteProperty = Reflect.deleteProperty;
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 injectTapEventPlugin();
-
 
 export class Main extends React.Component<any, any> {
 	constructor() {
@@ -30,20 +31,22 @@ export class Main extends React.Component<any, any> {
 			price: 0
 		};
 	}
-	private click(cl : string, t = 0) : void {
+
+	private cl(cl: string, t = 0): void {
 		console.log(cl);
 		if (t == 0) {
-			this.setState({cl : cl});
+			this.setState({cl: cl});
 		} else {
-			setTimeout(()=> this.click(cl), t)
+			setTimeout(() => this.cl(cl), t)
 		}
 
 	}
 
-	private priceClick() : void {
-		this.setState({price: this.state.price != 8500 ? 8500: 6300})
+	private priceClick(): void {
+		this.setState({price: this.state.price != 8500 ? 8500 : 6300})
 
 	}
+
 	render() {
 		let c = ["Заднее стекло", "Задние боковые", "Переднии боковые", "Лобовое стекло", "Полоска на лобовое"];
 		let servs = ["Затемнение", "Атермальная", "Атермальная хамелион", "Съемная", "Цветная", "Зеркальная", "Бронирование", "Защита от сколов"];
@@ -61,11 +64,12 @@ export class Main extends React.Component<any, any> {
 						Затемнение 80%/белый
 					</div>
 					<div className={classnames(style.edit)}>
-						<FlatButton labelStyle={{textTransform: 'none'}} onClick={()=>this.click('second')} primary={true}  label="Редактировать" />
+						<FlatButton labelStyle={{textTransform: 'none'}} onClick={() => this.cl('second')}
+									primary={true} label="Редактировать"/>
 					</div>
 					<div className={classnames(style.end)}>
 						<IconMenu
-							touchTapCloseDelay = {1}
+							touchTapCloseDelay={1}
 							iconButtonElement={<IconButton
 								iconStyle={{
 									width: 24,
@@ -80,13 +84,13 @@ export class Main extends React.Component<any, any> {
 							anchorOrigin={{horizontal: 'left', vertical: 'top'}}
 							targetOrigin={{horizontal: 'left', vertical: 'top'}}
 						>
-							<MenuItem primaryText="Редактировать" onTouchTap={()=>this.click('second')} />
-							<MenuItem primaryText="Удалить заказ" />
-							<MenuItem primaryText="Приминить ко все стеклам" />
-							<MenuItem primaryText="Приминить к лобовобу" />
-							<MenuItem primaryText="Приминить к боковым передним" />
-							<MenuItem primaryText="Приминитьь к задним боковым" />
-							<MenuItem primaryText="Приминить к полоске на лобовое" />
+							<MenuItem primaryText="Редактировать" onTouchTap={() => this.cl('second')}/>
+							<MenuItem primaryText="Удалить заказ"/>
+							<MenuItem primaryText="Приминить ко все стеклам"/>
+							<MenuItem primaryText="Приминить к лобовобу"/>
+							<MenuItem primaryText="Приминить к боковым передним"/>
+							<MenuItem primaryText="Приминитьь к задним боковым"/>
+							<MenuItem primaryText="Приминить к полоске на лобовое"/>
 						</IconMenu>
 					</div>
 					<div className={classnames(style.clr)}/>
@@ -96,167 +100,166 @@ export class Main extends React.Component<any, any> {
 		for (let i = 0; i < servs.length; i++) {
 			services.push((
 
-					<RadioButton
-						key={i}
-						style={{width: '50%'}}
-						className={classnames(style.srv)}
-						value={"light" + i}
-						label={servs[i] + " (?)"}
-						onClick={()=> this.click('third', 500)}
-						/>
+				<RadioButton
+					key={i}
+					style={{width: '50%'}}
+					className={classnames(style.srv)}
+					value={"light" + i}
+					label={servs[i] + " (?)"}
+					onClick={() => this.cl('third', 500)}
+				/>
 
 			))
 		}
 
-			if (Math.random() > 0) {
-				property.push(
-					<li key={1}>
-						<div className={classnames(style.caption)}>
-							Производитель
-						</div>
-						<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
-							<RadioButton
-								style={{width: '50%'}}
-								className={classnames(style.srv)}
-								value="suncontrol"
-								label="suncontrol"
-								onClick={()=> this.priceClick()}
-							/>
-							<RadioButton
-								style={{width: '50%'}}
-								className={classnames(style.srv)}
-								value="2suncontrol"
-								label="llumar"
-								onClick={()=> this.priceClick()}
-							/>
-						</RadioButtonGroup>
-						<div className={style.clr}/>
-					</li>
-				)
-				property.push(
-					<li key={2}>
-						<div className={classnames(style.caption)}>
-							Цвет
-						</div>
-						<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
-							<RadioButton
-								style={{width: '10%'}}
-								className={classnames(style.srv)}
-								value="suncontrol"
-								iconStyle={{fill: '#f00'}}
-								onClick={()=> this.priceClick()}
-							/>
-							<RadioButton
-								style={{width: '10%'}}
-								className={classnames(style.srv)}
-								value="2suncontrol"
-								iconStyle={{fill: '#0f0'}}
-								onClick={()=> this.priceClick()}
-							/>
-							<RadioButton
-								style={{width: '10%'}}
-								className={classnames(style.srv)}
-								value="3suncontrol"
-								iconStyle={{fill: '#00f'}}
-								onClick={()=> this.priceClick()}
-							/>
-							<RadioButton
-								style={{width: '10%'}}
-								className={classnames(style.srv)}
-								value="4suncontrol"
-								iconStyle={{fill: '#ff0'}}
-								onClick={()=> this.priceClick()}
-							/>
-							<RadioButton
-								style={{width: '10%'}}
-								className={classnames(style.srv)}
-								value="5suncontrol"
-								iconStyle={{fill: '#0ff'}}
-								onClick={()=> this.priceClick()}
-							/>
-						</RadioButtonGroup>
-						<div className={style.clr}/>
-					</li>
-				);
-			} else {
-				property.push(
-					<li key={2}>
-						<div className={classnames(style.caption)}>
-							Свето пропускаемость
-						</div>
-						<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="suncontrol"
-								onClick={()=> this.priceClick()}
-								label="80%"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="2suncontrol"
-								onClick={()=> this.priceClick()}
-								label="60%"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="3suncontrol"
-								onClick={()=> this.priceClick()}
-								label="40%"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="4suncontrol"
-								onClick={()=> this.priceClick()}
-								label="20%"
-							/>
-						</RadioButtonGroup>
-						<div className={style.clr}/>
-					</li>
-				);
-				property.push(
-					<li key={3}>
-						<div className={classnames(style.caption)}>
-							Толщина
-						</div>
-						<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="suncontrol"
-								onClick={()=> this.priceClick()}
-								label="200"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="2suncontrol"
-								onClick={()=> this.priceClick()}
-								label="300"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="3suncontrol"
-								onClick={()=> this.priceClick()}
-								label="400"
-							/>
-							<RadioButton
-								style={{width: '8%'}}
-								className={classnames(style.srv)}
-								value="4suncontrol"
-								onClick={()=> this.priceClick()}
-								label="800"
-							/>
-						</RadioButtonGroup>
-						<div className={style.clr}/>
-					</li>
-				)
-			}
-
+		if (Math.random() > 0) {
+			property.push(
+				<li key={1}>
+					<div className={classnames(style.caption)}>
+						Производитель
+					</div>
+					<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
+						<RadioButton
+							style={{width: '50%'}}
+							className={classnames(style.srv)}
+							value="suncontrol"
+							label="suncontrol"
+							onClick={() => this.priceClick()}
+						/>
+						<RadioButton
+							style={{width: '50%'}}
+							className={classnames(style.srv)}
+							value="2suncontrol"
+							label="llumar"
+							onClick={() => this.priceClick()}
+						/>
+					</RadioButtonGroup>
+					<div className={style.clr}/>
+				</li>
+			)
+			property.push(
+				<li key={2}>
+					<div className={classnames(style.caption)}>
+						Цвет
+					</div>
+					<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
+						<RadioButton
+							style={{width: '10%'}}
+							className={classnames(style.srv)}
+							value="suncontrol"
+							iconStyle={{fill: '#f00'}}
+							onClick={() => this.priceClick()}
+						/>
+						<RadioButton
+							style={{width: '10%'}}
+							className={classnames(style.srv)}
+							value="2suncontrol"
+							iconStyle={{fill: '#0f0'}}
+							onClick={() => this.priceClick()}
+						/>
+						<RadioButton
+							style={{width: '10%'}}
+							className={classnames(style.srv)}
+							value="3suncontrol"
+							iconStyle={{fill: '#00f'}}
+							onClick={() => this.priceClick()}
+						/>
+						<RadioButton
+							style={{width: '10%'}}
+							className={classnames(style.srv)}
+							value="4suncontrol"
+							iconStyle={{fill: '#ff0'}}
+							onClick={() => this.priceClick()}
+						/>
+						<RadioButton
+							style={{width: '10%'}}
+							className={classnames(style.srv)}
+							value="5suncontrol"
+							iconStyle={{fill: '#0ff'}}
+							onClick={() => this.priceClick()}
+						/>
+					</RadioButtonGroup>
+					<div className={style.clr}/>
+				</li>
+			);
+		} else {
+			property.push(
+				<li key={2}>
+					<div className={classnames(style.caption)}>
+						Свето пропускаемость
+					</div>
+					<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="suncontrol"
+							onClick={() => this.priceClick()}
+							label="80%"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="2suncontrol"
+							onClick={() => this.priceClick()}
+							label="60%"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="3suncontrol"
+							onClick={() => this.priceClick()}
+							label="40%"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="4suncontrol"
+							onClick={() => this.priceClick()}
+							label="20%"
+						/>
+					</RadioButtonGroup>
+					<div className={style.clr}/>
+				</li>
+			);
+			property.push(
+				<li key={3}>
+					<div className={classnames(style.caption)}>
+						Толщина
+					</div>
+					<RadioButtonGroup className={style.prop} name="shipSpeed" defaultSelected="suncontrol">
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="suncontrol"
+							onClick={() => this.priceClick()}
+							label="200"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="2suncontrol"
+							onClick={() => this.priceClick()}
+							label="300"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="3suncontrol"
+							onClick={() => this.priceClick()}
+							label="400"
+						/>
+						<RadioButton
+							style={{width: '8%'}}
+							className={classnames(style.srv)}
+							value="4suncontrol"
+							onClick={() => this.priceClick()}
+							label="800"
+						/>
+					</RadioButtonGroup>
+					<div className={style.clr}/>
+				</li>
+			)
+		}
 
 
 		return (
@@ -277,7 +280,9 @@ export class Main extends React.Component<any, any> {
 											<Checkbox label="Выбрать все"/>
 										</span>
 										<span className={classnames(style.allEdit)}>
-											<FlatButton labelStyle={{textTransform: 'none'}} onClick={()=>this.click('second')} primary={true}  label="Редактировать выбранные (2)" />
+											<FlatButton labelStyle={{textTransform: 'none'}}
+														onClick={() => this.cl('second')} primary={true}
+														label="Редактировать выбранные (2)"/>
 										</span>
 									</div>
 								</div>
@@ -288,12 +293,13 @@ export class Main extends React.Component<any, any> {
 										<FlatButton
 											label="Назад"
 											primary={true}
-											onClick={()=>this.click('first')}
+											onClick={() => this.cl('first')}
 										/>
 										<span><b>Выбор типа тонирования</b></span>
 										<div className={style.ar}>Заднее/лобовое/передние боковые</div>
 									</div>
-									<RadioButtonGroup className={style.container} name="shipSpeed" defaultSelected="light1">
+									<RadioButtonGroup className={style.container} name="shipSpeed"
+													  defaultSelected="light1">
 										{services}
 									</RadioButtonGroup>
 
@@ -306,7 +312,7 @@ export class Main extends React.Component<any, any> {
 										<FlatButton
 											label="Назад"
 											primary={true}
-											onClick={()=>this.click('second')}
+											onClick={() => this.cl('second')}
 										/>
 										<span><b>Подбор параметров</b></span>
 										<div className={style.ar}>Атермальная - Заднее/лобовое/передние боковые</div>
@@ -319,7 +325,7 @@ export class Main extends React.Component<any, any> {
 									<FlatButton
 										label="Сохранить"
 										style={{float: 'right'}}
-										onClick={()=>this.click('reset')}
+										onClick={() => this.cl('reset')}
 										primary={true}
 									/>
 								</div>
@@ -328,7 +334,9 @@ export class Main extends React.Component<any, any> {
 						<Paper zDepth={1} rounded={false} className={classnames(style.right)}>
 							<h1>{this.state.price}р.</h1>
 							<div className={style.footer}>
-								<RaisedButton label="Оформить заказ" onTouchTap={()=>alert("Модалочка будет, введите свое имя и телефон")} primary={true} style={style}/>
+								<RaisedButton label="Оформить заказ"
+											  onTouchTap={() => alert("Модалочка будет, введите свое имя и телефон")}
+											  primary={true} style={style}/>
 								<div className={style.c}>
 									Цены являються приближенными и т.д. и бла бла бла
 								</div>
@@ -348,3 +356,18 @@ export class Main extends React.Component<any, any> {
 		)
 	}
 }
+
+export default connect(
+	(state: any) => {
+		console.log(state);
+		return {
+			todos: state.todos
+		};
+	},
+	(dispatch) => {
+		console.log(dispatch);
+		return {
+			actions: bindActionCreators({} as any, dispatch)
+		};
+	})(Main);
+
