@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as styles from './calculator.pcss';
 import * as classnames from 'classnames';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Paper from 'material-ui/Paper';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -12,30 +11,44 @@ import Places from "./places/places";
 import Services from "./services/services";
 import Properties from "./properties/properties";
 import Totals from "./totals/totals";
+import {returntypeof} from 'react-redux-typescript';
 
-export class Calculator extends React.Component<any, any> {
-	constructor() {
-		super();
-		this.state = {
-			cl: 'first',
-			price: 0
-		};
-	}
+interface ICalculatorState {
+	cl: string
+}
+
+const mapStateToProps = (rootState: RootState) => ({
+	step: rootState.step
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	actions: bindActionCreators(actions as any, dispatch)
+});
+
+const dispatchToProps = returntypeof(mapDispatchToProps);
+const stateProps = returntypeof(mapStateToProps);
+type Props = typeof stateProps & typeof dispatchToProps;
+
+
+export class Calculator extends React.Component<Props, ICalculatorState> {
+	state: ICalculatorState = {
+		cl: 'first'
+	};
 
 	componentWillReceiveProps(nextProps) {
 		switch (nextProps.step) {
 			case STEP.SERVICES:
-				this.setState({cl : 'second'});
+				this.setState({cl: 'second'});
 				break;
 			case  STEP.PROPERTIES:
-				this.setState({cl : 'third'});
+				this.setState({cl: 'third'});
 				break;
 			default:
-				this.setState({cl : this.props.step === STEP.PROPERTIES ? 'reset' : 'first'});
+				this.setState({cl: this.props.step === STEP.PROPERTIES ? 'reset' : 'first'});
 				break;
 		}
 
-		if (nextProps.step === STEP.PLACES ) {
+		if (nextProps.step === STEP.PLACES) {
 
 		}
 	}
@@ -58,15 +71,7 @@ export class Calculator extends React.Component<any, any> {
 }
 
 export default connect(
-	(state: RootState) => {
-		return {
-			step: state.step
-		};
-	},
-	(dispatch) => {
-		return {
-			actions: bindActionCreators(actions as any, dispatch)
-		};
-	}
+	mapStateToProps,
+	mapDispatchToProps
 )(Calculator);
 

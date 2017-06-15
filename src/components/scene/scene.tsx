@@ -248,6 +248,13 @@ export class Scene extends React.Component<any, any> {
 	render() {
 		console.log("render");
 		return (
+
+ <Paper zDepth={1} rounded={false} className={classnames(style.car)}>
+ <div className={classnames(style.select)}>
+ <div>Выбор машины</div>
+ <div>Выбор цвета</div>
+ </div>
+ </Paper>
 			<div>
 				<canvas ref="canvas" width={300} height={300}/>
 			</div>
