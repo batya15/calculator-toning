@@ -58,7 +58,7 @@ const mats = [{
 		"reflectivity": 0.3,
 		"specularColor": "#ffffff"
 	}];
-
+/*
 export class Scene extends React.Component<any, any> {
 
 	private camera: THREE.PerspectiveCamera;
@@ -90,7 +90,7 @@ export class Scene extends React.Component<any, any> {
 		var renderer = new THREE.WebGLRenderer(
 			{
 				antialias: true,
-				canvas: this.refs.canvas
+				canvas: this.refs.canvas as HTMLCanvasElement
 			}
 		);
 		renderer.setPixelRatio(window.devicePixelRatio);
@@ -123,9 +123,9 @@ export class Scene extends React.Component<any, any> {
 		if (!this.mesh) {
 			return;
 		}
-		/*if (!this.mesh.origMaterial) {
-			this.mesh.origMaterial = this.mesh.material.clone();
-		}*/
+		//if (!this.mesh.origMaterial) {
+		//	this.mesh.origMaterial = this.mesh.material.clone();
+		//}
 		//this.mesh.material = this.mesh.origMaterial.clone();
 		this.mesh.material.forEach((m : THREE.Material) => {
 			if (m.transparent) {
@@ -254,3 +254,4 @@ export class Scene extends React.Component<any, any> {
 		)
 	}
 }
+*/

@@ -1,0 +1,80 @@
+:root {
+	--heightHeader: 270px;
+}
+
+.clr {
+	clear: both;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.header {
+	margin-bottom: 10px;
+}
+
+
+.step {
+	width: calc(100%/3);
+	height: 20%;
+	float: left;
+	padding: .7rem;
+
+	&.areas {
+	//background: rebeccapurple;
+		& ul {
+			margin: .5rem 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		& .caption {
+			display: inline-block;
+			vertical-align: middle;
+			width: 35%;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+
+		& .label {
+			display: inline-block;
+			vertical-align: middle;
+			width: 35%;
+			font-size: .85em;
+			color: #5b5b5b;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+
+		& .edit {
+			display: inline-block;
+			vertical-align: middle;
+
+			text-align: right;
+			width: 20%;
+		}
+
+		& .end {
+			display: inline-block;
+			vertical-align: middle;
+			text-align: right;
+			width: 10%;
+		}
+
+		& .allEdit {
+			text-align: right;
+			width: 65%;
+			display: inline-block;
+		}
+
+		& li {
+			border-bottom: 1px solid #eeeeee;
+			cursor: pointer;
+			height: 36px;
+		}
+	}
+
+}
+
