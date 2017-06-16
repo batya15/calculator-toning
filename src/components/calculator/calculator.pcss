@@ -2,61 +2,77 @@
 	--heightHeader: 270px;
 }
 
-.clr {
-	clear: both;
-}
-
-* {
-	box-sizing: border-box;
-}
-
-.header {
+.calculator {
 	margin-bottom: 10px;
 }
 
-
-.left {
-//background-color: green;
-	float: left;
+.controls {
 	width: 75%;
 	overflow: hidden;
 	position: relative;
 	height: var(--heightHeader);
+	float: left;
 
 	& .scroll {
 		width: 300%;
 		will-change: transform;
 		transition: transform .3s;
 
-		&.reset {
-			transform: translateX(0);
-			transition: none;
-
-			& .property {
-				transform: translateX(-200%);
-				animation: shadow  .7s infinite ease-in-out;
-				animation-iteration-count: 1;
-				animation-fill-mode: forwards;
-			}
-		}
-
 		&.first {
 			transform: translateX(0);
 		}
 
 		&.second {
-			transform: translateX(calc(-100%/3));
+			transform: translateX(calc(-100% / 3));
 		}
 
 		&.third {
-			transform: translateX(calc(-100%/3*2));
+			transform: translateX(calc(-100% / 3 * 2));
+		}
+
+		&.reset {
+			transform: translateX(0);
+			transition: none;
+
+			& .properties {
+				transform: translateX(-200%);
+				animation: save .7s infinite ease-in-out;
+				animation-iteration-count: 1;
+				animation-fill-mode: forwards;
+			}
+		}
+
+		& .step {
+			width: calc(100% / 3);
+			height: 20%;
+			float: left;
+			padding: .7rem;
+
+			&.areas {
+			}
+			&.services {
+			}
+			&.properties {
+			}
 		}
 	}
 
 }
 
-@keyframes shadow {
-	from {transform: scale(1) translateX(-200%);}
-	to {transform: scale(0) translateX(-200%);}
+.total {
+	height: var(--heightHeader);
+	float: left;
+	width: calc(25% - .5rem);
+	margin-left: .5rem;
+	text-align: center;
+}
+
+@keyframes save {
+	from {
+		transform: scale(1) translateX(-200%);
+	}
+	to {
+		transform: scale(0) translateX(-200%);
+	}
 }
 

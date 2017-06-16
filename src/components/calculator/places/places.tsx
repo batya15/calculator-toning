@@ -61,9 +61,7 @@ export default class Places extends React.Component<any, any> {
 		}
 
 		return (
-			<div
-				className={classnames(style.step, style.areas)}
-			>
+			<div className={style.areas}>
 				<b>Выбор стекла</b>
 				<ul>
 					{row}

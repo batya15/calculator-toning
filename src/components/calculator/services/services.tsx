@@ -26,9 +26,7 @@ export default class Services extends React.Component<any, any> {
 		}
 
 		return (
-			<div
-				className={classnames(styles.step, styles.services)}
-			>
+			<div className={styles.services}>
 				<div className={classnames(styles.title)}>
 					<FlatButton
 						label="Назад"

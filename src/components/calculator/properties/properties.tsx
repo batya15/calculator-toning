@@ -160,10 +160,7 @@ export default class Properties extends React.Component<any, any> {
 			)
 		}
 		return (
-			<div
-				className={classnames(style.step, style.property)}
-
-			>
+			<div className={style.property}>
 				<div className={classnames(style.title)}>
 					<FlatButton
 						label="Назад"

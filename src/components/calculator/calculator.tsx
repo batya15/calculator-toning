@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as styles from './calculator.pcss';
+import * as commonStyles from 'components/common.pcss';
 import * as classnames from 'classnames';
 import Paper from 'material-ui/Paper';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {RootState} from "../../reducers/index";
-import * as actions from "actions";
+import {mapDispatchToProps} from "actions";
 import {STEP} from "../../reducers/step";
 import Places from "./places/places";
 import Services from "./services/services";
@@ -13,58 +13,58 @@ import Properties from "./properties/properties";
 import Totals from "./totals/totals";
 import {returntypeof} from 'react-redux-typescript';
 
-interface ICalculatorState {
-	cl: string
+interface IState {
+	stepClass: string
 }
 
 const mapStateToProps = (rootState: RootState) => ({
 	step: rootState.step
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(actions as any, dispatch)
-});
-
 const dispatchToProps = returntypeof(mapDispatchToProps);
 const stateProps = returntypeof(mapStateToProps);
 type Props = typeof stateProps & typeof dispatchToProps;
 
-
-export class Calculator extends React.Component<Props, ICalculatorState> {
-	state: ICalculatorState = {
-		cl: 'first'
+export class Calculator extends React.Component<Props, IState> {
+	state: IState = {
+		stepClass: styles.first
 	};
 
 	componentWillReceiveProps(nextProps) {
 		switch (nextProps.step) {
 			case STEP.SERVICES:
-				this.setState({cl: 'second'});
+				this.setState({stepClass: styles.second});
 				break;
 			case  STEP.PROPERTIES:
-				this.setState({cl: 'third'});
+				this.setState({stepClass: styles.third});
 				break;
 			default:
-				this.setState({cl: this.props.step === STEP.PROPERTIES ? 'reset' : 'first'});
+				this.setState({stepClass: this.props.step === STEP.PROPERTIES ? styles.reset : styles.first});
 				break;
-		}
-
-		if (nextProps.step === STEP.PLACES) {
-
 		}
 	}
 
 	render() {
 		return (
-			<div className={classnames(styles.header)}>
-				<Paper zDepth={1} rounded={false} className={classnames(styles.left)}>
-					<div className={classnames(styles.scroll, styles[this.state.cl])}>
-						<Places actions={this.props.actions}/>
-						<Services actions={this.props.actions}/>
-						<Properties actions={this.props.actions}/>
+			<div className={styles.calculator}>
+				<Paper zDepth={1} rounded={false} className={styles.controls}>
+					<div className={classnames(styles.scroll, this.state.stepClass)}>
+						<div className={classnames(styles.step, styles.areas)}>
+							<Places actions={this.props.actions}/>
+						</div>
+						<div className={classnames(styles.step, styles.services)}>
+							<Services actions={this.props.actions}/>
+						</div>
+						<div className={classnames(styles.step, styles.properties)}>
+							<Properties actions={this.props.actions}/>
+						</div>
+
 					</div>
 				</Paper>
-				<Totals/>
-				<div className={classnames(styles.clr)}/>
+				<div className={styles.total}>
+					<Totals/>
+				</div>
+				<div className={commonStyles.clr}/>
 			</div>
 		)
 	}

@@ -14,7 +14,7 @@ export default class Totals extends React.Component<any, any> {
 	}
 	render() {
 		return (
-			<Paper zDepth={1} rounded={false} className={classnames(styles.right)}>
+			<Paper zDepth={1} rounded={false}>
 				<h1>8500р.</h1>
 				<div className={styles.footer}>
 					<RaisedButton label="Оформить заказ"
