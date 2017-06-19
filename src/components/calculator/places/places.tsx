@@ -26,6 +26,7 @@ type Props = typeof stateProps & typeof dispatchToProps;
 
 export class Places extends React.Component<Props, IState> {
 	componentDidMount(): void {
+		//todo: вынести на вверх - в верхний компонент
 		this.props.actions.needPlaces();
 	}
 

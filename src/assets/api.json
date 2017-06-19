@@ -3,27 +3,27 @@
     {
       "id": "1",
       "caption": "Заднее стекло",
-      "serviceIDs": []
+      "serviceIDs": ["1", "2", "3", "4"]
     },
     {
       "id": "2",
       "caption": "Задние боковые",
-      "serviceIDs": []
+      "serviceIDs": ["4", "5", "6", "7", "8"]
     },
     {
       "id": "3",
       "caption": "Лобовое",
-      "serviceIDs": []
+      "serviceIDs": ["1", "2", "3", "4", "5", "6", "7", "8"]
     },
     {
       "id": "4",
       "caption": "Передние боковые",
-      "serviceIDs": []
+      "serviceIDs": ["1", "2", "3", "4", "5", "6", "7", "8"]
     },
     {
       "id": "5",
-      "caption": "Передние боковые",
-      "serviceIDs": []
+      "caption": "Полоска на лобовое",
+      "serviceIDs": ["1", "2", "3", "4", "5", "6", "7", "8"]
     }
   ],
   "services" : [

@@ -30,6 +30,11 @@ export class Calculator extends React.Component<Props, IState> {
 		stepClass: styles.first
 	};
 
+	componentDidMount(): void {
+		//todo: вынести на вверх - в верхний компонент
+		this.props.actions.needPlaces();
+	}
+
 	componentWillReceiveProps(nextProps) {
 		switch (nextProps.step) {
 			case STEP.SERVICES:
@@ -53,7 +58,7 @@ export class Calculator extends React.Component<Props, IState> {
 							<Places/>
 						</div>
 						<div className={classnames(styles.step, styles.services)}>
-							<Services actions={this.props.actions}/>
+							<Services/>
 						</div>
 						<div className={classnames(styles.step, styles.properties)}>
 							<Properties actions={this.props.actions}/>

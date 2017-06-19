@@ -10,8 +10,17 @@ export const selectService = createAction(String(ACTIONS.SELECT_SERVICE));
 export const save = createAction(String(ACTIONS.SAVE));
 export const selectMaterial = createAction(String(ACTIONS.SELECT_MATERIAL));
 export const needPlaces = createAction(String(ACTIONS.NEED_PLACES), api.places.get);
+export const needServices = createAction(String(ACTIONS.NEED_SERVICES), api.services.get);
 
-const actions = {editPlaces, selectService, save, selectMaterial, needPlaces, selectPlace};
+const actions = {
+	editPlaces,
+	selectService,
+	save,
+	selectMaterial,
+	needPlaces,
+	selectPlace,
+	needServices
+};
 
 export const mapDispatchToProps = (dispatch) => ({
 	actions: bindActionCreators(actions as any, dispatch)
