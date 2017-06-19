@@ -10,7 +10,7 @@ export default {
 	opacity: new Request<Api.IOpacity>('opacity'),
 }
 
-namespace Api {
+export namespace Api {
 	//Место куда клеить
 	export interface IPlace {
 		id: string,

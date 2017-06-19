@@ -50,7 +50,7 @@ export class Calculator extends React.Component<Props, IState> {
 				<Paper zDepth={1} rounded={false} className={styles.controls}>
 					<div className={classnames(styles.scroll, this.state.stepClass)}>
 						<div className={classnames(styles.step, styles.areas)}>
-							<Places actions={this.props.actions}/>
+							<Places/>
 						</div>
 						<div className={classnames(styles.step, styles.services)}>
 							<Services actions={this.props.actions}/>

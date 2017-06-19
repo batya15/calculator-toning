@@ -5,6 +5,7 @@ export class Request<T> {
 	static loading: boolean = false;
 	static cbs: ((err?: any) => void)[] = [];
 	constructor(private url: string) {
+		this.get = this.get.bind(this)
 	}
 
 	get(): Promise<T> {
