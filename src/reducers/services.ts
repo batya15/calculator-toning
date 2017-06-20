@@ -5,11 +5,11 @@ import {Api} from "../api/index";
 
 export interface IServices {
 	state: STATE
-	list: any[]
+	list: Api.IService[]
 }
 
 interface IServicesPayload {
-	payload: Api.IPlace[]
+	payload: Api.IService[]
 }
 
 const initial : IServices = {
@@ -18,8 +18,7 @@ const initial : IServices = {
 };
 
 export default handleActions<IServices>({
-	[ACTIONS.NEED_SERVICES]: (old, data: any) : IServices => {
-		console.log(data)
+	[ACTIONS.NEED_SERVICES]: (old, data: IServicesPayload) : IServices => {
 		return {
 			state: STATE.LOADED,
 			list: data.payload

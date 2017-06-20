@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
+import {Place} from "../../../reducers/places";
 
 interface IState {
 }
@@ -26,20 +27,38 @@ export class Services extends React.Component<Props, IState> {
 		this.props.actions.needServices();
 	}
 
-	render() {
-		let ids: Set<string> = new Set;
-		let items = this.props.places.list
-			.filter(item => item.editable);
+	static getAvailableServiceIds(list: Place[]) : Set<string> {
+		let result: Set<string> = new Set;
 
-		items.forEach(item => {
-			item.place.serviceIDs.forEach(i => {
-				if (!ids.has(i)
-					&& items.filter(e => e.place.serviceIDs.indexOf(i) >= 0).length === items.length
-				) {
-					ids.add(i)
+		let itemsFilter = list.filter(item => item.editable);
+
+		let idsCount = itemsFilter
+			.reduce((result, item) => result.concat(item.place.serviceIDs), [])
+			.reduce((result, id) => {
+				if (result[id]) {
+					result[id] += 1;
+				} else {
+					result[id] = 1;
 				}
-			});
-		});
+				return result;
+			}, {});
+
+		for (let key in idsCount) {
+			if (idsCount.hasOwnProperty(key) && idsCount[key] >= itemsFilter.length) {
+				result.add(key)
+			}
+		}
+		return result;
+	}
+
+	private selectedService(id: string) {
+		setTimeout(()=> {
+			this.props.actions.selectService(id);
+		}, 400);
+	}
+
+	render() {
+		let availableServiceIds: Set<string> = Services.getAvailableServiceIds(this.props.places.list);
 		return (
 			<div className={styles.services}>
 				<div className={classnames(styles.title)}>
@@ -61,7 +80,7 @@ export class Services extends React.Component<Props, IState> {
 					name="shipSpeed"
 					defaultSelected="light1">
 					{this.props.services.list
-						.filter(item => ids.has(item.id))
+						.filter(item => availableServiceIds.has(item.id))
 						.map(item => (
 							<RadioButton
 								key={item.id}
@@ -69,7 +88,7 @@ export class Services extends React.Component<Props, IState> {
 								className={classnames(styles.srv)}
 								value={"light" + item.id}
 								label={item.caption + " (?)"}
-								onClick={() => this.props.actions.selectService()}
+								onClick={() => this.selectedService(item.id)}
 							/>)
 						)}
 				</RadioButtonGroup>
