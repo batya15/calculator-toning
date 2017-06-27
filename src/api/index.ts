@@ -1,65 +1,82 @@
 import {Request} from './request';
 
-export default {
-	places: new Request<Api.IPlace>('places'),
-	services: new Request<Api.IService>('services'),
-	materials: new Request<Api.IMaterial>('materials'),
-	producers: new Request<Api.IProducer>('producers'),
-	colors: new Request<Api.IColor>('colors'),
-	thickness: new Request<Api.IThickness>('thickness'),
-	opacity: new Request<Api.IOpacity>('opacity'),
-}
-
 export namespace Api {
-	//Место куда клеить
-	export interface IPlace {
-		id: string,
+	/**
+	 * Деталь машины (стекло)
+	 */
+	export interface IDetail {
+		id: number
 		caption: string,
+		size: number,
+		cameraPosition: string,
+		meshName: string,
 		serviceIDs: string[]
-		area: number
 	}
 
-//Виды тонировки
+	/**
+	 * Виды работ
+	 */
 	export interface IService {
-		id: string,
-		caption: string
+		id: number,
+		caption: string,
+		description: string
 	}
 
-
-//Сама пленка
+	/**
+	 * Матерьялы для обклейки
+	 */
 	export interface IMaterial {
-		id: string,
-		property: {
-			producerId?: string, // Происводитель
-			colorId?: string, // Цвет пленки
-			opacityId?: string, // Светопропускаемость
-			thicknessId?: string // Толщина
-		},
-		price: number,
-		serviceIds: string[]
+		readonly id: number,
+		readonly caption: string,
+		readonly producerId: number,
+		readonly colorId: string | null,
+		readonly opacityId: string | null,
+		readonly thicknessId: string | null,
+		readonly price: number,
+		readonly serviceId: string
 	}
 
+	/**
+	 * Цвета
+	 */
 	export interface IColor {
-		id: string,
+		id: number,
 		caption: string,
 		rgb: string;
 	}
 
+	/**
+	 * Производитель
+	 */
 	export interface IProducer {
-		id: string;
+		readonly id: number
+		readonly caption: string
+	}
+
+	/**
+	 * Толщина пленки
+	 */
+	export interface IThickness {
+		id: number
 		caption: string
 	}
 
-	export interface IThickness {
-		id: string,
-		caption: string,
-		value: number;
-	}
-
+	/**
+	 * Прозрачность
+	 */
 	export interface IOpacity {
-		id: string,
-		caption: string,
-		value: number
+		id: number,
+		caption: string
 	}
 
+}
+
+export default {
+	details: new Request<Api.IDetail[]>('details'),
+	services: new Request<Api.IService[]>('services'),
+	materials: new Request<Api.IMaterial[]>('materials'),
+	producers: new Request<Api.IProducer[]>('producers'),
+	colors: new Request<Api.IColor[]>('colors'),
+	thickness: new Request<Api.IThickness[]>('thickness'),
+	opacity: new Request<Api.IOpacity[]>('opacity'),
 }

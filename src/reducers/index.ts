@@ -1,19 +1,14 @@
 import {combineReducers, Reducer} from 'redux';
-import step from "./step";
-import places from "./places";
-import services from "./services";
-import editable from "./editable";
-import {STEP} from "./step";
-import {IPlaces} from "./places";
-import {IServices} from "./services";
+import api, {ApiStore} from './api';
 
 export interface RootState {
-	step: STEP,
-	places: IPlaces,
-	services: IServices,
-	properties: any
+	/*step: STEP,
+	 places: IPlaces,
+	 services: IServices,
+	 properties: any*/
+	api: ApiStore
 }
 
 export default combineReducers<RootState>({
-	step, places, services, editable
+	api
 });

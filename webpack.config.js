@@ -46,9 +46,24 @@ module.exports = {
                         'awesome-typescript-loader'
                     ]
             },
-            // css
             {
-                test: /\.p?css$/,
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            query: {
+                                importLoaders: 1,
+                                localIdentName: '[local]__[hash:base64:5]'
+                            }
+                        }
+                    ]
+                })
+            },
+            // pcss
+            {
+                test: /\.pcss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
