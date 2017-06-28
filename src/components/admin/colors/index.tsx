@@ -9,11 +9,11 @@ interface IState {
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IProducer>[];
+	list: Readonly<Api.IColor>[];
 	actions: any;
 }
 
-export class Producers extends React.Component<IProps, IState> {
+export class Colors extends React.Component<IProps, IState> {
 	state = {
 		editableId: null
 	};
@@ -23,20 +23,20 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onDelete(id: number) {
-		if (this.props.materials.some(i => i.producerId === id)) {
+		if (this.props.materials.some(i => i.colorId === id)) {
 			alert(`Элемент используеться в матерьялах: \n 
 				${
-				this.props.materials.filter(i => i.producerId === id)
+				this.props.materials.filter(i => i.colorId === id)
 					.map(i => i.caption + ',\n')
 					.join('')
 				}`);
 		} else {
-			this.props.actions.apiRemoveProducer(id);
+			this.props.actions.apiRemoveColor(id);
 		}
 	}
 
 	onSave(data: Api.IProducer) {
-		this.props.actions.apiSaveProducers(data);
+		this.props.actions.apiSaveColor(data);
 		this.onCancel();
 	}
 
@@ -45,7 +45,7 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onAddNewItem() {
-		this.props.actions.apiAddNewProducer();
+		this.props.actions.apiAddNewColor();
 	}
 
 	render() {
@@ -56,7 +56,7 @@ export class Producers extends React.Component<IProps, IState> {
 						i.id === this.state.editableId
 							? <Editor key={i.id}
 									  item={i}
-									  onSave={(d: Api.IProducer) => this.onSave(d)}
+									  onSave={(d: Api.IColor) => this.onSave(d)}
 									  onCancel={() => this.onCancel()}/>
 							: <Item key={i.id}
 									item={i}
@@ -70,4 +70,4 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 }
 
-export default Producers;
+export default Colors;

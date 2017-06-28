@@ -9,7 +9,7 @@ interface IState {
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IProducer>[];
+	list: Readonly<Api.IThickness>[];
 	actions: any;
 }
 

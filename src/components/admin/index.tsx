@@ -25,13 +25,13 @@ export class Admin extends React.Component<Props, IState> {
 
 	componentDidMount() {
 		Promise.all([
-			this.props.actions.apiNeedColors(),
-			this.props.actions.apiNeedDetails(),
-			this.props.actions.apiNeedMaterials(),
-			this.props.actions.apiNeedProducers(),
-			this.props.actions.apiNeedOpacity(),
-			this.props.actions.apiNeedThickness(),
-			this.props.actions.apiNeedServices()
+			this.props.actions.api.apiNeedColors(),
+			this.props.actions.api.apiNeedDetails(),
+			this.props.actions.api.apiNeedMaterials(),
+			this.props.actions.api.apiNeedProducers(),
+			this.props.actions.api.apiNeedOpacity(),
+			this.props.actions.api.apiNeedThickness(),
+			this.props.actions.api.apiNeedServices()
 		]).then(() => this.setState({loaded: true}));
 	}
 
@@ -44,14 +44,39 @@ export class Admin extends React.Component<Props, IState> {
 					</Panel>
 					<Tabs defaultSelectedIndex={0} justified={true}>
 						<Tab value="Производители" label="Производители">
-							<Producers actions={this.props.actions} materials={this.props.api.materials} producers={this.props.api.producers}/>
+							<Producers actions={this.props.actions.api} materials={this.props.api.materials} list={this.props.api.producers}/>
 						</Tab>
-						<Tab value="Толщина" label="Толщина">Толщина</Tab>
-						<Tab value="Прозрачность" label="Прозрачность">Прозрачность</Tab>
-						<Tab value="Цвета" label="Цвета">Цвета</Tab>
-						<Tab value="Детали" label="Детали">Детали</Tab>
-						<Tab value="Услуги" label="Услуги">Услуги</Tab>
-						<Tab value="Материалы" label="Материалы">Материалы</Tab>
+						<Tab value="Толщина" label="Толщина">
+							<Thickness actions={this.props.actions.api} materials={this.props.api.materials} list={this.props.api.thickness}/>
+						</Tab>
+						<Tab value="Прозрачность" label="Прозрачность">
+							<Opacity actions={this.props.actions.api} materials={this.props.api.materials} list={this.props.api.opacity}/>
+						</Tab>
+						<Tab value="Цвета" label="Цвета">
+							<Colors actions={this.props.actions.api} materials={this.props.api.materials} list={this.props.api.colors}/>
+						</Tab>
+						<Tab value="Детали" label="Детали">
+							<Details actions={this.props.actions.api} list={this.props.api.details}/>
+						</Tab>
+						<Tab value="Услуги" label="Услуги">
+							<Services
+								actions={this.props.actions.api}
+								details={this.props.api.details}
+								materials={this.props.api.materials}
+								list={this.props.api.services}
+							/>
+						</Tab>
+						<Tab value="Материалы" label="Материалы">
+							<Materials
+								actions={this.props.actions.api}
+								list={this.props.api.materials}
+								services={this.props.api.services}
+								colors={this.props.api.colors}
+								opacity={this.props.api.opacity}
+								thickness={this.props.api.thickness}
+								producers={this.props.api.producers}
+							/>
+						</Tab>
 					</Tabs>
 				</div>
 			);

@@ -9,11 +9,11 @@ interface IState {
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IProducer>[];
+	list: Readonly<Api.IDetail>[];
 	actions: any;
 }
 
-export class Producers extends React.Component<IProps, IState> {
+export class Details extends React.Component<IProps, IState> {
 	state = {
 		editableId: null
 	};
@@ -70,4 +70,4 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 }
 
-export default Producers;
+export default Details;
