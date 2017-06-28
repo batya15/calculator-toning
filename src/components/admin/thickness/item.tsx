@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {Api} from "api";
 
-
 interface IState {
-
 }
 
 interface IProps {
-	item: Readonly<Api.IProducer>;
+	item: Readonly<Api.IThickness>;
 	onEdit: () => void;
 	onDelete: () => void;
 }

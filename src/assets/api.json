@@ -20,11 +20,11 @@
       "cameraPosition": "1,0,1",
       "meshName": "",
       "serviceIDs": [
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
+        4,
+        5,
+        6,
+        7,
+        8
       ]
     },
     {
@@ -34,14 +34,14 @@
       "cameraPosition": "1,0,1",
       "meshName": "",
       "serviceIDs": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
       ]
     },
     {
@@ -51,14 +51,14 @@
       "cameraPosition": "1,0,1",
       "meshName": "",
       "serviceIDs": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
       ]
     },
     {
@@ -68,14 +68,14 @@
       "cameraPosition": "1,0,1",
       "meshName": "",
       "serviceIDs": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
       ]
     }
   ],
@@ -83,7 +83,7 @@
     {
       "id": 1,
       "caption": "Затемнение",
-      "description": ""
+      "description": "Краткое описание сервиса"
     },
     {
       "id": 2,
@@ -127,120 +127,120 @@
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "1",
+      "opacityId": 1,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 2,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "2",
+      "opacityId": 2,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 3,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "3",
+      "opacityId": 3,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 4,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "4",
+      "opacityId": 4,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 5,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "5",
+      "opacityId": 5,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 6,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 1,
       "colorId": null,
-      "opacityId": "6",
+      "opacityId": 6,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 7,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 2,
       "colorId": null,
-      "opacityId": "1",
+      "opacityId": 1,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 8,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 2,
       "colorId": null,
-      "opacityId": "2",
+      "opacityId": 2,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 9,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 2,
       "colorId": null,
-      "opacityId": "3",
+      "opacityId": 3,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 10,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 2,
       "colorId": null,
-      "opacityId": "4",
+      "opacityId": 4,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 11,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 2,
       "colorId": null,
-      "opacityId": "5",
+      "opacityId": 5,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "1"
+      "serviceId": 1
     },
     {
       "id": 12,
       "caption": "Название чтобы не забыть что за пленка",
       "producerId": 3,
-      "colorId": null,
-      "opacityId": null,
-      "thicknessId": null,
+      "colorId": 1,
+      "opacityId": 1,
+      "thicknessId": 1,
       "price": 10,
-      "serviceId": "2"
+      "serviceId": 2
     },
     {
       "id": 13,
@@ -250,7 +250,7 @@
       "opacityId": null,
       "thicknessId": null,
       "price": 10,
-      "serviceId": "2"
+      "serviceId": 2
     }
   ],
   "producers": [

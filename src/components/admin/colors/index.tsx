@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
+import {ApiActionsType} from "../../../actions/api";
 
 interface IState {
 	editableId: number;
@@ -10,7 +11,7 @@ interface IState {
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
 	list: Readonly<Api.IColor>[];
-	actions: any;
+	actions: ApiActionsType;
 }
 
 export class Colors extends React.Component<IProps, IState> {
@@ -35,7 +36,7 @@ export class Colors extends React.Component<IProps, IState> {
 		}
 	}
 
-	onSave(data: Api.IProducer) {
+	onSave(data: Api.IColor) {
 		this.props.actions.apiSaveColor(data);
 		this.onCancel();
 	}

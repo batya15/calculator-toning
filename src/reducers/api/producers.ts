@@ -9,7 +9,7 @@ export default handleActions<Api.IProducer[]>({
 	[ACTIONS.API_ADD_NEW_PRODUCER]: (old) => {
 		return old.concat(
 			{
-				id: old.reduce((max, i) => max < i.id? i.id : max , -Infinity) + 1,
+				id:  old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
 				caption: 'new item'
 			}
 		);

@@ -5,6 +5,12 @@ import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import {Container, Appbar, Panel, Tabs, Tab, Button} from 'muicss/react';
 import {Producers} from "./producers";
+import {Thickness} from "./thickness";
+import {Opacity} from "./opacity/index";
+import {Colors} from "./colors/index";
+import {Services} from "./services/index";
+import {Details} from "./details/index";
+import {Materials} from "./materials/index";
 
 interface IState {
 	loaded: boolean

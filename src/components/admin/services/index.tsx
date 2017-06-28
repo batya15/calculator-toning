@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
+import {ApiActionsType} from "../../../actions/api";
 
 interface IState {
 	editableId: number;
@@ -9,11 +10,12 @@ interface IState {
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IThickness>[];
-	actions: any;
+	details: Readonly<Api.IDetail>[];
+	list: Readonly<Api.IService>[];
+	actions: ApiActionsType;
 }
 
-export class Producers extends React.Component<IProps, IState> {
+export class Services extends React.Component<IProps, IState> {
 	state = {
 		editableId: null
 	};
@@ -23,20 +25,27 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onDelete(id: number) {
-		if (this.props.materials.some(i => i.producerId === id)) {
+		if (this.props.materials.some(i => i.serviceId === id) || this.props.details.some(i => i.serviceIDs.indexOf(id) >= 0)) {
 			alert(`Элемент используеться в матерьялах: \n 
 				${
-				this.props.materials.filter(i => i.producerId === id)
+				this.props.materials.filter(i => i.serviceId === id)
 					.map(i => i.caption + ',\n')
 					.join('')
-				}`);
+				}
+				Элемент используеться в деталях: \n 
+				${
+				this.props.details.filter(i => i.serviceIDs.indexOf(id) >= 0)
+					.map(i => i.caption + ',\n')
+					.join('')
+				}
+				`);
 		} else {
-			this.props.actions.apiRemoveProducer(id);
+			this.props.actions.apiRemoveService(id);
 		}
 	}
 
-	onSave(data: Api.IProducer) {
-		this.props.actions.apiSaveProducers(data);
+	onSave(data: Api.IService) {
+		this.props.actions.apiSaveService(data);
 		this.onCancel();
 	}
 
@@ -45,7 +54,7 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onAddNewItem() {
-		this.props.actions.apiAddNewProducer();
+		this.props.actions.apiAddNewService();
 	}
 
 	render() {
@@ -56,7 +65,7 @@ export class Producers extends React.Component<IProps, IState> {
 						i.id === this.state.editableId
 							? <Editor key={i.id}
 									  item={i}
-									  onSave={(d: Api.IProducer) => this.onSave(d)}
+									  onSave={(d: Api.IService) => this.onSave(d)}
 									  onCancel={() => this.onCancel()}/>
 							: <Item key={i.id}
 									item={i}
@@ -70,4 +79,4 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 }
 
-export default Producers;
+export default Services;

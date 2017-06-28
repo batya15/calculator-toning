@@ -2,15 +2,15 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
+import {ApiActionsType} from "../../../actions/api";
 
 interface IState {
 	editableId: number;
 }
 
 interface IProps {
-	materials: Readonly<Api.IMaterial>[];
 	list: Readonly<Api.IDetail>[];
-	actions: any;
+	actions: ApiActionsType;
 }
 
 export class Details extends React.Component<IProps, IState> {
@@ -23,20 +23,11 @@ export class Details extends React.Component<IProps, IState> {
 	}
 
 	onDelete(id: number) {
-		if (this.props.materials.some(i => i.producerId === id)) {
-			alert(`Элемент используеться в матерьялах: \n 
-				${
-				this.props.materials.filter(i => i.producerId === id)
-					.map(i => i.caption + ',\n')
-					.join('')
-				}`);
-		} else {
-			this.props.actions.apiRemoveProducer(id);
-		}
+		this.props.actions.apiRemoveDetail(id);
 	}
 
-	onSave(data: Api.IProducer) {
-		this.props.actions.apiSaveProducers(data);
+	onSave(data: Api.IDetail) {
+		this.props.actions.apiSaveDetail(data);
 		this.onCancel();
 	}
 
@@ -45,7 +36,7 @@ export class Details extends React.Component<IProps, IState> {
 	}
 
 	onAddNewItem() {
-		this.props.actions.apiAddNewProducer();
+		this.props.actions.apiAddNewDetail();
 	}
 
 	render() {
@@ -56,7 +47,7 @@ export class Details extends React.Component<IProps, IState> {
 						i.id === this.state.editableId
 							? <Editor key={i.id}
 									  item={i}
-									  onSave={(d: Api.IProducer) => this.onSave(d)}
+									  onSave={(d: Api.IDetail) => this.onSave(d)}
 									  onCancel={() => this.onCancel()}/>
 							: <Item key={i.id}
 									item={i}

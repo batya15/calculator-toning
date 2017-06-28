@@ -3,11 +3,10 @@ import {Api} from "api";
 
 
 interface IState {
-
 }
 
 interface IProps {
-	item: Readonly<Api.IProducer>;
+	item: Readonly<Api.IService>;
 	onEdit: () => void;
 	onDelete: () => void;
 }

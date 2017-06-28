@@ -5,21 +5,21 @@ export namespace Api {
 	 * Деталь машины (стекло)
 	 */
 	export interface IDetail {
-		id: number
-		caption: string,
-		size: number,
-		cameraPosition: string,
-		meshName: string,
-		serviceIDs: string[]
+		readonly id: number
+		readonly caption: string,
+		readonly size: number,
+		readonly cameraPosition: string,
+		readonly meshName: string,
+		readonly serviceIDs: number[]
 	}
 
 	/**
 	 * Виды работ
 	 */
 	export interface IService {
-		id: number,
-		caption: string,
-		description: string
+		readonly id: number,
+		readonly caption: string,
+		readonly description: string
 	}
 
 	/**
@@ -29,20 +29,20 @@ export namespace Api {
 		readonly id: number,
 		readonly caption: string,
 		readonly producerId: number,
-		readonly colorId: string | null,
-		readonly opacityId: string | null,
-		readonly thicknessId: string | null,
+		readonly colorId: number | null,
+		readonly opacityId: number | null,
+		readonly thicknessId: number | null,
 		readonly price: number,
-		readonly serviceId: string
+		readonly serviceId: number
 	}
 
 	/**
 	 * Цвета
 	 */
 	export interface IColor {
-		id: number,
-		caption: string,
-		rgb: string;
+		readonly id: number,
+		readonly caption: string,
+		readonly rgb: string;
 	}
 
 	/**
@@ -57,16 +57,16 @@ export namespace Api {
 	 * Толщина пленки
 	 */
 	export interface IThickness {
-		id: number
-		caption: string
+		readonly id: number
+		readonly caption: string
 	}
 
 	/**
 	 * Прозрачность
 	 */
 	export interface IOpacity {
-		id: number,
-		caption: string
+		readonly id: number,
+		readonly caption: string
 	}
 
 }

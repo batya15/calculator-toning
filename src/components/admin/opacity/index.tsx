@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
+import {ApiActionsType} from "actions/api";
 
 interface IState {
 	editableId: number;
@@ -9,11 +10,11 @@ interface IState {
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IColor>[];
-	actions: any;
+	list: Readonly<Api.IOpacity>[];
+	actions: ApiActionsType;
 }
 
-export class Producers extends React.Component<IProps, IState> {
+export class Opacity extends React.Component<IProps, IState> {
 	state = {
 		editableId: null
 	};
@@ -23,20 +24,20 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onDelete(id: number) {
-		if (this.props.materials.some(i => i.producerId === id)) {
+		if (this.props.materials.some(i => i.opacityId === id)) {
 			alert(`Элемент используеться в матерьялах: \n 
 				${
-				this.props.materials.filter(i => i.producerId === id)
+				this.props.materials.filter(i => i.opacityId === id)
 					.map(i => i.caption + ',\n')
 					.join('')
 				}`);
 		} else {
-			this.props.actions.apiRemoveProducer(id);
+			this.props.actions.apiRemoveOpacity(id);
 		}
 	}
 
-	onSave(data: Api.IProducer) {
-		this.props.actions.apiSaveProducers(data);
+	onSave(data: Api.IOpacity) {
+		this.props.actions.apiSaveOpacity(data);
 		this.onCancel();
 	}
 
@@ -45,7 +46,7 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onAddNewItem() {
-		this.props.actions.apiAddNewProducer();
+		this.props.actions.apiAddNewOpacity();
 	}
 
 	render() {
@@ -56,7 +57,7 @@ export class Producers extends React.Component<IProps, IState> {
 						i.id === this.state.editableId
 							? <Editor key={i.id}
 									  item={i}
-									  onSave={(d: Api.IProducer) => this.onSave(d)}
+									  onSave={(d: Api.IOpacity) => this.onSave(d)}
 									  onCancel={() => this.onCancel()}/>
 							: <Item key={i.id}
 									item={i}
@@ -70,4 +71,4 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 }
 
-export default Producers;
+export default Opacity;

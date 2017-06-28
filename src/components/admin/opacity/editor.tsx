@@ -6,8 +6,8 @@ interface IState {
 }
 
 interface IProps {
-	item: Readonly<Api.IProducer>,
-	onSave: (data: Api.IProducer) => void,
+	item: Readonly<Api.IOpacity>,
+	onSave: (data: Api.IOpacity) => void,
 	onCancel: () => void
 }
 

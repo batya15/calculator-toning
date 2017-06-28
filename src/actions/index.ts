@@ -1,6 +1,6 @@
 import {bindActionCreators} from 'redux';
-import * as apiActions from './api';
-import * as appActions from './app';
+import apiActions from './api';
+import appActions from './app';
 
 export const mapDispatchToProps = (dispatch) => ({
 	actions: {

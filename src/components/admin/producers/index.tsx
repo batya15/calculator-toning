@@ -2,15 +2,17 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
+import {ApiActionsType} from "actions/api";
 
 interface IState {
 	editableId: number;
 }
 
+
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
 	list: Readonly<Api.IProducer>[];
-	actions: any;
+	actions: ApiActionsType;
 }
 
 export class Producers extends React.Component<IProps, IState> {
@@ -36,7 +38,7 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	onSave(data: Api.IProducer) {
-		this.props.actions.apiSaveProducers(data);
+		this.props.actions.apiSaveProducer(data);
 		this.onCancel();
 	}
 

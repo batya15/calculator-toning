@@ -18,7 +18,7 @@ export class Item extends React.Component<IProps, IState> {
 			<div key={this.props.item.id}>
 				<span>{this.props.item.id}</span>
 				<span>{this.props.item.caption}</span>
-				<span>{this.props.item.rgb}</span>
+				<span style={{color: this.props.item.rgb}}>{this.props.item.rgb}</span>
 				<button onClick={this.props.onDelete}>Удалить</button>
 				<button onClick={this.props.onEdit}>Редактировать</button>
 			</div>

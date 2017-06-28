@@ -10,3 +10,12 @@ export const selectMaterial = createAction(String(ACTIONS.SELECT_MATERIAL));
 export const needPlaces = createAction(String(ACTIONS.NEED_PLACES), api.details.get);
 export const needServices = createAction(String(ACTIONS.NEED_SERVICES), api.services.get);
 
+export default {
+	editPlaces,
+	selectPlace,
+	selectService,
+	save,
+	selectMaterial,
+	needPlaces,
+	needServices,
+}
