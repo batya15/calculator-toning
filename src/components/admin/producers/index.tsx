@@ -39,10 +39,10 @@ export class Producers extends React.Component<IProps, IState> {
 
 	onSave(data: Api.IProducer) {
 		this.props.actions.apiSaveProducer(data);
-		this.onCancel();
+		this.resetEditableItem();
 	}
 
-	onCancel() {
+	private resetEditableItem() {
 		this.setState({editableId: null});
 	}
 
@@ -59,7 +59,7 @@ export class Producers extends React.Component<IProps, IState> {
 							? <Editor key={i.id}
 									  item={i}
 									  onSave={(d: Api.IProducer) => this.onSave(d)}
-									  onCancel={() => this.onCancel()}/>
+									  onCancel={() => this.resetEditableItem()}/>
 							: <Item key={i.id}
 									item={i}
 									onEdit={() => this.onEdit(i.id)}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
-import {ApiActionsType} from "../../../actions/api";
+import {ApiActionsType} from "actions/api";
 
 interface IState {
 	editableId: number;
@@ -45,11 +45,11 @@ export class Services extends React.Component<IProps, IState> {
 	}
 
 	onSave(data: Api.IService) {
+		this.resetEditableItem();
 		this.props.actions.apiSaveService(data);
-		this.onCancel();
 	}
 
-	onCancel() {
+	resetEditableItem() {
 		this.setState({editableId: null});
 	}
 
@@ -66,7 +66,7 @@ export class Services extends React.Component<IProps, IState> {
 							? <Editor key={i.id}
 									  item={i}
 									  onSave={(d: Api.IService) => this.onSave(d)}
-									  onCancel={() => this.onCancel()}/>
+									  onCancel={() => this.resetEditableItem()}/>
 							: <Item key={i.id}
 									item={i}
 									onEdit={() => this.onEdit(i.id)}

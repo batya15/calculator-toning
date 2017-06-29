@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
-import {ApiActionsType} from "../../../actions/api";
+import {ApiActionsType} from "actions/api";
 
 interface IState {
 	editableId: number;
@@ -38,10 +38,10 @@ export class Colors extends React.Component<IProps, IState> {
 
 	onSave(data: Api.IColor) {
 		this.props.actions.apiSaveColor(data);
-		this.onCancel();
+		this.resetEditableItem();
 	}
 
-	onCancel() {
+	private resetEditableItem() {
 		this.setState({editableId: null});
 	}
 
@@ -58,7 +58,7 @@ export class Colors extends React.Component<IProps, IState> {
 							? <Editor key={i.id}
 									  item={i}
 									  onSave={(d: Api.IColor) => this.onSave(d)}
-									  onCancel={() => this.onCancel()}/>
+									  onCancel={() => this.resetEditableItem()}/>
 							: <Item key={i.id}
 									item={i}
 									onEdit={() => this.onEdit(i.id)}

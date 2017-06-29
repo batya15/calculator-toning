@@ -23,7 +23,7 @@ export default handleActions<Api.IColor[]>({
 			if (i.id === data.payload.id) {
 				return {
 					id : data.payload.id,
-					caption: data.payload.caption + "save",
+					caption: data.payload.caption,
 					rgb: data.payload.rgb
 				}
 			} else {

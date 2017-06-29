@@ -26,7 +26,7 @@ export default handleActions<Api.IDetail[]>({
 			if (i.id === data.payload.id) {
 				return {
 					id : data.payload.id,
-					caption: data.payload.caption + "save",
+					caption: data.payload.caption,
 					size: 1,
 					cameraPosition: '',
 					meshName: '',

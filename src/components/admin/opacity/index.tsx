@@ -38,10 +38,10 @@ export class Opacity extends React.Component<IProps, IState> {
 
 	onSave(data: Api.IOpacity) {
 		this.props.actions.apiSaveOpacity(data);
-		this.onCancel();
+		this.resetEditableItem();
 	}
 
-	onCancel() {
+	private resetEditableItem() {
 		this.setState({editableId: null});
 	}
 
@@ -58,7 +58,7 @@ export class Opacity extends React.Component<IProps, IState> {
 							? <Editor key={i.id}
 									  item={i}
 									  onSave={(d: Api.IOpacity) => this.onSave(d)}
-									  onCancel={() => this.onCancel()}/>
+									  onCancel={() => this.resetEditableItem()}/>
 							: <Item key={i.id}
 									item={i}
 									onEdit={() => this.onEdit(i.id)}

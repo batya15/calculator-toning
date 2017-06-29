@@ -28,7 +28,7 @@ export default handleActions<Api.IMaterial[]>({
 			if (i.id === data.payload.id) {
 				return {
 					id : data.payload.id,
-					caption: data.payload.caption + "save",
+					caption: data.payload.caption,
 					producerId: 1,
 					colorId: null,
 					opacityId: null,

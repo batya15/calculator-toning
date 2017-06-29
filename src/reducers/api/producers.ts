@@ -22,7 +22,7 @@ export default handleActions<Api.IProducer[]>({
 			if (i.id === data.payload.id) {
 				return {
 					id : data.payload.id,
-					caption: data.payload.caption + "save"
+					caption: data.payload.caption
 				}
 			} else {
 				return i;

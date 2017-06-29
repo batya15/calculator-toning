@@ -23,8 +23,8 @@ export default handleActions<Api.IService[]>({
 			if (i.id === data.payload.id) {
 				return {
 					id : data.payload.id,
-					caption: data.payload.caption + "save",
-					description : data.payload.description + "save"
+					caption: data.payload.caption,
+					description : data.payload.description
 				}
 			} else {
 				return i;
