@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export class Editor extends React.Component<IProps, Api.IService> {
-	public componentWillReceiveProps(): void {
+	public componentWillMount(): void {
 		this.propsToState(this.props.item);
 	}
 

@@ -3,11 +3,15 @@ import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
 import {ApiActionsType} from "actions/api";
+import * as styles  from "./../admin.pcss";
+import * as classnames  from 'classnames';
+import * as Input from 'muicss/lib/react/input';
+import * as Button from 'muicss/lib/react/button';
 
 interface IState {
 	editableId: number;
+	searchString : RegExp;
 }
-
 
 interface IProps {
 	materials: Readonly<Api.IMaterial>[];
@@ -17,7 +21,8 @@ interface IProps {
 
 export class Producers extends React.Component<IProps, IState> {
 	state = {
-		editableId: null
+		editableId: null,
+		searchString: new RegExp('', 'gi')
 	};
 
 	onEdit(id: number) {
@@ -46,15 +51,22 @@ export class Producers extends React.Component<IProps, IState> {
 		this.setState({editableId: null});
 	}
 
+	private onSearch(search: string) {
+		this.setState({searchString: new RegExp(search, 'gi')});
+	}
+
 	onAddNewItem() {
 		this.props.actions.apiAddNewProducer();
 	}
 
 	render() {
 		return (
-			<div>
+			<div className={classnames({[styles.editable] : this.state.editableId !== null, [styles.list]: true})}>
+				<Input hint="Поиск..." onChange={e => this.onSearch(e.target.value)}/>
 				{
-					this.props.list.map(i => (
+					this.props.list
+						.filter(i => this.state.searchString.test(i.caption))
+						.map(i => (
 						i.id === this.state.editableId
 							? <Editor key={i.id}
 									  item={i}
@@ -66,7 +78,7 @@ export class Producers extends React.Component<IProps, IState> {
 									onDelete={() => this.onDelete(i.id)}/>
 					))
 				}
-				<button onClick={() => this.onAddNewItem()}>Добавить</button>
+				<Button className={styles.add} variant="fab" color="primary" onClick={() => this.onAddNewItem()}>+</Button>
 			</div>
 		)
 	}

@@ -26,16 +26,7 @@ export default handleActions<Api.IMaterial[]>({
 	[ACTIONS.API_SAVE_MATERIAL]: (old, data: {payload: Api.IMaterial}) => {
 		return old.map(i=> {
 			if (i.id === data.payload.id) {
-				return {
-					id : data.payload.id,
-					caption: data.payload.caption,
-					producerId: 1,
-					colorId: null,
-					opacityId: null,
-					thicknessId: null,
-					price: 0,
-					serviceId: 1
-				}
+				return {...data.payload}
 			} else {
 				return i;
 			}

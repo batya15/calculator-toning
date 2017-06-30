@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as styles from './index.pcss';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import 'muicss/dist/css/mui.css';
+import 'muicss/dist/css/mui-noglobals.css';
 import Admin from "./admin/index";
 
 injectTapEventPlugin();

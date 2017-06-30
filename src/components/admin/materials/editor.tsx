@@ -30,32 +30,12 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 		this.setState({...item})
 	}
 
-	private onChangeProducerId(id: number) {
-		this.setState({producerId: id})
-	}
-
-	private onChangeColorId(id: number) {
-		this.setState({colorId: id})
-	}
-
-	private onChangeOpacityId(id: number) {
-		this.setState({opacityId: id})
-	}
-
-	private onChangeThicknessId(id: number) {
-		this.setState({thicknessId: id})
-	}
-
-	private onChangeServiceId(id: number) {
-		this.setState({serviceId: id})
-	}
-
 	render() {
 		return (
 			<div key={this.props.item.id}>
 				<span>{this.props.item.id}</span>
-				<input onChange={(e) => this.setState({caption: e.target.value})} value={this.props.item.caption}/>
-				<input type="number" onChange={(e) => this.setState({price: Number(e.target.value)})} value={this.props.item.price}/>
+				<input onChange={(e) => this.setState({caption: e.target.value})} value={this.state.caption}/>
+				<input type="number" onChange={(e) => this.setState({price: Number(e.target.value)})} value={this.state.price}/>
 				<select value={this.state.producerId} onChange={(e) => this.setState({producerId: Number(e.target.value)})}>
 					{
 						this.props.producers.map(p => (
@@ -63,16 +43,16 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						))
 					}
 				</select>
-				<select value={this.state.colorId} onChange={(e) => this.setState({colorId: Number(e.target.value)})}>
-					<option key={-1} value={null}>Не выбрано</option>
+				<select value={this.state.colorId ? this.state.colorId : ''} onChange={(e) => this.setState({colorId: e.target.value !== '' ? Number(e.target.value) : null})}>
+					<option value=''>Не выбрано</option>
 					{
 						this.props.colors.map(c => (
 							<option key={c.id} value={c.id}>{c.caption}</option>
 						))
 					}
 				</select>
-				<select>
-					<option key={-1} value={null}>Не выбрано</option>
+				<select value={this.state.thicknessId ? this.state.thicknessId : ''} onChange={(e) => this.setState({thicknessId: e.target.value !== '' ? Number(e.target.value) : null})}>
+					<option value=''>Не выбрано</option>
 					{
 						this.props.thickness.map(c => (
 							<option key={c.id} value={c.id}>{c.caption}</option>
@@ -80,8 +60,8 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 					}
 				</select>
 
-				<select>
-					<option key={-1} value={null}>Не выбрано</option>
+				<select value={this.state.opacityId ? this.state.opacityId : ''} onChange={(e) => this.setState({opacityId: e.target.value !== '' ? Number(e.target.value) : null})}>
+					<option value={null}>Не выбрано</option>
 					{
 						this.props.opacity.map(c => (
 							<option key={c.id} value={c.id}>{c.caption}</option>
@@ -89,14 +69,14 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 					}
 				</select>
 
-				<select>
+				<select value={this.state.serviceId ? this.state.serviceId : ''} onChange={(e) => this.setState({serviceId: e.target.value !== '' ? Number(e.target.value) : null})}>
 					{
 						this.props.services.map(c => (
 							<option key={c.id} value={c.id}>{c.caption}</option>
 						))
 					}
-				</select>}
-				<button onClick={() => this.props.onSave(this.props.item)}>Сохранить</button>
+				</select>
+				<button onClick={() => this.props.onSave(this.state)}>Сохранить</button>
 				<button onClick={this.props.onCancel}>Отменить</button>
 			</div>
 		)

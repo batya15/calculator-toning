@@ -46,7 +46,9 @@ export class Admin extends React.Component<Props, IState> {
 			return (
 				<div>
 					<Panel>
-						Json
+						<div style={{display: 'none'}}>
+							{JSON.stringify({...this.props.api})}
+						</div>
 					</Panel>
 					<Tabs defaultSelectedIndex={0} justified={true}>
 						<Tab value="Производители" label="Производители">
