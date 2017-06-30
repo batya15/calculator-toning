@@ -85,6 +85,7 @@ export class Admin extends React.Component<Props, IState> {
 								services={this.props.api.services}
 								colors={this.props.api.colors}
 								opacity={this.props.api.opacity}
+								details={this.props.api.details}
 								thickness={this.props.api.thickness}
 								producers={this.props.api.producers}
 							/>

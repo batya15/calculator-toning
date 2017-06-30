@@ -60,7 +60,7 @@ export class Services extends React.Component<IProps, IState> {
 			this.setState({searchString: null});
 		} else {
 			let req = search.split(' ').reduce((res, i) => res += `(?=.*${i})`, '');
-			this.setState({searchString: new RegExp(`^${req}.*$`, 'gi')});
+			this.setState({searchString: new RegExp(`^${req}.*$`, 'i')});
 		}
 	}
 

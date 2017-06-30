@@ -8,6 +8,21 @@
   line-height: 1rem;
 }
 
+.searchPanel {
+  margin-bottom: 1rem;
+
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+}
+
+.searchSelect {
+  float: left;
+  width: 20%;
+}
+
 .side {
   float: left;
   width: 50%;
@@ -15,6 +30,25 @@
 
 .clr {
   clear: both;
+}
+
+.calculator {
+  line-height: 1.2rem;
+  margin: 1rem;
+
+  & .caption {
+    width: 40%;
+    display: inline-block;
+  }
+
+  & .detail {
+    border-bottom: 1px solid #d4d4d4;
+    line-height: 24px;
+  }
+
+  & .price {
+    float: right;
+  }
 }
 
 @keyframes animation {

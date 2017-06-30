@@ -7,15 +7,15 @@ import * as Input from 'muicss/lib/react/input';
 import * as classnames  from 'classnames';
 import * as Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import {isUndefined} from "util";
 
 interface IProps {
 	item: Readonly<Api.IMaterial>,
-	services?: Readonly<Api.IService>[];
-	producers?: Readonly<Api.IProducer>[];
-	colors?: Readonly<Api.IColor>[];
-	opacity?: Readonly<Api.IOpacity>[];
-	thickness?: Readonly<Api.IThickness>[];
+	services: Readonly<Api.IService>[];
+	producers: Readonly<Api.IProducer>[];
+	colors: Readonly<Api.IColor>[];
+	opacity: Readonly<Api.IOpacity>[];
+	thickness: Readonly<Api.IThickness>[];
+	details: Readonly<Api.IDetail>[];
 	onSave?: (data: Api.IMaterial) => void,
 	onCancel?: () => void
 }
@@ -97,7 +97,19 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						onChange={e => this.setState({opacityId: e})}
 					/>
 				</div>
-
+				<div className={customStyle.side}>
+					<div className={customStyle.calculator}>
+						<div className={commonStyle.id}>Калькулятор:</div>
+						{
+							this.props.details.map(i => (
+								<div className={customStyle.detail} key={i.id}>
+									<span className={customStyle.caption}>{i.caption}:</span>
+									<span  className={customStyle.price}>{i.size * this.state.price}</span>
+								</div>
+							))
+						}
+					</div>
+				</div>
 				<div className={classnames(commonStyle.controls, customStyle.clr)}>
 					<Button size="small"
 							className={commonStyle.save}

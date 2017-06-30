@@ -51,7 +51,7 @@ export class Opacity extends React.Component<IProps, IState> {
 		if (search === '') {
 			this.setState({searchString: null});
 		} else {
-			this.setState({searchString: new RegExp(search, 'gi')});
+			this.setState({searchString: new RegExp(search, 'i')});
 		}
 	}
 
