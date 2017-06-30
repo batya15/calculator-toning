@@ -6,11 +6,14 @@ export default handleActions<Api.IProducer[]>({
 	[ACTIONS.API_NEED_PRODUCERS]: (old, data) => {
 		return data.payload;
 	},
+	[ACTIONS.API_LOAD_FROM_FILE]: (old, data: {payload: {producers: Api.IProducer[]}}) => {
+		return data.payload.producers;
+	},
 	[ACTIONS.API_ADD_NEW_PRODUCER]: (old) => {
 		return old.concat(
 			{
 				id:  old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
-				caption: 'new item'
+				caption: 'Новый производитель'
 			}
 		);
 	},

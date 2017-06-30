@@ -6,11 +6,14 @@ export default handleActions<Api.IColor[]>({
 	[ACTIONS.API_NEED_COLORS]: (old, data) => {
 		return data.payload;
 	},
+	[ACTIONS.API_LOAD_FROM_FILE]: (old, data: {payload: {colors: Api.IColor[]}}) => {
+		return data.payload.colors;
+	},
 	[ACTIONS.API_ADD_NEW_COLOR]: (old) => {
 		return old.concat(
 			{
 				id: old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
-				caption: 'new item',
+				caption: 'Новый цвет',
 				rgb: "#ffdd00"
 			}
 		);

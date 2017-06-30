@@ -6,11 +6,14 @@ export default handleActions<Api.IOpacity[]>({
 	[ACTIONS.API_NEED_OPACITY]: (old, data): Api.IOpacity[] => {
 		return data.payload;
 	},
+	[ACTIONS.API_LOAD_FROM_FILE]: (old, data: {payload: {opacity: Api.IOpacity[]}}) => {
+		return data.payload.opacity;
+	},
 	[ACTIONS.API_ADD_NEW_OPACITY]: (old) => {
 		return old.concat(
 			{
 				id:  old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
-				caption: 'new item'
+				caption: 'Новая прозрачность'
 			}
 		);
 	},

@@ -63,7 +63,7 @@ export class Opacity extends React.Component<IProps, IState> {
 		this.props.actions.apiAddNewOpacity();
 	}
 
-	private render() {
+	render() {
 		return (
 			<div className={classnames({[styles.editable]: this.state.editableId !== null, [styles.list]: true})}>
 				<Input hint="Поиск..." onChange={e => this.onSearch(e.target.value)}/>

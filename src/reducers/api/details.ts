@@ -6,11 +6,14 @@ export default handleActions<Api.IDetail[]>({
 	[ACTIONS.API_NEED_DETAILS]: (old, data) => {
 		return data.payload;
 	},
+	[ACTIONS.API_LOAD_FROM_FILE]: (old, data: {payload: {details: Api.IDetail[]}}) => {
+		return data.payload.details;
+	},
 	[ACTIONS.API_ADD_NEW_DETAIL]: (old) => {
 		return old.concat(
 			{
 				id: old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
-				caption: 'new item',
+				caption: 'Новая деталь',
 				size: 1,
 				cameraPosition: '',
 				meshName: '',

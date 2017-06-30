@@ -69,7 +69,13 @@ export class Materials extends React.Component<IProps, IState> {
 	}
 
 	private onAddNewItem() {
-		this.props.actions.apiAddNewMaterial();
+		if (this.props.producers.length === 0) {
+			alert('Ошибка! Нет ни одного производителя!')
+		} else if (this.props.services.length === 0) {
+			alert('Ошибка! Нет ни одной услуги!')
+		} else {
+			this.props.actions.apiAddNewMaterial({producerId: this.props.producers[0].id, serviceId: this.props.services[0].id});
+		}
 	}
 
 	render() {

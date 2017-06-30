@@ -6,12 +6,15 @@ export default handleActions<Api.IService[]>({
 	[ACTIONS.API_NEED_SERVICES]: (old, data) => {
 		return data.payload;
 	},
+	[ACTIONS.API_LOAD_FROM_FILE]: (old, data: {payload: {services: Api.IService[]}}) => {
+		return data.payload.services;
+	},
 	[ACTIONS.API_ADD_NEW_SERVICE]: (old) => {
 		return old.concat(
 			{
 				id:  old.reduce((max: number|null, i) => (max === null || max < i.id)? i.id : max , null) + 1,
-				caption: 'new item',
-				description: 'description2'
+				caption: 'Новая услуга',
+				description: 'Описание новой услуги'
 			}
 		);
 	},
