@@ -1,0 +1,28 @@
+.main {
+  animation: animation .7s infinite ease-in-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.reset {
+  line-height: 1rem;
+}
+
+.side {
+  float: left;
+  width: 50%;
+}
+
+.clr {
+  clear: both;
+}
+
+@keyframes animation {
+  99% {
+    overflow: hidden;
+  }
+  to {
+    height: 590px;
+    overflow: inherit;
+  }
+}

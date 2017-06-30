@@ -64,7 +64,11 @@ export class Admin extends React.Component<Props, IState> {
 							<Colors actions={this.props.actions.api} materials={this.props.api.materials} list={this.props.api.colors}/>
 						</Tab>
 						<Tab value="Детали" label="Детали">
-							<Details actions={this.props.actions.api} list={this.props.api.details}/>
+							<Details
+								actions={this.props.actions.api}
+								list={this.props.api.details}
+								services={this.props.api.services}
+							/>
 						</Tab>
 						<Tab value="Услуги" label="Услуги">
 							<Services

@@ -21,11 +21,7 @@ export default handleActions<Api.IColor[]>({
 	[ACTIONS.API_SAVE_COLOR]: (old, data: {payload: Api.IColor}) => {
 		return old.map(i=> {
 			if (i.id === data.payload.id) {
-				return {
-					id : data.payload.id,
-					caption: data.payload.caption,
-					rgb: data.payload.rgb
-				}
+				return {...data.payload}
 			} else {
 				return i;
 			}

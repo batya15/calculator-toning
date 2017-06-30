@@ -1,6 +1,13 @@
 import * as React from 'react';
 import {Api} from "api";
-
+import * as commonStyle from "./../admin.pcss";
+import * as customStyle from "./materials.pcss";
+import * as Button from 'muicss/lib/react/button';
+import * as Input from 'muicss/lib/react/input';
+import * as classnames  from 'classnames';
+import * as Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import {isUndefined} from "util";
 
 interface IProps {
 	item: Readonly<Api.IMaterial>,
@@ -32,52 +39,75 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 
 	render() {
 		return (
-			<div key={this.props.item.id}>
-				<span>{this.props.item.id}</span>
-				<input onChange={(e) => this.setState({caption: e.target.value})} value={this.state.caption}/>
-				<input type="number" onChange={(e) => this.setState({price: Number(e.target.value)})} value={this.state.price}/>
-				<select value={this.state.producerId} onChange={(e) => this.setState({producerId: Number(e.target.value)})}>
-					{
-						this.props.producers.map(p => (
-							<option key={p.id} value={p.id}>{p.caption}</option>
-						))
-					}
-				</select>
-				<select value={this.state.colorId ? this.state.colorId : ''} onChange={(e) => this.setState({colorId: e.target.value !== '' ? Number(e.target.value) : null})}>
-					<option value=''>Не выбрано</option>
-					{
-						this.props.colors.map(c => (
-							<option key={c.id} value={c.id}>{c.caption}</option>
-						))
-					}
-				</select>
-				<select value={this.state.thicknessId ? this.state.thicknessId : ''} onChange={(e) => this.setState({thicknessId: e.target.value !== '' ? Number(e.target.value) : null})}>
-					<option value=''>Не выбрано</option>
-					{
-						this.props.thickness.map(c => (
-							<option key={c.id} value={c.id}>{c.caption}</option>
-						))
-					}
-				</select>
+			<div className={classnames(commonStyle.editor, customStyle.main)}>
+				<div className={customStyle.side}>
+					<div className={commonStyle.id}>id: #{this.state.id}</div>
+					<Input label="Название пленки:"
+						   onChange={(e) => this.setState({caption: e.target.value})}
+						   value={this.state.caption}/>
+					<Input label="Цена за 1 кв.м."
+						   type="number"
+						   onChange={(e) => this.setState({price: Number(e.target.value)})}
+						   value={this.state.price}/>
+					<div className={commonStyle.id}>Услуга:</div>
+					<Select
+						className={customStyle.reset}
+						placeholder="Отсутствует данный параметр"
+						simpleValue
+						clearable={false}
+						value={this.state.serviceId}
+						options={this.props.services.map(i => ({value: i.id, label: i.caption}))}
+						onChange={e => this.setState({serviceId: e})}
+					/>
+					<div className={commonStyle.id}>Производитель:</div>
+					<Select
+						className={customStyle.reset}
+						placeholder="Выбор производителя..."
+						clearable={false}
+						simpleValue
+						value={this.state.producerId}
+						options={this.props.producers.map(i => ({value: i.id, label: i.caption}))}
+						onChange={e => this.setState({producerId: e})}
+					/>
+					<div className={commonStyle.id}>Цвет:</div>
+					<Select
+						className={customStyle.reset}
+						placeholder="Отсутствует данный параметр"
+						simpleValue
+						value={this.state.colorId}
+						options={this.props.colors.map(i => ({value: i.id, label: i.caption}))}
+						onChange={e => this.setState({colorId: e})}
+					/>
+					<div className={commonStyle.id}>Толщина:</div>
+					<Select
+						className={customStyle.reset}
+						placeholder="Отсутствует данный параметр"
+						simpleValue
+						value={this.state.thicknessId}
+						options={this.props.thickness.map(i => ({value: i.id, label: i.caption}))}
+						onChange={e => this.setState({thicknessId: e})}
+					/>
+					<div className={commonStyle.id}>Светопропускаемость:</div>
+					<Select
+						className={customStyle.reset}
+						placeholder="Отсутствует данный параметр"
+						simpleValue
+						value={this.state.opacityId}
+						options={this.props.opacity.map(i => ({value: i.id, label: i.caption}))}
+						onChange={e => this.setState({opacityId: e})}
+					/>
+				</div>
 
-				<select value={this.state.opacityId ? this.state.opacityId : ''} onChange={(e) => this.setState({opacityId: e.target.value !== '' ? Number(e.target.value) : null})}>
-					<option value={null}>Не выбрано</option>
-					{
-						this.props.opacity.map(c => (
-							<option key={c.id} value={c.id}>{c.caption}</option>
-						))
-					}
-				</select>
-
-				<select value={this.state.serviceId ? this.state.serviceId : ''} onChange={(e) => this.setState({serviceId: e.target.value !== '' ? Number(e.target.value) : null})}>
-					{
-						this.props.services.map(c => (
-							<option key={c.id} value={c.id}>{c.caption}</option>
-						))
-					}
-				</select>
-				<button onClick={() => this.props.onSave(this.state)}>Сохранить</button>
-				<button onClick={this.props.onCancel}>Отменить</button>
+				<div className={classnames(commonStyle.controls, customStyle.clr)}>
+					<Button size="small"
+							className={commonStyle.save}
+							color="primary"
+							onClick={() => this.props.onSave(this.state)}>Сохранить</Button>
+					<Button size="small"
+							className={commonStyle.cancel}
+							color="primary"
+							onClick={this.props.onCancel}>Отменить</Button>
+				</div>
 			</div>
 		)
 	}

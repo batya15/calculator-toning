@@ -1,5 +1,10 @@
 import * as React from 'react';
 import {Api} from "api";
+import * as commonStyle from "./../admin.pcss";
+import * as customStyle from "./thickness.pcss";
+import * as Button from 'muicss/lib/react/button';
+import * as Input from 'muicss/lib/react/input';
+import * as classnames  from 'classnames';
 
 interface IProps {
 	item: Readonly<Api.IThickness>,
@@ -24,17 +29,23 @@ export class Editor extends React.Component<IProps, Api.IThickness> {
 		this.setState({...item})
 	}
 
-	private onChangeCaption(caption: string) {
-		this.setState({caption: caption})
-	}
-
 	render() {
 		return (
-			<div key={this.state.id}>
-				<span>{this.state.id}</span>
-				<input onChange={(e) => this.onChangeCaption(e.target.value)} value={this.state.caption}/>
-				<button onClick={() => this.props.onSave(this.state)}>Сохранить</button>
-				<button onClick={this.props.onCancel}>Отменить</button>
+			<div className={classnames(commonStyle.editor, customStyle.main)}>
+				<div className={commonStyle.id}>id: #{this.state.id}</div>
+				<Input label="Название толщины:"
+					   onChange={(e) => this.setState({caption: e.target.value})}
+					   value={this.state.caption}/>
+				<div className={commonStyle.controls}>
+					<Button size="small"
+							className={commonStyle.save}
+							color="primary"
+							onClick={() => this.props.onSave(this.state)}>Сохранить</Button>
+					<Button size="small"
+							className={commonStyle.cancel}
+							color="primary"
+							onClick={this.props.onCancel}>Отменить</Button>
+				</div>
 			</div>
 		)
 	}

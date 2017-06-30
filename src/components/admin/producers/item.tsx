@@ -16,7 +16,7 @@ interface IProps {
 export class Item extends React.Component<IProps, IState> {
 	render() {
 		return (
-			<div className={styles.item} key={this.props.item.id}>
+			<div className={styles.item}>
 				<span className={styles.id}>{this.props.item.id}</span>
 				<div className={styles.controls}>
 					<Button size="small" color="primary" onClick={this.props.onEdit}>Редактировать</Button>

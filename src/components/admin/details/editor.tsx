@@ -1,14 +1,24 @@
 import * as React from 'react';
 import {Api} from "api";
+import * as commonStyle from "./../admin.pcss";
+import * as customStyle from "./details.pcss";
+import * as Button from 'muicss/lib/react/button';
+import * as Input from 'muicss/lib/react/input';
+import * as classnames  from 'classnames';
+import * as Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 
 interface IProps {
 	item: Readonly<Api.IDetail>,
+	services: Readonly<Api.IService>[],
 	onSave: (data: Api.IDetail) => void,
 	onCancel: () => void
 }
 
+
 export class Editor extends React.Component<IProps, Api.IDetail> {
+
 	public componentWillMount(): void {
 		this.propsToState(this.props.item);
 	}
@@ -22,36 +32,46 @@ export class Editor extends React.Component<IProps, Api.IDetail> {
 	 * @param item
 	 */
 	private propsToState(item: Api.IDetail) {
-		this.setState({...item})
-	}
-
-	private onChangeCaption(caption: string) {
-		this.setState({caption: caption})
-	}
-
-	private onChangeMeshName(meshName: string) {
-		this.setState({meshName: meshName})
-	}
-
-	private onChangeSize(size: number) {
-		this.setState({size: size})
-	}
-
-	private onChangeCameraPosition(pos: string) {
-		this.setState({cameraPosition: pos})
+		this.setState({...item});
 	}
 
 	render() {
 		return (
-			<div key={this.state.id}>
-				<span>{this.state.id}</span>
-				<input onChange={(e) => this.onChangeCaption(e.target.value)} value={this.state.caption}/>
-				<input onChange={(e) => this.onChangeSize(e.target.value)} value={this.state.size}/>
-				<input onChange={(e) => this.onChangeMeshName(e.target.value)} value={this.state.meshName}/>
-				<input onChange={(e) => this.onChangeCameraPosition(e.target.value)} value={this.state.cameraPosition}/>
-				<input onChange={console.log} value={this.state.serviceIDs.join()}/>
-				<button onClick={()=> this.props.onSave(this.state)}>Сохранить</button>
-				<button onClick={this.props.onCancel}>Отменить</button>
+			<div className={classnames(commonStyle.editor, customStyle.main)}>
+				<div className={commonStyle.id}>id: #{this.state.id}</div>
+				<Input label="Название детали:"
+					   onChange={(e) => this.setState({caption: e.target.value})}
+					   value={this.state.caption}/>
+				<Input label="Площадь детали:"
+					   type="number"
+					   onChange={(e) => this.setState({size: e.target.value})}
+					   value={this.state.size}/>
+				<Input label="Идентификатор 3d:"
+					   onChange={(e) => this.setState({meshName: e.target.value})}
+					   value={this.state.meshName}/>
+				<Input label="Позиция камеры 3d:"
+					   onChange={(e) => this.setState({cameraPosition: e.target.value})}
+					   value={this.state.cameraPosition}/>
+				<div className={commonStyle.id}>Возможные проводимые услуги для данной детали:</div>
+				<div className={customStyle.selectService}>
+					<Select
+						placeholder="Выбор услуг..."
+						value={this.state.serviceIDs}
+						multi={true}
+						options={this.props.services.map(i => ({value: i.id, label: i.caption}))}
+						onChange={(e) => this.setState({serviceIDs: e.map(s => s.value)})}
+					/>
+				</div>
+				<div className={commonStyle.controls}>
+					<Button size="small"
+							className={commonStyle.save}
+							color="primary"
+							onClick={() => this.props.onSave(this.state)}>Сохранить</Button>
+					<Button size="small"
+							className={commonStyle.cancel}
+							color="primary"
+							onClick={this.props.onCancel}>Отменить</Button>
+				</div>
 			</div>
 		)
 	}

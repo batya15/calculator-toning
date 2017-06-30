@@ -1,6 +1,10 @@
 import * as React from 'react';
 import {Api} from "api";
-
+import * as commonStyle from "./../admin.pcss";
+import * as customStyle from "./services.pcss";
+import * as Button from 'muicss/lib/react/button';
+import * as Input from 'muicss/lib/react/input';
+import * as classnames  from 'classnames';
 
 interface IProps {
 	item: Readonly<Api.IService>,
@@ -35,12 +39,24 @@ export class Editor extends React.Component<IProps, Api.IService> {
 
 	render() {
 		return (
-			<div key={this.state.id}>
-				<span>{this.state.id}</span>
-				<input onChange={(e) => this.onChangeCaption(e.target.value)} value={this.state.caption}/>
-				<input onChange={(e) => this.onChangeDescription(e.target.value)} value={this.state.description}/>
-				<button onClick={()=> this.props.onSave(this.state)}>Сохранить</button>
-				<button onClick={this.props.onCancel}>Отменить</button>
+			<div className={classnames(commonStyle.editor, customStyle.main)}>
+				<div className={commonStyle.id}>id: #{this.state.id}</div>
+				<Input label="Название услуги:"
+					   onChange={(e) => this.setState({caption: e.target.value})}
+					   value={this.state.caption}/>
+				<Input label="Описание услуги:"
+					   onChange={(e) => this.setState({description: e.target.value})}
+					   value={this.state.description}/>
+				<div className={commonStyle.controls}>
+					<Button size="small"
+							className={commonStyle.save}
+							color="primary"
+							onClick={() => this.props.onSave(this.state)}>Сохранить</Button>
+					<Button size="small"
+							className={commonStyle.cancel}
+							color="primary"
+							onClick={this.props.onCancel}>Отменить</Button>
+				</div>
 			</div>
 		)
 	}

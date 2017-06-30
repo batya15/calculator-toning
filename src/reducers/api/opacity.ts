@@ -20,10 +20,7 @@ export default handleActions<Api.IOpacity[]>({
 	[ACTIONS.API_SAVE_OPACITY]: (old, data: {payload: Api.IOpacity}) => {
 		return old.map(i=> {
 			if (i.id === data.payload.id) {
-				return {
-					id : data.payload.id,
-					caption: data.payload.caption
-				}
+				return {...data.payload}
 			} else {
 				return i;
 			}

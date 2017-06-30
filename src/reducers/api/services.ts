@@ -21,11 +21,7 @@ export default handleActions<Api.IService[]>({
 	[ACTIONS.API_SAVE_SERVICE]: (old, data: {payload: Api.IService}) => {
 		return old.map(i=> {
 			if (i.id === data.payload.id) {
-				return {
-					id : data.payload.id,
-					caption: data.payload.caption,
-					description : data.payload.description
-				}
+				return {...data.payload}
 			} else {
 				return i;
 			}

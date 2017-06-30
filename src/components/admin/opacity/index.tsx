@@ -3,9 +3,14 @@ import {Api} from "api";
 import {Item} from "./item";
 import {Editor} from "./editor";
 import {ApiActionsType} from "actions/api";
+import * as styles  from "./../admin.pcss";
+import * as classnames  from 'classnames';
+import * as Input from 'muicss/lib/react/input';
+import * as Button from 'muicss/lib/react/button';
 
 interface IState {
 	editableId: number;
+	searchString: RegExp;
 }
 
 interface IProps {
@@ -16,14 +21,15 @@ interface IProps {
 
 export class Opacity extends React.Component<IProps, IState> {
 	state = {
-		editableId: null
+		editableId: null,
+		searchString: null
 	};
 
-	onEdit(id: number) {
+	private onEdit(id: number) {
 		this.setState({editableId: id});
 	}
 
-	onDelete(id: number) {
+	private onDelete(id: number) {
 		if (this.props.materials.some(i => i.opacityId === id)) {
 			alert(`Элемент используеться в матерьялах: \n 
 				${
@@ -36,39 +42,51 @@ export class Opacity extends React.Component<IProps, IState> {
 		}
 	}
 
-	onSave(data: Api.IOpacity) {
+	private onSave(data: Api.IOpacity) {
 		this.props.actions.apiSaveOpacity(data);
 		this.resetEditableItem();
+	}
+
+	private onSearch(search: string) {
+		if (search === '') {
+			this.setState({searchString: null});
+		} else {
+			this.setState({searchString: new RegExp(search, 'gi')});
+		}
 	}
 
 	private resetEditableItem() {
 		this.setState({editableId: null});
 	}
 
-	onAddNewItem() {
+	private onAddNewItem() {
 		this.props.actions.apiAddNewOpacity();
 	}
 
-	render() {
+	private render() {
 		return (
-			<div>
+			<div className={classnames({[styles.editable]: this.state.editableId !== null, [styles.list]: true})}>
+				<Input hint="Поиск..." onChange={e => this.onSearch(e.target.value)}/>
 				{
-					this.props.list.map(i => (
-						i.id === this.state.editableId
-							? <Editor key={i.id}
-									  item={i}
-									  onSave={(d: Api.IOpacity) => this.onSave(d)}
-									  onCancel={() => this.resetEditableItem()}/>
-							: <Item key={i.id}
-									item={i}
-									onEdit={() => this.onEdit(i.id)}
-									onDelete={() => this.onDelete(i.id)}/>
-					))
+					this.props.list
+						.filter(i => this.state.searchString === null? true : this.state.searchString.test(i.caption))
+						.map(i => (
+							i.id === this.state.editableId
+								? <Editor key={i.id}
+										  item={i}
+										  onSave={(d: Api.IOpacity) => this.onSave(d)}
+										  onCancel={() => this.resetEditableItem()}/>
+								: <Item key={i.id}
+										item={i}
+										onEdit={() => this.onEdit(i.id)}
+										onDelete={() => this.onDelete(i.id)}/>
+						))
 				}
-				<button onClick={() => this.onAddNewItem()}>Добавить</button>
+				<Button className={styles.add}
+						variant="fab"
+						color="primary"
+						onClick={() => this.onAddNewItem()}>+</Button>
 			</div>
 		)
 	}
 }
-
-export default Opacity;

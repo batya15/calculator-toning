@@ -24,14 +24,7 @@ export default handleActions<Api.IDetail[]>({
 	[ACTIONS.API_SAVE_DETAIL]: (old, data: {payload: Api.IDetail}) => {
 		return old.map(i=> {
 			if (i.id === data.payload.id) {
-				return {
-					id : data.payload.id,
-					caption: data.payload.caption,
-					size: 1,
-					cameraPosition: '',
-					meshName: '',
-					serviceIDs: []
-				}
+				return {...data.payload}
 			} else {
 				return i;
 			}

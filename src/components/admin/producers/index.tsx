@@ -10,7 +10,7 @@ import * as Button from 'muicss/lib/react/button';
 
 interface IState {
 	editableId: number;
-	searchString : RegExp;
+	searchString: RegExp;
 }
 
 interface IProps {
@@ -22,14 +22,14 @@ interface IProps {
 export class Producers extends React.Component<IProps, IState> {
 	state = {
 		editableId: null,
-		searchString: new RegExp('', 'gi')
+		searchString: null
 	};
 
-	onEdit(id: number) {
+	private onEdit(id: number) {
 		this.setState({editableId: id});
 	}
 
-	onDelete(id: number) {
+	private onDelete(id: number) {
 		if (this.props.materials.some(i => i.producerId === id)) {
 			alert(`Элемент используеться в матерьялах: \n 
 				${
@@ -42,7 +42,7 @@ export class Producers extends React.Component<IProps, IState> {
 		}
 	}
 
-	onSave(data: Api.IProducer) {
+	private onSave(data: Api.IProducer) {
 		this.props.actions.apiSaveProducer(data);
 		this.resetEditableItem();
 	}
@@ -52,36 +52,41 @@ export class Producers extends React.Component<IProps, IState> {
 	}
 
 	private onSearch(search: string) {
-		this.setState({searchString: new RegExp(search, 'gi')});
+		if (search === '') {
+			this.setState({searchString: null});
+		} else {
+			this.setState({searchString: new RegExp(search, 'gi')});
+		}
 	}
 
-	onAddNewItem() {
+	private onAddNewItem() {
 		this.props.actions.apiAddNewProducer();
 	}
 
 	render() {
 		return (
-			<div className={classnames({[styles.editable] : this.state.editableId !== null, [styles.list]: true})}>
+			<div className={classnames({[styles.editable]: this.state.editableId !== null, [styles.list]: true})}>
 				<Input hint="Поиск..." onChange={e => this.onSearch(e.target.value)}/>
 				{
 					this.props.list
-						.filter(i => this.state.searchString.test(i.caption))
+						.filter(i => this.state.searchString === null? true : this.state.searchString.test(i.caption))
 						.map(i => (
-						i.id === this.state.editableId
-							? <Editor key={i.id}
-									  item={i}
-									  onSave={(d: Api.IProducer) => this.onSave(d)}
-									  onCancel={() => this.resetEditableItem()}/>
-							: <Item key={i.id}
-									item={i}
-									onEdit={() => this.onEdit(i.id)}
-									onDelete={() => this.onDelete(i.id)}/>
-					))
+							i.id === this.state.editableId
+								? <Editor key={i.id}
+										  item={i}
+										  onSave={(d: Api.IProducer) => this.onSave(d)}
+										  onCancel={() => this.resetEditableItem()}/>
+								: <Item key={i.id}
+										item={i}
+										onEdit={() => this.onEdit(i.id)}
+										onDelete={() => this.onDelete(i.id)}/>
+						))
 				}
-				<Button className={styles.add} variant="fab" color="primary" onClick={() => this.onAddNewItem()}>+</Button>
+				<Button className={styles.add}
+						variant="fab"
+						color="primary"
+						onClick={() => this.onAddNewItem()}>+</Button>
 			</div>
 		)
 	}
 }
-
-export default Producers;

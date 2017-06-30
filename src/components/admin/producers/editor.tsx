@@ -29,16 +29,12 @@ export class Editor extends React.Component<IProps, Api.IProducer> {
 		this.setState({...item})
 	}
 
-	private onChangeCaption(caption: string) {
-		this.setState({caption: caption})
-	}
-
 	render() {
 		return (
-			<div className={classnames(commonStyle.editor, customStyle.main)} key={this.state.id}>
+			<div className={classnames(commonStyle.editor, customStyle.main)}>
 				<div className={commonStyle.id}>id: #{this.state.id}</div>
 				<Input label="Название производителя:"
-					   onChange={(e) => this.onChangeCaption(e.target.value)}
+					   onChange={(e) => this.setState({caption: e.target.value})}
 					   value={this.state.caption}/>
 				<div className={commonStyle.controls}>
 					<Button size="small"
