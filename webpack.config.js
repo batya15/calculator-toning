@@ -18,7 +18,10 @@ module.exports = {
             'react',
             'react-dom',
             'react-redux',
-            'redux'
+            'redux',
+            'muicss',
+            'react-select',
+            'classnames'
         ]
     },
     output: {
