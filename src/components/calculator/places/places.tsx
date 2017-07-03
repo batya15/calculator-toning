@@ -7,6 +7,7 @@ import {mapDispatchToProps} from "actions";
 import {connect} from 'react-redux';
 import * as Button from 'muicss/lib/react/button';
 import * as Checkbox from 'muicss/lib/react/checkbox';
+import {MenuList, MenuItem, MenuButton, Dropdown, SubMenuItem} from 'react-menu-list';
 
 interface IState {
 	selectedIds: {
@@ -24,29 +25,35 @@ type Props = typeof stateProps & typeof dispatchToProps;
 
 export class Places extends React.Component<Props, IState> {
 	state = {
-		selectedIds : {}
+		selectedIds: {}
 	};
 
-	private editByPlaces(places: any): void {
+	private editByIds(ids: number[]): void {
 		this.props.actions.app.editPlaces();
 	}
 
-	private onCheckItem (item: any, check: boolean): void {
-		//this.props.actions.selectPlace({places: [item], selected: check});
-	}
-
-	private toggleDetails(id : number, check: boolean) {
+	private toggleDetails(id: number, check: boolean) {
 		this.setState({
 			selectedIds: {...this.state.selectedIds, [id]: check}
 		});
 	}
-	private toggleSelectedAll() {
+
+	private toggleSelectedAll(checked: boolean): void {
 		this.setState({
-			selectedIds: this.props.details.reduce((init, item) => {init[item.id] = true; return init}, {})
+			selectedIds: this.props.details.reduce((init, item) => {
+				init[item.id] = checked;
+				return init
+			}, {})
 		});
 	}
 
+	private allDetailsSelected(): boolean {
+		return Object.values(this.state.selectedIds).filter(i => i).length === this.props.details.length;
+	}
+
 	render() {
+		let countSelected = Object.values(this.state.selectedIds).filter(i => i).length;
+		console.log(countSelected);
 		return (
 			<div className={styles.areas}>
 				<b>Выбор стекла</b>
@@ -56,47 +63,64 @@ export class Places extends React.Component<Props, IState> {
 							return (
 								<li key={item.id}>
 									<div className={classnames(styles.caption)}>
-
 										<input
 											name="isGoing"
 											type="checkbox"
-
-											checked={this.state.selectedIds[item.id]}
-											onChange={(e) => this.toggleDetails(item.id, e.target.checked)} />
+											checked={!!this.state.selectedIds[item.id]}
+											onChange={(e) => this.toggleDetails(item.id, e.target.checked)}/>
 									</div>
 									<div className={classnames(styles.label)}>
 										Затемнение 80%/белый
 									</div>
 									<div className={classnames(styles.edit)}>
 										<Button
-													onClick={() => this.editByPlaces([item])}
-													 label="edit"/>
+											color="primary"
+											onClick={() => this.editByPlaces([item])}
+											label="edit"/>
 									</div>
 									<div className={classnames(styles.end)}>
-										{/*<IconMenu
-											touchTapCloseDelay={1}
-											iconButtonElement={<IconButton
-												iconStyle={{
-													width: 24,
-													height: 24,
-												}}
-												style={{
-													width: 36,
-													height: 36,
-													padding: 0,
-												}}
-											><MoreVertIcon /></IconButton>}
-											anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-											targetOrigin={{horizontal: 'left', vertical: 'top'}}
-										>
-											<MenuItem primaryText="Редактировать" onTouchTap={() => this.editByPlaces([item])}/>
-											<MenuItem primaryText="Удалить заказ"/>
-											<MenuItem primaryText="Приминить ко все стеклам"/>
-											{this.props.details
-												.filter(i => i.id !== item.id)
-												.map(i => (<MenuItem key={item.id + i.id} primaryText={`Приминить на ${i.caption}`} />))
+										<MenuButton
+											menu={
+												<Dropdown>
+													<MenuList>
+														<li>Mercury</li>
+														<div style={{
+															height: '50px', overflowY: 'scroll', border: '1px solid gray'
+														}}>
+															<li>Venus</li>
+															<li>Earth</li>
+															<li>Mars</li>
+															<li>Jupiter</li>
+															<li>Saturn</li>
+															<li>Uranus</li>
+														</div>
+														<li>Neptune</li>
+														<hr style={{margin: '1px 0'}} />
+														<SubMenuItem
+															style={{cursor: 'pointer', userSelect: 'none'}}
+															highlightedStyle={{background: 'gray'}}
+															menu={
+																<Dropdown>
+																	<MenuList>
+																		<li>Ceres</li>
+																		<li>Pluto</li>
+																		<li>Eris</li>
+																		<hr style={{margin: '1px 0'}} />
+																		<div>
+																			Test textbox:{' '}
+																			<input type="text" />
+																		</div>
+																	</MenuList>
+																</Dropdown>
+															}>
+															Dwarf Planets ►
+														</SubMenuItem>
+													</MenuList>
+												</Dropdown>
 											}
-										</IconMenu>*/}
+										>
+											Menu Button
+										</MenuButton>
 									</div>
 									<div className={classnames(styles.clr)}/>
 								</li>
@@ -108,15 +132,15 @@ export class Places extends React.Component<Props, IState> {
 					<span className={classnames(styles.caption)}>
 						<Checkbox
 							label="Выбрать все"
-							onChange={()=> this.toggleSelectedAll()}
+							checked={this.allDetailsSelected()}
+							onChange={(e) => this.toggleSelectedAll(e.target.checked)}
 						/>
 					</span>
 					<span className={classnames(styles.allEdit)}>
-						{/*<FlatButton labelStyle={{textTransform: 'none'}}
-									onClick={() => this.editByPlaces(this.props.details.filter(i => i.selected))}
-									primary={true}
-									disabled={!this.props.places.list.some(i=>i.selected)}
-									label={`Редактировать выбранные (${this.props.places.list.filter(i=>i.selected).length})`}/>*/}
+						<button
+							onClick={() => this.editByIds([])}
+							disabled={countSelected === 0}
+						>Редактировать выбранные ({countSelected})</button>
 					</span>
 				</div>
 			</div>
