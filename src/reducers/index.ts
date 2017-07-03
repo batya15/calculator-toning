@@ -5,7 +5,7 @@ import orders, {IOrder} from './orders';
 
 export interface RootState {
 	step: STEP,
-	orders: IOrder,
+	orders: IOrder[],
 	/*places: IPlaces,
 	services: IServices,
 	properties: any*/

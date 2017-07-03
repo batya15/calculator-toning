@@ -13,14 +13,24 @@ export interface IOrder {
 
 export default handleActions<IOrder[]>({
 	[ACTIONS.EDIT_ORDERS]: (old, data: { payload: number[] }): IOrder[] => {
-		return data.payload.map(id => {
+		let result: IOrder[] = [];
+
+		data.payload.forEach(id => {
 			let order = old.filter(o => o.detailId === id);
 			if (order.length > 0) {
-				return {...order[0], editable: false};
+				result.push({...order[0], editable: order[0].detailId === id});
 			} else {
-				return {detailId: id, editable: true};
+				result.push({detailId: id, editable: true});
 			}
 		});
+
+		old.forEach(i=> {
+			if (!result.some(r => r.detailId === i.detailId)) {
+				result.push({...i, editable: false});
+			}
+		});
+
+		return result;
 	},
 	[ACTIONS.REMOVE_ORDERS]: (old, data: { payload: number[] }): IOrder[] => {
 		return old.map(i => {

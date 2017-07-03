@@ -67,7 +67,7 @@ class Calculator extends React.Component<Props, IState> {
 							<Places/>
 						</div>
 						<div className={classnames(styles.step, styles.services)}>
-							{/*<Services/>*/}2
+							<Services/>
 						</div>
 						<div className={classnames(styles.step, styles.properties)}>
 							{/*<Properties actions={this.props.actions}/>*/}3
