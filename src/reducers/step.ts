@@ -8,7 +8,7 @@ export enum STEP {
 }
 
 export default handleActions<STEP>({
-	[ACTIONS.EDIT_PLACES]: () => STEP.SERVICES,
+	[ACTIONS.EDIT_ORDERS]: () => STEP.SERVICES,
 	[ACTIONS.SELECT_SERVICE]: () => STEP.PROPERTIES,
 	[ACTIONS.SAVE]: () => STEP.PLACES,
 }, STEP.PLACES);

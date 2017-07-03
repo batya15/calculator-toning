@@ -1,7 +1,7 @@
 {
   "details": [
     {
-      "id": "1",
+      "id": 1,
       "caption": "Заднее стекло",
       "size": 10,
       "cameraPosition": "1,0,1",
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "caption": "Задние боковые",
       "size": 10,
       "cameraPosition": "1,0,1",
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "id": "3",
+      "id": 3,
       "caption": "Лобовое",
       "size": 10,
       "cameraPosition": "1,0,1",
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "id": "4",
+      "id": 4,
       "caption": "Передние боковые",
       "size": 10,
       "cameraPosition": "1,0,1",
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "id": "5",
+      "id": 5,
       "caption": "Полоска на лобовое",
       "size": 10,
       "cameraPosition": "1,0,1",

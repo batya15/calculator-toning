@@ -165,7 +165,7 @@ export default class Properties extends React.Component<any, any> {
 					<FlatButton
 						label="Назад"
 						primary={true}
-						onClick={() => this.props.actions.editPlaces()}
+						onClick={() => this.props.actions.editOrders()}
 					/>
 					<span><b>Подбор параметров</b></span>
 					<div className={style.ar}>Атермальная - Заднее/лобовое/передние боковые</div>

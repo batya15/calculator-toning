@@ -65,7 +65,7 @@ export class Services extends React.Component<Props, IState> {
 					<FlatButton
 						label="Назад"
 						primary={true}
-						onClick={() => this.props.actions.editPlaces()}
+						onClick={() => this.props.actions.editOrders()}
 					/>
 					<span><b>Выбор типа тонирования</b></span>
 					<div className={styles.ar}>
