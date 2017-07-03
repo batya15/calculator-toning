@@ -1,20 +1,21 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
+import * as classnames from 'classnames';
+import * as Panel from 'muicss/lib/react/panel';
+import {returntypeof} from 'react-redux-typescript';
 import * as styles from './calculator.pcss';
 import * as commonStyles from 'components/common.pcss';
-import * as classnames from 'classnames';
-import Paper from 'material-ui/Paper';
-import {connect} from 'react-redux';
-import {RootState} from "../../reducers/index";
+import {RootState} from "reducers/index";
 import {mapDispatchToProps} from "actions";
-import {STEP} from "../../reducers/step";
+import {STEP} from "reducers/step";
 import Places from "./places/places";
 import Services from "./services/services";
 import Properties from "./properties/properties";
 import Totals from "./totals/totals";
-import {returntypeof} from 'react-redux-typescript';
 
 interface IState {
-	stepClass: string
+	stepClass: string,
+	loaded: boolean
 }
 
 const mapStateToProps = (rootState: RootState) => ({
@@ -25,14 +26,22 @@ const dispatchToProps = returntypeof(mapDispatchToProps);
 const stateProps = returntypeof(mapStateToProps);
 type Props = typeof stateProps & typeof dispatchToProps;
 
-export class Calculator extends React.Component<Props, IState> {
+class Calculator extends React.Component<Props, IState> {
 	state: IState = {
-		stepClass: styles.first
+		stepClass: styles.first,
+		loaded: false
 	};
 
 	componentDidMount(): void {
-		//todo: вынести на вверх - в верхний компонент
-		this.props.actions.needPlaces();
+		Promise.all([
+			this.props.actions.api.apiNeedColors(),
+			this.props.actions.api.apiNeedProducers(),
+			this.props.actions.api.apiNeedOpacity(),
+			this.props.actions.api.apiNeedThickness(),
+			this.props.actions.api.apiNeedServices(),
+			this.props.actions.api.apiNeedDetails(),
+			this.props.actions.api.apiNeedMaterials()
+		]).then(() => this.setState({loaded: true}));
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -52,20 +61,20 @@ export class Calculator extends React.Component<Props, IState> {
 	render() {
 		return (
 			<div className={styles.calculator}>
-				<Paper zDepth={1} rounded={false} className={styles.controls}>
+				<Panel className={styles.controls}>
 					<div className={classnames(styles.scroll, this.state.stepClass)}>
 						<div className={classnames(styles.step, styles.areas)}>
 							<Places/>
 						</div>
 						<div className={classnames(styles.step, styles.services)}>
-							<Services/>
+							{/*<Services/>*/}2
 						</div>
 						<div className={classnames(styles.step, styles.properties)}>
-							<Properties actions={this.props.actions}/>
+							{/*<Properties actions={this.props.actions}/>*/}3
 						</div>
 
 					</div>
-				</Paper>
+				</Panel>
 				<div className={styles.total}>
 					<Totals/>
 				</div>

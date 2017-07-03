@@ -1,23 +1,21 @@
 import * as React from 'react';
 import * as styles from './places.pcss';
 import * as classnames from 'classnames';
-import Checkbox from 'material-ui/Checkbox';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import FlatButton from 'material-ui/FlatButton';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import {RootState} from "reducers/index";
 import {returntypeof} from 'react-redux-typescript';
 import {mapDispatchToProps} from "actions";
 import {connect} from 'react-redux';
-import {Place} from "reducers/places";
+import * as Button from 'muicss/lib/react/button';
+import * as Checkbox from 'muicss/lib/react/checkbox';
 
-interface IState {}
+interface IState {
+	selectedIds: {
+		[id: number]: boolean
+	}
+}
 
 const mapStateToProps = (rootState: RootState) => ({
-	places: rootState.places
+	details: rootState.api.details
 });
 
 const dispatchToProps = returntypeof(mapDispatchToProps);
@@ -25,21 +23,27 @@ const stateProps = returntypeof(mapStateToProps);
 type Props = typeof stateProps & typeof dispatchToProps;
 
 export class Places extends React.Component<Props, IState> {
-	componentDidMount(): void {
-		//todo: вынести на вверх - в верхний компонент
-		this.props.actions.needPlaces();
+	state = {
+		selectedIds : {}
+	};
+
+	private editByPlaces(places: any): void {
+		this.props.actions.app.editPlaces();
 	}
 
-	private editByPlaces(places: Place[]): void {
-		this.props.actions.editPlaces(places);
+	private onCheckItem (item: any, check: boolean): void {
+		//this.props.actions.selectPlace({places: [item], selected: check});
 	}
 
-	private onCheckItem (item: Place, check: boolean): void {
-		this.props.actions.selectPlace({places: [item], selected: check});
+	private toggleDetails(id : number, check: boolean) {
+		this.setState({
+			selectedIds: {...this.state.selectedIds, [id]: check}
+		});
 	}
-
 	private toggleSelectedAll() {
-		this.props.actions.selectPlace({places: this.props.places.list, selected: !this.props.places.list.every(i => i.selected)});
+		this.setState({
+			selectedIds: this.props.details.reduce((init, item) => {init[item.id] = true; return init}, {})
+		});
 	}
 
 	render() {
@@ -48,26 +52,28 @@ export class Places extends React.Component<Props, IState> {
 				<b>Выбор стекла</b>
 				<ul>
 					{
-						this.props.places.list.map(item => {
+						this.props.details.map(item => {
 							return (
-								<li key={item.place.id}>
+								<li key={item.id}>
 									<div className={classnames(styles.caption)}>
-										<Checkbox
-											label={item.place.caption}
-											checked={item.selected}
-											onCheck={(e,check) => this.onCheckItem(item, check)}
-										/>
+
+										<input
+											name="isGoing"
+											type="checkbox"
+
+											checked={this.state.selectedIds[item.id]}
+											onChange={(e) => this.toggleDetails(item.id, e.target.checked)} />
 									</div>
 									<div className={classnames(styles.label)}>
 										Затемнение 80%/белый
 									</div>
 									<div className={classnames(styles.edit)}>
-										<FlatButton labelStyle={{textTransform: 'none'}}
+										<Button
 													onClick={() => this.editByPlaces([item])}
-													primary={true} label="edit"/>
+													 label="edit"/>
 									</div>
 									<div className={classnames(styles.end)}>
-										<IconMenu
+										{/*<IconMenu
 											touchTapCloseDelay={1}
 											iconButtonElement={<IconButton
 												iconStyle={{
@@ -86,11 +92,11 @@ export class Places extends React.Component<Props, IState> {
 											<MenuItem primaryText="Редактировать" onTouchTap={() => this.editByPlaces([item])}/>
 											<MenuItem primaryText="Удалить заказ"/>
 											<MenuItem primaryText="Приминить ко все стеклам"/>
-											{this.props.places.list
-												.filter(i => i.place.id !== item.place.id)
-												.map(i => (<MenuItem key={item.place.id + i.place.id} primaryText={`Приминить на ${i.place.caption}`} />))
+											{this.props.details
+												.filter(i => i.id !== item.id)
+												.map(i => (<MenuItem key={item.id + i.id} primaryText={`Приминить на ${i.caption}`} />))
 											}
-										</IconMenu>
+										</IconMenu>*/}
 									</div>
 									<div className={classnames(styles.clr)}/>
 								</li>
@@ -102,16 +108,15 @@ export class Places extends React.Component<Props, IState> {
 					<span className={classnames(styles.caption)}>
 						<Checkbox
 							label="Выбрать все"
-							checked={this.props.places.list.every(i=>i.selected)}
-							onCheck={()=> this.toggleSelectedAll()}
+							onChange={()=> this.toggleSelectedAll()}
 						/>
 					</span>
 					<span className={classnames(styles.allEdit)}>
-						<FlatButton labelStyle={{textTransform: 'none'}}
-									onClick={() => this.editByPlaces(this.props.places.list.filter(i => i.selected))}
+						{/*<FlatButton labelStyle={{textTransform: 'none'}}
+									onClick={() => this.editByPlaces(this.props.details.filter(i => i.selected))}
 									primary={true}
 									disabled={!this.props.places.list.some(i=>i.selected)}
-									label={`Редактировать выбранные (${this.props.places.list.filter(i=>i.selected).length})`}/>
+									label={`Редактировать выбранные (${this.props.places.list.filter(i=>i.selected).length})`}/>*/}
 					</span>
 				</div>
 			</div>
