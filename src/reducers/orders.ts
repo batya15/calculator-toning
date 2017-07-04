@@ -46,4 +46,17 @@ export default handleActions<IOrder[]>({
 			return {...i, editableServicesId: data.payload};
 		});
 	},
+	[ACTIONS.TO_SELECT_SERVICES]: (old) => {
+		return old.map(i => {
+			return {...i, materialId: i.oldMaterialId};
+		});
+	},
+	[ACTIONS.SAVE]: (old, data: {payload: number}) => {
+		return old.map(i => {
+			if (i.editable) {
+				return {...i, materialId: data.payload};
+			}
+			return i;
+		});
+	},
 }, []);
