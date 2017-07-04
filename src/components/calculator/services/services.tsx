@@ -15,7 +15,8 @@ interface IState {
 const mapStateToProps = (rootState: RootState) => ({
 	details: rootState.api.details,
 	orders: rootState.orders,
-	services: rootState.api.services
+	services: rootState.api.services,
+	materials: rootState.api.materials
 });
 
 const dispatchToProps = returntypeof(mapDispatchToProps);
@@ -57,6 +58,77 @@ export class Services extends React.Component<Props, IState> {
 	private selectedService(id: number) {
 		setTimeout(() => {
 			this.props.actions.app.selectService(id);
+
+			let r = this.props.materials.filter(m => {
+				return id === m.serviceId;
+			});
+
+			let prop = {
+				color: [],
+				prod: [],
+				t: [],
+				opacity: []
+			};
+
+			let current = this.props.materials[0];
+
+			prop.prod = r.filter(material => {
+				return current.colorId === material.colorId
+					&& current.opacityId === material.opacityId
+					&& current.thicknessId === material.thicknessId
+			});
+
+			prop.color = r.filter(material => {
+				return current.producerId === material.producerId
+					&& current.opacityId === material.opacityId
+					&& current.thicknessId === material.thicknessId
+			});
+
+			prop.t = r.filter(material => {
+				return current.producerId === material.producerId
+					&& current.opacityId === material.opacityId
+					&& current.colorId === material.colorId
+			});
+
+			prop.opacity = r.filter(material => {
+				return current.producerId === material.producerId
+					&& current.thicknessId === material.thicknessId
+					&& current.colorId === material.colorId
+			});
+			/*
+			r.forEach(m => {
+				if (m.serviceId === id) {
+					return false;
+				}
+
+
+				if (m.colorId !== null) {
+					if (prop.color.indexOf(m.colorId) < 0) {
+						prop.color.push(m.colorId);
+					}
+				}
+				if (m.producerId !== null) {
+					if (prop.prod.indexOf(m.producerId) < 0) {
+						prop.prod.push(m.producerId);
+					}
+				}
+
+				if (m.thicknessId !== null) {
+					if (prop.t.indexOf(m.thicknessId) < 0) {
+						prop.t.push(m.thicknessId);
+					}
+				}
+
+				if (m.opacityId !== null) {
+					if (prop.opacity.indexOf(m.opacityId) < 0) {
+						prop.opacity.push(m.opacityId);
+					}
+				}
+			});
+*/
+			console.log(prop);
+
+			console.log(r);
 		}, 400);
 	}
 

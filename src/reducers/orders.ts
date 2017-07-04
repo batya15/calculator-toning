@@ -24,7 +24,7 @@ export default handleActions<IOrder[]>({
 			}
 		});
 
-		old.forEach(i=> {
+		old.forEach(i => {
 			if (!result.some(r => r.detailId === i.detailId)) {
 				result.push({...i, editable: false});
 			}
@@ -39,6 +39,11 @@ export default handleActions<IOrder[]>({
 			} else {
 				return i
 			}
+		});
+	},
+	[ACTIONS.SELECT_SERVICE]: (old, data: { payload: number }): IOrder[] => {
+		return old.map(i => {
+			return {...i, editableServicesId: data.payload};
 		});
 	},
 }, []);

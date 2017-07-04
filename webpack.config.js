@@ -15,13 +15,19 @@ module.exports = {
     entry: {
         main: './index.tsx',
         vendor: [
-            'react',
-            'react-dom',
-            'react-redux',
-            'redux',
+            'axios',
+			'classnames',
+            'flux-standard-action',
             'muicss',
+			'react',
+			'react-dom',
+            'react-menu-list',
+			'react-redux',
+            'react-redux-typescript',
+            'react-router',
             'react-select',
-            'classnames'
+			'redux',
+            'redux-actions',
         ]
     },
     output: {
