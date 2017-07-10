@@ -7,15 +7,16 @@ import * as Input from 'muicss/lib/react/input';
 import * as classnames  from 'classnames';
 import * as Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import {MapColor, MapDetails, MapOpacity, MapProducer, MapService, MapThickness} from "../../../reducers/api/index";
 
 interface IProps {
 	item: Readonly<Api.IMaterial>,
-	services: Readonly<Api.IService>[];
-	producers: Readonly<Api.IProducer>[];
-	colors: Readonly<Api.IColor>[];
-	opacity: Readonly<Api.IOpacity>[];
-	thickness: Readonly<Api.IThickness>[];
-	details: Readonly<Api.IDetail>[];
+	services: MapService;
+	producers: MapProducer;
+	colors: MapColor;
+	opacity: MapOpacity;
+	thickness: MapThickness;
+	details: MapDetails;
 	onSave?: (data: Api.IMaterial) => void,
 	onCancel?: () => void
 }
@@ -56,7 +57,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						simpleValue
 						clearable={false}
 						value={this.state.serviceId}
-						options={this.props.services.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.services.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({serviceId: e})}
 					/>
 					<div className={commonStyle.id}>Производитель:</div>
@@ -66,7 +67,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						clearable={false}
 						simpleValue
 						value={this.state.producerId}
-						options={this.props.producers.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.producers.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({producerId: e})}
 					/>
 					<div className={commonStyle.id}>Цвет:</div>
@@ -75,7 +76,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						placeholder="Отсутствует данный параметр"
 						simpleValue
 						value={this.state.colorId}
-						options={this.props.colors.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.colors.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({colorId: e})}
 					/>
 					<div className={commonStyle.id}>Толщина:</div>
@@ -84,7 +85,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						placeholder="Отсутствует данный параметр"
 						simpleValue
 						value={this.state.thicknessId}
-						options={this.props.thickness.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.thickness.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({thicknessId: e})}
 					/>
 					<div className={commonStyle.id}>Светопропускаемость:</div>
@@ -93,7 +94,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 						placeholder="Отсутствует данный параметр"
 						simpleValue
 						value={this.state.opacityId}
-						options={this.props.opacity.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.opacity.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({opacityId: e})}
 					/>
 				</div>
@@ -101,7 +102,7 @@ export class Editor extends React.Component<IProps, Api.IMaterial> {
 					<div className={customStyle.calculator}>
 						<div className={commonStyle.id}>Калькулятор:</div>
 						{
-							this.props.details.map(i => (
+							this.props.details.toArray().map(i => (
 								<div className={customStyle.detail} key={i.id}>
 									<span className={customStyle.caption}>{i.caption}:</span>
 									<span  className={customStyle.price}>{i.size * this.state.price}</span>

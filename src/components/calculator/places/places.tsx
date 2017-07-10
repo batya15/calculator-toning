@@ -59,7 +59,7 @@ export class Places extends React.Component<Props, IState> {
 	}
 
 	private allDetailsSelected(): boolean {
-		return Places.objectValues(this.state.selectedIds).filter(i => i).length === this.props.details.length;
+		return Places.objectValues(this.state.selectedIds).filter(i => i).length === this.props.details.size;
 	}
 
 	static objectValues(obj: any): string[] {
@@ -78,7 +78,7 @@ export class Places extends React.Component<Props, IState> {
 			<div className={styles.areas}>
 				<b>Выбор стекла</b>
 				<ul>
-					{this.props.details.map(item => {
+					{this.props.details.toArray().map(item => {
 						return (
 							<li key={item.id}>
 								<div className={classnames(styles.caption)}>
@@ -110,6 +110,7 @@ export class Places extends React.Component<Props, IState> {
 													Приминить ко все стеклам
 												</div>
 												{this.props.details
+													.toArray()
 													.filter(i => i.id !== item.id)
 													.map(i => (
 														<div

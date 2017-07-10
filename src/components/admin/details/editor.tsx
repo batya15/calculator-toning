@@ -7,11 +7,12 @@ import * as Input from 'muicss/lib/react/input';
 import * as classnames  from 'classnames';
 import * as Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import {MapService} from "../../../reducers/api/index";
 
 
 interface IProps {
 	item: Readonly<Api.IDetail>,
-	services: Readonly<Api.IService>[],
+	services: MapService,
 	onSave: (data: Api.IDetail) => void,
 	onCancel: () => void
 }
@@ -58,7 +59,7 @@ export class Editor extends React.Component<IProps, Api.IDetail> {
 						placeholder="Выбор услуг..."
 						value={this.state.serviceIDs}
 						multi={true}
-						options={this.props.services.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.services.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={(e) => this.setState({serviceIDs: e.map(s => s.value)})}
 					/>
 				</div>

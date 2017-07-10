@@ -7,6 +7,7 @@ import * as styles  from "./../admin.pcss";
 import * as classnames  from 'classnames';
 import * as Input from 'muicss/lib/react/input';
 import * as Button from 'muicss/lib/react/button';
+import {Map} from 'immutable';
 
 interface IState {
 	editableId: number;
@@ -14,8 +15,8 @@ interface IState {
 }
 
 interface IProps {
-	materials: Readonly<Api.IMaterial>[];
-	list: Readonly<Api.IProducer>[];
+	materials: Map<number, Api.IMaterial>;
+	list: Map<number, Api.IProducer>;
 	actions: ApiActionsType;
 }
 
@@ -69,6 +70,7 @@ export class Producers extends React.Component<IProps, IState> {
 				<Input hint="Поиск..." onChange={e => this.onSearch(e.target.value)}/>
 				{
 					this.props.list
+						.toArray()
 						.filter(i => this.state.searchString === null? true : this.state.searchString.test(i.caption))
 						.map(i => (
 							i.id === this.state.editableId

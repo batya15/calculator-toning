@@ -32,9 +32,8 @@ export class Services extends React.Component<Props, IState> {
 
 		let idsCount = itemsFilter
 			.reduce((init, order) => {
-				let details = this.props.details.filter(i => i.id === order.detailId);
-				if (details.length > 0) {
-					return init.concat(details[0].serviceIDs);
+				if (this.props.details.get(order.detailId)) {
+					return init.concat(this.props.details.get(order.detailId).serviceIDs);
 				}
 				return init;
 			}, [])
@@ -48,7 +47,7 @@ export class Services extends React.Component<Props, IState> {
 			}, {});
 
 		for (let key in idsCount) {
-			if (idsCount.hasOwnProperty(key) && idsCount[key] >= itemsFilter.length) {
+			if (idsCount.hasOwnProperty(key) && idsCount[key] >= itemsFilter.size) {
 				result.add(parseInt(key))
 			}
 		}
@@ -71,14 +70,19 @@ export class Services extends React.Component<Props, IState> {
 						onClick={() => this.props.actions.app.toSelectDetails()}
 					/>
 					<span><b>Выбор типа тонирования</b></span>
-					{/*<div className={styles.ar}>
-					 {this.props.places.list
-					 .filter(item => item.editable)
-					 .map(item => (<span key={item.place.id}>{item.place.caption}/</span>))
-					 }
-					 </div>*/}
+					<div className={styles.ar}>
+						{
+							this.props.orders
+								.toArray()
+								.filter(item => item.editable)
+								.map(item => (
+									<span key={item.detailId}>{this.props.details.get(item.detailId).caption}/</span>)
+								)
+						}
+					</div>
 				</div>
 				{this.props.services
+					.toArray()
 					.filter(item => availableServiceIds.has(item.id))
 					.map(item => (
 						<Radio

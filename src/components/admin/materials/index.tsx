@@ -10,6 +10,11 @@ import * as Input from 'muicss/lib/react/input';
 import * as Button from 'muicss/lib/react/button';
 import * as Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import {Map} from 'immutable';
+import {
+	MapColor, MapDetails, MapMaterial, MapOpacity, MapProducer, MapService,
+	MapThickness
+} from "../../../reducers/api/index";
 
 interface IState {
 	editableId: number;
@@ -22,13 +27,13 @@ interface IState {
 }
 
 interface IProps {
-	list: Readonly<Api.IMaterial>[];
-	services: Readonly<Api.IService>[];
-	colors: Readonly<Api.IColor>[];
-	opacity: Readonly<Api.IOpacity>[];
-	thickness: Readonly<Api.IThickness>[];
-	producers: Readonly<Api.IProducer>[];
-	details: Readonly<Api.IDetail>[];
+	list: MapMaterial;
+	services: MapService;
+	colors: MapColor;
+	opacity: MapOpacity;
+	thickness: MapThickness;
+	producers: MapProducer;
+	details: MapDetails;
 	actions: ApiActionsType;
 }
 
@@ -69,12 +74,15 @@ export class Materials extends React.Component<IProps, IState> {
 	}
 
 	private onAddNewItem() {
-		if (this.props.producers.length === 0) {
+		if (this.props.producers.size === 0) {
 			alert('Ошибка! Нет ни одного производителя!')
-		} else if (this.props.services.length === 0) {
+		} else if (this.props.services.size === 0) {
 			alert('Ошибка! Нет ни одной услуги!')
 		} else {
-			this.props.actions.apiAddNewMaterial({producerId: this.props.producers[0].id, serviceId: this.props.services[0].id});
+			this.props.actions.apiAddNewMaterial({
+				producerId: this.props.producers.first().id,
+				serviceId: this.props.services.first().id
+			});
 		}
 	}
 
@@ -88,7 +96,7 @@ export class Materials extends React.Component<IProps, IState> {
 						placeholder="Сервис"
 						simpleValue
 						value={this.state.searchServiceId}
-						options={this.props.services.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.services.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({searchServiceId: e})}
 					/>
 					<Select
@@ -96,7 +104,7 @@ export class Materials extends React.Component<IProps, IState> {
 						placeholder="Производитель"
 						simpleValue
 						value={this.state.searchProducerId}
-						options={this.props.producers.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.producers.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({searchProducerId: e})}
 					/>
 					<Select
@@ -104,7 +112,7 @@ export class Materials extends React.Component<IProps, IState> {
 						placeholder="Цвет"
 						simpleValue
 						value={this.state.searchColorId}
-						options={this.props.colors.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.colors.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({searchColorId: e})}
 					/>
 					<Select
@@ -112,7 +120,7 @@ export class Materials extends React.Component<IProps, IState> {
 						placeholder="Толщина"
 						simpleValue
 						value={this.state.searchThicknessId}
-						options={this.props.thickness.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.thickness.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({searchThicknessId: e})}
 					/>
 					<Select
@@ -120,12 +128,13 @@ export class Materials extends React.Component<IProps, IState> {
 						placeholder="Светопропускаемость"
 						simpleValue
 						value={this.state.searchOpacityId}
-						options={this.props.opacity.map(i => ({value: i.id, label: i.caption}))}
+						options={this.props.opacity.toArray().map(i => ({value: i.id, label: i.caption}))}
 						onChange={e => this.setState({searchOpacityId: e})}
 					/>
 				</div>
 				{
 					this.props.list
+						.toArray()
 						.filter(i => this.state.searchString === null || this.state.searchString.test(i.caption))
 						.filter(i => this.state.searchColorId === null || this.state.searchColorId === i.colorId)
 						.filter(i => this.state.searchOpacityId === null || this.state.searchOpacityId === i.opacityId)
@@ -146,11 +155,11 @@ export class Materials extends React.Component<IProps, IState> {
 										  onCancel={() => this.resetEditableItem()}/>
 								: <Item key={i.id}
 										item={i}
-										service={this.props.services.filter(s => s.id === i.serviceId)[0]}
-										producer={this.props.producers.filter(s => s.id === i.producerId)[0]}
-										color={this.props.colors.filter(s => s.id === i.colorId)[0]}
-										opacity={this.props.opacity.filter(s => s.id === i.opacityId)[0]}
-										thickness={this.props.thickness.filter(s => s.id === i.thicknessId)[0]}
+										service={this.props.services.get(i.serviceId)}
+										producer={this.props.producers.get(i.producerId)}
+										color={this.props.colors.get(i.colorId)}
+										opacity={this.props.opacity.get(i.opacityId)}
+										thickness={this.props.thickness.get(i.thicknessId)}
 										onEdit={() => this.onEdit(i.id)}
 										onDelete={() => this.onDelete(i.id)}/>
 						))

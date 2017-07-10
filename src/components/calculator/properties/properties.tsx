@@ -8,6 +8,8 @@ import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import {Api} from "api/index";
+import {MapColor, MapOpacity, MapProducer, MapThickness} from "../../../reducers/api/index";
+import {STEP} from "../../../reducers/step";
 
 
 interface IState {
@@ -23,11 +25,13 @@ interface IProperties {
 
 const mapStateToProps = (rootState: RootState) => ({
 	details: rootState.api.details,
+	step: rootState.step,
 	orders: rootState.orders,
 	materials: rootState.api.materials,
 	producers: rootState.api.producers,
 	colors: rootState.api.colors,
 	opacity: rootState.api.opacity,
+	services: rootState.api.services,
 	thickness: rootState.api.thickness,
 });
 
@@ -52,29 +56,29 @@ export class Properties extends React.Component<Props, IState> {
 			return id === m.serviceId;
 		});
 
-		let m = r.filter(i => i.id === this.state.currentMaterialId)[0];
-		let current = m ? m : r[0];
+		let m = r.filter(i => i.id === this.state.currentMaterialId).first();
+		let current = m ? m : r.first();
 
 		let prop: IProperties = {
 			producer: r.filter(material => current.colorId === material.colorId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
-			),
+			).toArray(),
 			color: r.filter(material => current.colorId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
-			),
+			).toArray(),
 			thickness: r.filter(material => current.thicknessId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.colorId === material.colorId
-			),
+			).toArray(),
 			opacity: r.filter(material => current.opacityId !== null
 				&& current.producerId === material.producerId
 				&& current.thicknessId === material.thicknessId
 				&& current.colorId === material.colorId
-			)
+			).toArray()
 		};
 
 		console.log(prop);
@@ -93,14 +97,26 @@ export class Properties extends React.Component<Props, IState> {
 						onClick={() => this.props.actions.app.toSelectServices()}
 					/>
 					<span><b>Подбор параметров</b></span>
-					<div className={style.ar}>Атермальная - Заднее/лобовое/передние боковые</div>
+					<div className={style.ar}>
+						{<span>{this.props.services.size
+						&& this.props.step === STEP.PROPERTIES
+						&& this.props.services.get(this.props.orders.filter(item => item.editable).first().editableServicesId).caption}/</span>}
+						{
+							this.props.orders
+								.toArray()
+								.filter(item => item.editable)
+								.map(item => (
+									<span key={item.detailId}>{this.props.details.get(item.detailId).caption}/</span>)
+								)
+						}
+					</div>
 				</div>
 				<ul>
 					<div>
 						{propertys.producer.length > 0 &&
 						propertys.producer.map(i => (
 							<div onClick={() => this.setState({currentMaterialId: i.id})}
-								 key={i.producerId}>{this.props.producers.filter(p => p.id === i.producerId)[0].caption}</div>
+								 key={i.producerId}>{this.props.producers.get(i.producerId).caption}</div>
 						))
 						}
 					</div>
@@ -108,7 +124,7 @@ export class Properties extends React.Component<Props, IState> {
 						{propertys.color.length > 0 &&
 						propertys.color.map(i => (
 							<div onClick={() => this.setState({currentMaterialId: i.id})}
-								 key={i.colorId}>{this.props.colors.filter(p => p.id === i.colorId)[0].caption}</div>
+								 key={i.colorId}>{this.props.colors.get(i.colorId).caption}</div>
 						))
 						}
 					</div>
@@ -116,7 +132,7 @@ export class Properties extends React.Component<Props, IState> {
 						{propertys.opacity.length > 0 &&
 						propertys.opacity.map(i => (
 							<div onClick={() => this.setState({currentMaterialId: i.id})}
-								 key={i.opacityId}>{this.props.opacity.filter(p => p.id === i.opacityId)[0].caption}</div>
+								 key={i.opacityId}>{this.props.opacity.get(i.opacityId).caption}</div>
 						))
 						}
 					</div>
@@ -124,7 +140,7 @@ export class Properties extends React.Component<Props, IState> {
 						{propertys.thickness.length > 0 &&
 						propertys.thickness.map(i => (
 							<div onClick={() => this.setState({currentMaterialId: i.id})}
-								 key={i.thicknessId}>{this.props.thickness.filter(p => p.id === i.thicknessId)[0].caption}</div>
+								 key={i.thicknessId}>{this.props.thickness.get(i.thicknessId).caption}</div>
 						))
 						}
 					</div>

@@ -7,6 +7,8 @@ import * as styles  from "./../admin.pcss";
 import * as classnames  from 'classnames';
 import * as Input from 'muicss/lib/react/input';
 import * as Button from 'muicss/lib/react/button';
+import {Map} from 'immutable';
+import {MapService} from "../../../reducers/api/index";
 
 interface IState {
 	editableId: number;
@@ -14,8 +16,8 @@ interface IState {
 }
 
 interface IProps {
-	list: Readonly<Api.IDetail>[];
-	services: Readonly<Api.IService>[];
+	list: Map<number, Api.IDetail>;
+	services: MapService;
 	actions: ApiActionsType;
 }
 
@@ -61,6 +63,7 @@ export class Details extends React.Component<IProps, IState> {
 					   onChange={e => this.onSearch(e.target.value)}/>
 				{
 					this.props.list
+						.toArray()
 						.filter(i => this.state.searchString === null? true : this.state.searchString.test(i.caption + i.size))
 						.map(i => (
 							i.id === this.state.editableId

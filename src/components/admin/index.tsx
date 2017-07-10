@@ -62,7 +62,18 @@ export class Admin extends React.Component<Props, IState> {
 
 	private saveToFile(): void {
 		let a = document.createElement("a");
-		let file = new Blob([JSON.stringify(this.props.api)], {type: 'text/plain'});
+		let result = {
+			details: this.props.api.details.toArray(),
+			services: this.props.api.services.toArray(),
+			materials: this.props.api.materials.toArray(),
+			producers: this.props.api.producers.toArray(),
+			colors: this.props.api.colors.toArray(),
+			opacity: this.props.api.opacity.toArray(),
+			thickness: this.props.api.thickness.toArray()
+		};
+
+
+		let file = new Blob([JSON.stringify(result)], {type: 'text/plain'});
 		a.href = URL.createObjectURL(file);
 		a.download = 'api.json';
 		a.click();

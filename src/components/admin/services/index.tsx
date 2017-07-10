@@ -7,6 +7,8 @@ import * as styles  from "./../admin.pcss";
 import * as classnames  from 'classnames';
 import * as Input from 'muicss/lib/react/input';
 import * as Button from 'muicss/lib/react/button';
+import {Map} from 'immutable';
+import {MapDetails, MapMaterial, MapService} from "../../../reducers/api/index";
 
 interface IState {
 	editableId: number;
@@ -14,9 +16,9 @@ interface IState {
 }
 
 interface IProps {
-	materials: Readonly<Api.IMaterial>[];
-	details: Readonly<Api.IDetail>[];
-	list: Readonly<Api.IService>[];
+	materials: MapMaterial;
+	details: MapDetails;
+	list: MapService;
 	actions: ApiActionsType;
 }
 
@@ -79,6 +81,7 @@ export class Services extends React.Component<IProps, IState> {
 					   onChange={e => this.onSearch(e.target.value)}/>
 				{
 					this.props.list
+						.toArray()
 						.filter(i => this.state.searchString === null? true : this.state.searchString.test(i.caption + i.description))
 						.map(i => (
 							i.id === this.state.editableId

@@ -1,7 +1,6 @@
 import {handleActions} from 'redux-actions';
 import ACTIONS from '../constants/actions';
-import {STATE} from "../constants/state";
-import {Api} from "../api/index";
+import {Map} from 'immutable';
 
 export interface IOrder {
 	detailId: number;
@@ -11,14 +10,16 @@ export interface IOrder {
 	editableServicesId?: number; //temp editable service
 }
 
-export default handleActions<IOrder[]>({
-	[ACTIONS.EDIT_ORDERS]: (old, data: { payload: number[] }): IOrder[] => {
+export type MapOrder = Map<number, IOrder>;
+
+export default handleActions<MapOrder>({
+	[ACTIONS.EDIT_ORDERS]: (old, data: { payload: number[] }): MapOrder => {
 		let result: IOrder[] = [];
 
 		data.payload.forEach(id => {
-			let order = old.filter(o => o.detailId === id);
-			if (order.length > 0) {
-				result.push({...order[0], editable: order[0].detailId === id});
+			let order = old.get(id);
+			if (order) {
+				result.push({...order, editable: order.detailId === id});
 			} else {
 				result.push({detailId: id, editable: true});
 			}
@@ -30,10 +31,13 @@ export default handleActions<IOrder[]>({
 			}
 		});
 
-		return result;
+		return Map<number, IOrder>(result.reduce((init, item) => {
+			init.push([item.detailId, item]);
+			return init;
+		}, []));
 	},
-	[ACTIONS.REMOVE_ORDERS]: (old, data: { payload: number[] }): IOrder[] => {
-		return old.map(i => {
+	[ACTIONS.REMOVE_ORDERS]: (old, data: { payload: number[] }) => {
+		return old.map<IOrder>(i => {
 			if (data.payload.indexOf(i.detailId)) {
 				return {...i, materialId: null};
 			} else {
@@ -41,7 +45,7 @@ export default handleActions<IOrder[]>({
 			}
 		});
 	},
-	[ACTIONS.SELECT_SERVICE]: (old, data: { payload: number }): IOrder[] => {
+	[ACTIONS.SELECT_SERVICE]: (old, data: { payload: number }) => {
 		return old.map(i => {
 			return {...i, editableServicesId: data.payload};
 		});
@@ -59,4 +63,4 @@ export default handleActions<IOrder[]>({
 			return i;
 		});
 	},
-}, []);
+}, Map<number, IOrder>());
