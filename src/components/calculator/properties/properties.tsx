@@ -13,7 +13,7 @@ import {STEP} from "../../../reducers/step";
 
 
 interface IState {
-	currentMaterialId: number
+
 }
 
 interface IProperties {
@@ -40,23 +40,20 @@ const stateProps = returntypeof(mapStateToProps);
 type Props = typeof stateProps & typeof dispatchToProps;
 
 export class Properties extends React.Component<Props, IState> {
-	constructor(props) {
-		super(props);
-		let t = this.props.orders.filter(i => i.editable)[0];
-		this.state = {
-			currentMaterialId: t ? t.materialId : null
-		};
+
+	private selectMaterial(m: Api.IMaterial) {
+		this.props.actions.app.selectMaterial(m.id);
 	}
 
-	getProperiesByCurrent(): IProperties {
-		let t = this.props.orders.filter(i => i.editable)[0];
+	private getProperiesByCurrent(): IProperties {
+		let t = this.props.orders.filter(i => i.editable).first();
 		let id = t ? t.editableServicesId : 1;
 
 		let r = this.props.materials.filter(m => {
 			return id === m.serviceId;
 		});
 
-		let m = r.filter(i => i.id === this.state.currentMaterialId).first();
+		let m = r.filter(i => i.id === t.materialId).first();
 		let current = m ? m : r.first();
 
 		let prop: IProperties = {
@@ -115,7 +112,7 @@ export class Properties extends React.Component<Props, IState> {
 					<div>
 						{propertys.producer.length > 0 &&
 						propertys.producer.map(i => (
-							<div onClick={() => this.setState({currentMaterialId: i.id})}
+							<div onClick={() => this.selectMaterial(i)}
 								 key={i.producerId}>{this.props.producers.get(i.producerId).caption}</div>
 						))
 						}
@@ -123,7 +120,7 @@ export class Properties extends React.Component<Props, IState> {
 					<div>
 						{propertys.color.length > 0 &&
 						propertys.color.map(i => (
-							<div onClick={() => this.setState({currentMaterialId: i.id})}
+							<div onClick={() => this.selectMaterial(i)}
 								 key={i.colorId}>{this.props.colors.get(i.colorId).caption}</div>
 						))
 						}
@@ -131,7 +128,7 @@ export class Properties extends React.Component<Props, IState> {
 					<div>
 						{propertys.opacity.length > 0 &&
 						propertys.opacity.map(i => (
-							<div onClick={() => this.setState({currentMaterialId: i.id})}
+							<div onClick={() => this.selectMaterial(i)}
 								 key={i.opacityId}>{this.props.opacity.get(i.opacityId).caption}</div>
 						))
 						}
@@ -139,7 +136,7 @@ export class Properties extends React.Component<Props, IState> {
 					<div>
 						{propertys.thickness.length > 0 &&
 						propertys.thickness.map(i => (
-							<div onClick={() => this.setState({currentMaterialId: i.id})}
+							<div onClick={() => this.selectMaterial(i)}
 								 key={i.thicknessId}>{this.props.thickness.get(i.thicknessId).caption}</div>
 						))
 						}
@@ -150,7 +147,7 @@ export class Properties extends React.Component<Props, IState> {
 				<Button
 					label="Сохранить"
 					style={{float: 'right'}}
-					onClick={() => this.props.actions.app.save(this.state.currentMaterialId)}/>
+					onClick={() => this.props.actions.app.save(this.props.orders.filter(i => i.editable).first().materialId)}/>
 			</div>
 		)
 	}

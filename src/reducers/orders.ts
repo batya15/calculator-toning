@@ -38,7 +38,7 @@ export default handleActions<MapOrder>({
 	},
 	[ACTIONS.REMOVE_ORDERS]: (old, data: { payload: number[] }) => {
 		return old.map<IOrder>(i => {
-			if (data.payload.indexOf(i.detailId)) {
+			if (data.payload.indexOf(i.detailId) >= 0) {
 				return {...i, materialId: null};
 			} else {
 				return i
@@ -47,12 +47,20 @@ export default handleActions<MapOrder>({
 	},
 	[ACTIONS.SELECT_SERVICE]: (old, data: { payload: number }) => {
 		return old.map(i => {
-			return {...i, editableServicesId: data.payload};
+			return {...i, oldMaterialId: i.materialId, editableServicesId: data.payload};
 		});
 	},
-	[ACTIONS.TO_SELECT_SERVICES]: (old) => {
+	[ACTIONS.BACK_TO_SELECT_SERVICES]: (old) => {
 		return old.map(i => {
 			return {...i, materialId: i.oldMaterialId};
+		});
+	},
+	[ACTIONS.SELECT_MATERIAL]: (old, data: {payload: number}) => {
+		return old.map(i => {
+			if (i.editable) {
+				return {...i, materialId: data.payload};
+			}
+			return i;
 		});
 	},
 	[ACTIONS.SAVE]: (old, data: {payload: number}) => {
