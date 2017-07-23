@@ -1,18 +1,21 @@
 :root {
 	--heightHeader: 270px;
+	--gray: #eeeeee;
 }
 
 .calculator {
-	margin-bottom: 10px;
+	border: 1px solid var(--gray);
 }
 
 .controls {
-	width: 75%;
+	width: calc(100% - 220px);
 	overflow: hidden;
 	position: relative;
 	height: var(--heightHeader);
 	float: left;
 	padding: 0;
+	border: solid var(--gray);
+	border-width: 0 1px 0 0;
 
 	& .scroll {
 		width: 300%;
@@ -61,11 +64,23 @@
 }
 
 .total {
-	height: var(--heightHeader);
 	float: left;
-	width: calc(25% - .5rem);
-	margin-left: .5rem;
+	width: 220px;
 	text-align: center;
+	border: 0 solid var(--gray);
+}
+
+@media (max-width: 660px)  {
+	.controls {
+		width: 100%;
+		border-width: 0;
+	}
+
+	.total {
+		width: 100%;
+		margin: 0;
+		border-width: 1px 0 0 0;
+	}
 }
 
 @keyframes save {

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as styles from './totals.pcss';
+import * as commonStyles from '../../common.pcss';
 import * as classnames from 'classnames';
 import {connect} from "react-redux";
 import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
-import {isNullOrUndefined} from "util";
+import * as Button from 'muicss/lib/react/button';
 
 interface IState {
 }
@@ -36,14 +37,19 @@ export class Totals extends React.Component<Props, IState> {
 				sum + this.props.details.get(order.detailId).size * this.props.materials.get(order.materialId).price
 				, 0);
 		return (
-			<div>
-				<h1>{p}p.</h1>
+			<div className={styles.main}>
+				<div className={styles.price}>{p}
+					<span className={styles.currency}>руб.</span>
+				</div>
 				<div className={styles.footer}>
-					<button label="Оформить заказ"/>
-					<div className={styles.c}>
-						Цены являються приближенными и т.д. и бла бла бла
+					<Button color="primary"
+							className={styles.toOrder}
+							onClick={console.log}>Оформить заказ</Button>
+					<div className={styles.note}>
+						*цены являются ориентировочной, точную цену уточняйте у менеджера
 					</div>
 				</div>
+				<div className={commonStyles.clr}/>
 			</div>
 		)
 	}

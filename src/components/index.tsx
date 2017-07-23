@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Admin from "./admin/index";
 import * as styles from './index.pcss';
 import 'muicss/dist/css/mui-noglobals.css';
 import Calculator from "./calculator/calculator";
+import Admin from "./admin/index";
 
 const REGEXP_ADMIN = /admin=admin/i;
 

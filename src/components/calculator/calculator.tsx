@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import * as classnames from 'classnames';
-import * as Panel from 'muicss/lib/react/panel';
 import {returntypeof} from 'react-redux-typescript';
 import * as styles from './calculator.pcss';
 import * as commonStyles from 'components/common.pcss';
@@ -61,7 +60,7 @@ class Calculator extends React.Component<Props, IState> {
 	render() {
 		return (
 			<div className={styles.calculator}>
-				<Panel className={styles.controls}>
+				<div className={styles.controls}>
 					<div className={classnames(styles.scroll, this.state.stepClass)}>
 						<div className={classnames(styles.step, styles.areas)}>
 							<Places/>
@@ -74,7 +73,7 @@ class Calculator extends React.Component<Props, IState> {
 						</div>
 
 					</div>
-				</Panel>
+				</div>
 				<div className={styles.total}>
 					<Totals/>
 				</div>
