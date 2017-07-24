@@ -76,36 +76,52 @@ export class Places extends React.Component<Props, IState> {
 		let countSelected = Places.objectValues(this.state.selectedIds).filter(i => i).length;
 		return (
 			<div className={styles.areas}>
-				<b>Выбор стекла</b>
-				<ul>
+				<div className={styles.title}>Выбор стекла</div>
+				<ul className={styles.details}>
 					{this.props.details.toArray().map(item => {
 						return (
-							<li key={item.id}>
+							<li key={item.id}
+								className={classnames({
+									[styles.detail]: true,
+									[styles.selected]: !!this.state.selectedIds[item.id]
+								})}
+								onClick={(e) => this.toggleDetails(item.id, !this.state.selectedIds[item.id])}
+							>
 								<div className={classnames(styles.caption)}>
-									<input
-										name="isGoing"
-										type="checkbox"
-										checked={!!this.state.selectedIds[item.id]}
-										onChange={(e) => this.toggleDetails(item.id, e.target.checked)}/>
-									<span>
+									<div
+										className={classnames({
+											[styles.checkbox]: true,
+											[styles.checked]: !!this.state.selectedIds[item.id]
+										})}
+									/>
+									<span className={styles.name}>
 										{item.caption}
 									</span>
 								</div>
 								<div className={classnames(styles.label)}>
 									{"function render informations"}
 								</div>
-								<div className={classnames(styles.edit)}>
+								<div className={classnames(styles.controls)} onClick={e=> e.stopPropagation()}>
 									<Button
+										size="small"
 										color="primary"
-										onClick={() => this.editByIds([item.id])}
-										label="edit"/>
-								</div>
-								<div className={classnames(styles.end)}>
+										variant="flat"
+										className={styles.btn}
+										onClick={(e) => {
+											e.stopPropagation();
+											this.editByIds([item.id])
+										}}
+									>
+										<i className="material-icons">mode_edit</i>
+									</Button>
 									<MenuButton
+										ButtonComponent='span'
 										menu={
 											<Dropdown>
 												<div onClick={() => this.editByIds([item.id])}>Редактировать</div>
-												<div onClick={() => this.props.actions.app.removeOrders([item.id])}>Удалить заказ</div>
+												<div onClick={() => this.props.actions.app.removeOrders([item.id])}>
+													Удалить заказ
+												</div>
 												<div onClick={() => console.log('Приминить ко все стеклам')}>
 													Приминить ко все стеклам
 												</div>
@@ -122,10 +138,13 @@ export class Places extends React.Component<Props, IState> {
 											</Dropdown>
 										}
 									>
-										...
+										<Button
+											size="small"
+											className={styles.btn}
+											variant="flat"
+										><i className="material-icons">menu</i></Button>
 									</MenuButton>
 								</div>
-								<div className={classnames(styles.clr)}/>
 							</li>
 						);
 					})
