@@ -5,10 +5,15 @@
   font-size: 1.2rem;
 }
 
+ul.details {
+  margin: 0;
+}
+
 .details {
   padding: 0;
   list-style: none;
   border-top: 1px solid #eeeeee;
+
 
   & > .detail {
     cursor: pointer;
@@ -31,7 +36,7 @@
     }
 
     &.selected {
-      border-color: #d3bc74;
+      border-color: #fbd14f;
       background: #fcfee4;
 
       &:before {
@@ -41,7 +46,7 @@
         right: -2px;
         content: '';
         height: 2px;
-        background: #d3bc74;
+        background: #fbd14f;
       }
 
 
@@ -52,7 +57,7 @@
         right: -2px;
         content: '';
         height: 2px;
-        background: #d3bc74;
+        background: #fbd14f;
       }
     }
 
@@ -71,7 +76,7 @@
   box-shadow: 0 1px 1px 1px rgba(154, 154, 154, .41);
   position: relative;
   background: white;
-  margin-right: .5rem;
+  margin: 0 .7rem;
   vertical-align: middle;
   line-height: 18px;
 
@@ -98,10 +103,9 @@
 .caption {
   display: inline-block;
   vertical-align: middle;
-  width: 165px;
+  width: 175px;
   white-space: nowrap;
   overflow: hidden;
-  padding: 0 .1rem;
 
   & .name {
     vertical-align: middle;
@@ -111,7 +115,7 @@
 .label {
   display: inline-block;
   vertical-align: middle;
-  width: calc(100% - 245px);
+  width: calc(100% - 255px);
   font-size: .85em;
   color: #5b5b5b;
   text-overflow: ellipsis;
@@ -131,8 +135,55 @@
   }
 }
 
-.allEdit {
-  text-align: right;
-  width: 65%;
-  display: inline-block;
+.footer {
+  margin-top: 8px;
+  padding: 0 1rem;
+  border: solid transparent;
+  border-width: 0 2px;
+  text-align: justify;
+
+
+  & .selectAll {
+    cursor: pointer;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 2rem;
+
+    & > div,
+    & > span {
+      vertical-align: middle;
+    }
+  }
+
+  & .allEdit {
+    float: right;
+    color: #2196F3;
+
+    &.disabled {
+      opacity: .5;
+      color: #eeeeee;
+    }
+
+  }
 }
+
+.dropdown {
+  margin: -.45rem 0;
+  width: 250px;
+
+  & .item {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    border-bottom: 1px solid #eeeeee;
+    padding: 0 1rem;
+    transition: background-color .2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eeeeee;
+    }
+  }
+
+}
+
+

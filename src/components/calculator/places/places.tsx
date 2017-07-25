@@ -6,7 +6,6 @@ import {returntypeof} from 'react-redux-typescript';
 import {mapDispatchToProps} from "actions";
 import {connect} from 'react-redux';
 import * as Button from 'muicss/lib/react/button';
-import * as Checkbox from 'muicss/lib/react/checkbox';
 import * as Dropdown from 'react-menu-list/js/Dropdown';
 import * as MenuButton from 'react-menu-list/js/MenuButton';
 
@@ -99,9 +98,9 @@ export class Places extends React.Component<Props, IState> {
 									</span>
 								</div>
 								<div className={classnames(styles.label)}>
-									{"function render informations"}
+									{"отображаеться информация о выбранном матерьяле"}
 								</div>
-								<div className={classnames(styles.controls)} onClick={e=> e.stopPropagation()}>
+								<div className={classnames(styles.controls)} onClick={e => e.stopPropagation()}>
 									<Button
 										size="small"
 										color="primary"
@@ -115,26 +114,37 @@ export class Places extends React.Component<Props, IState> {
 										<i className="material-icons">mode_edit</i>
 									</Button>
 									<MenuButton
+										ref={'menuButton' + item.id}
 										ButtonComponent='span'
 										menu={
 											<Dropdown>
-												<div onClick={() => this.editByIds([item.id])}>Редактировать</div>
-												<div onClick={() => this.props.actions.app.removeOrders([item.id])}>
-													Удалить заказ
+												<div className={styles.dropdown} onClick={() => this.refs['menuButton' + item.id]['close']()}>
+													<div
+														className={styles.item}
+														onClick={() => this.editByIds([item.id])}>Редактировать
+													</div>
+													<div
+														className={styles.item}
+														onClick={() => this.props.actions.app.removeOrders([item.id])}>
+														Удалить заказ
+													</div>
+													<div
+														className={styles.item}
+														onClick={() => console.log('Приминить ко все стеклам')}>
+														Приминить ко все стеклам
+													</div>
+													{this.props.details
+														.toArray()
+														.filter(i => i.id !== item.id)
+														.map(i => (
+															<div
+																key={item.id + i.id}
+																className={styles.item}
+																onClick={() => console.log(`Приминить на ${i.caption}`)}>
+																Приминить на {i.caption}
+															</div>))
+													}
 												</div>
-												<div onClick={() => console.log('Приминить ко все стеклам')}>
-													Приминить ко все стеклам
-												</div>
-												{this.props.details
-													.toArray()
-													.filter(i => i.id !== item.id)
-													.map(i => (
-														<div
-															key={item.id + i.id}
-															onClick={() => console.log(`Приминить на ${i.caption}`)}>
-															Приминить на {i.caption}
-														</div>))
-												}
 											</Dropdown>
 										}
 									>
@@ -150,20 +160,26 @@ export class Places extends React.Component<Props, IState> {
 					})
 					}
 				</ul>
-				<div>
-					<span className={classnames(styles.caption)}>
-						<Checkbox
-							label="Выбрать все"
-							checked={this.allDetailsSelected()}
-							onChange={(e) => this.toggleSelectedAll(e.target.checked)}
+				<div className={styles.footer}>
+					<div
+						className={styles.selectAll}
+						onClick={(e) => this.toggleSelectedAll(!this.allDetailsSelected())}>
+						<div
+							className={classnames({
+								[styles.checkbox]: true,
+								[styles.checked]: this.allDetailsSelected()
+							})}
 						/>
-					</span>
-					<span className={classnames(styles.allEdit)}>
-						<button
-							onClick={() => this.editSelectedDetails()}
-							disabled={countSelected === 0}
-						>Редактировать выбранные ({countSelected})</button>
-					</span>
+						<span>Выбрать все</span>
+					</div>
+					<Button
+						size="small"
+						variant="flat"
+						onClick={() => this.editSelectedDetails()}
+						disabled={countSelected === 0}
+						className={classnames({[styles.allEdit]: true, [styles.disabled]: countSelected === 0})}>
+						Редактировать выбранные ({countSelected})
+					</Button>
 				</div>
 			</div>
 		)
