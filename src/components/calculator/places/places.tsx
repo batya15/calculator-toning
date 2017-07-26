@@ -8,6 +8,8 @@ import {connect} from 'react-redux';
 import * as Button from 'muicss/lib/react/button';
 import * as Dropdown from 'react-menu-list/js/Dropdown';
 import * as MenuButton from 'react-menu-list/js/MenuButton';
+import {Api} from "api";
+import {STEP} from "../../../reducers/step";
 
 interface IState {
 	selectedIds: {
@@ -16,7 +18,15 @@ interface IState {
 }
 
 const mapStateToProps = (rootState: RootState) => ({
-	details: rootState.api.details
+	details: rootState.api.details,
+	materials: rootState.api.materials,
+	services: rootState.api.services,
+	producers: rootState.api.producers,
+	opacity: rootState.api.opacity,
+	thickness: rootState.api.thickness,
+	colors: rootState.api.colors,
+	orders: rootState.orders,
+	step: rootState.step
 });
 
 const dispatchToProps = returntypeof(mapDispatchToProps);
@@ -61,6 +71,32 @@ export class Places extends React.Component<Props, IState> {
 		return Places.objectValues(this.state.selectedIds).filter(i => i).length === this.props.details.size;
 	}
 
+	private getTitleMaterial(item: Api.IDetail): string {
+		let result = '';
+		let order = this.props.orders.get(item.id);
+		if (order && order.materialId) {
+			let material = this.props.materials.get(order.materialId);
+			result += this.props.services.get(material.serviceId).caption;
+			result += ' / ' + this.props.producers.get(material.producerId).caption;
+			if (material.opacityId) {
+				result += ' / ' + this.props.opacity.get(material.opacityId).caption;
+			}
+			if (material.thicknessId) {
+				result += ' / ' + this.props.thickness.get(material.thicknessId).caption;
+			}
+			if (material.colorId) {
+				result += ' / ' + this.props.colors.get(material.colorId).caption;
+			}
+			result += ' / ' + (material.price * item.size) + 'p.';
+		}
+		return result;
+	}
+
+	private applyMaterial(id: number[], materialId: number) {
+		this.props.actions.app.editOrders(id);
+		this.props.actions.app.save(materialId);
+	}
+
 	static objectValues(obj: any): string[] {
 		let result = [];
 		for (let key in obj) {
@@ -71,6 +107,10 @@ export class Places extends React.Component<Props, IState> {
 		return result;
 	}
 
+	shouldComponentUpdate(nextProps, nextState): boolean {
+		return nextProps.step === STEP.DETAILS;
+	}
+
 	render() {
 		let countSelected = Places.objectValues(this.state.selectedIds).filter(i => i).length;
 		return (
@@ -78,6 +118,7 @@ export class Places extends React.Component<Props, IState> {
 				<div className={styles.title}>Выбор стекла</div>
 				<ul className={styles.details}>
 					{this.props.details.toArray().map(item => {
+						let hasMaterial = this.props.orders.get(item.id) && this.props.orders.get(item.id).materialId;
 						return (
 							<li key={item.id}
 								className={classnames({
@@ -98,7 +139,7 @@ export class Places extends React.Component<Props, IState> {
 									</span>
 								</div>
 								<div className={classnames(styles.label)}>
-									{"отображаеться информация о выбранном матерьяле"}
+									{this.getTitleMaterial(item)}
 								</div>
 								<div className={classnames(styles.controls)} onClick={e => e.stopPropagation()}>
 									<Button
@@ -118,29 +159,44 @@ export class Places extends React.Component<Props, IState> {
 										ButtonComponent='span'
 										menu={
 											<Dropdown>
-												<div className={styles.dropdown} onClick={() => this.refs['menuButton' + item.id]['close']()}>
+												<div className={styles.dropdown}
+													 onClick={() => this.refs['menuButton' + item.id]['close']()}>
 													<div
 														className={styles.item}
 														onClick={() => this.editByIds([item.id])}>Редактировать
 													</div>
+													{hasMaterial &&
 													<div
 														className={styles.item}
 														onClick={() => this.props.actions.app.removeOrders([item.id])}>
 														Удалить заказ
 													</div>
+													}
+													{hasMaterial &&
 													<div
 														className={styles.item}
-														onClick={() => console.log('Приминить ко все стеклам')}>
+														onClick={() => {
+															this.applyMaterial(
+																this.props.details
+																	.filter(i => i.serviceIDs.indexOf(this.props.materials.get(this.props.orders.get(item.id).materialId).serviceId) >= 0)
+																	.toArray()
+																	.map(i => i.id),
+																this.props.orders.get(item.id).materialId
+															)
+														}}>
 														Приминить ко все стеклам
 													</div>
-													{this.props.details
+													}
+													{hasMaterial && this.props.details
 														.toArray()
-														.filter(i => i.id !== item.id)
+														.filter(i =>
+														i.id !== item.id
+														&& i.serviceIDs.indexOf(this.props.materials.get(this.props.orders.get(item.id).materialId).serviceId) >= 0)
 														.map(i => (
 															<div
 																key={item.id + i.id}
 																className={styles.item}
-																onClick={() => console.log(`Приминить на ${i.caption}`)}>
+																onClick={() => this.applyMaterial([i.id], this.props.orders.get(item.id).materialId)}>
 																Приминить на {i.caption}
 															</div>))
 													}

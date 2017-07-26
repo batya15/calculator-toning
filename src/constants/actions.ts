@@ -49,7 +49,8 @@ export enum ACTIONS {
 	SELECT_PLACES = <any>'SELECT_PLACES',
 	SELECT_SERVICE = <any>'SELECT_SERVICE',
 	SELECT_MATERIAL = <any>'SELECT_MATERIAL',
-	SAVE = <any>'SAVE'
+	SAVE = <any>'SAVE',
+	APPLY_MATERIAL = <any>'APPLY_MATERIAL'
 }
 
 export default ACTIONS;
