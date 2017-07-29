@@ -66,6 +66,7 @@
     "react-redux-typescript": "^2.3.0",
     "react-router": "^4.1.1",
     "react-select": "^1.0.0-rc.5",
+    "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.2",
     "three": "^0.85.2",

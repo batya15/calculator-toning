@@ -3,20 +3,17 @@ import * as style from './properties.pcss';
 import * as classnames from 'classnames';
 import * as Button from 'muicss/lib/react/button';
 import {connect} from 'react-redux';
-import * as Radio from 'muicss/lib/react/radio';
 import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import {Api} from "api/index";
-import {MapColor, MapOpacity, MapProducer, MapThickness} from "../../../reducers/api/index";
 import {STEP} from "../../../reducers/step";
 
-
 interface IState {
-
 }
 
 interface IProperties {
+	readonly current: Api.IMaterial,
 	readonly producer: Api.IMaterial[],
 	readonly color: Api.IMaterial[],
 	readonly opacity: Api.IMaterial[],
@@ -46,108 +43,171 @@ export class Properties extends React.Component<Props, IState> {
 	}
 
 	private getProperiesByCurrent(): IProperties {
-		let t = this.props.orders.filter(i => i.editable).first();
-		let id = t ? t.editableServicesId : 1;
+		let firstEditableOrder = this.props.orders.filter(i => i.editable).first();
+		let id = firstEditableOrder ? firstEditableOrder.editableServicesId : 1;
 
-		let r = this.props.materials.filter(m => {
-			return id === m.serviceId;
-		});
+		let materialsByService = this.props.materials.filter(m => id === m.serviceId);
 
-		let m = r.filter(i => i.id === t.materialId).first();
-		let current = m ? m : r.first();
+		let current = materialsByService.filter(i => i.id === firstEditableOrder.materialId).first();;
 
-		let prop: IProperties = {
-			producer: r.filter(material => current.colorId === material.colorId
+		if (!current) {
+			current = materialsByService.first();
+			if (current) {
+				setTimeout(() => this.selectMaterial(current), 0);
+			}
+		}
+
+		return {
+			current: current,
+			producer: materialsByService.filter(material => current.colorId === material.colorId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
 			).toArray(),
-			color: r.filter(material => current.colorId !== null
+			color: materialsByService.filter(material => current.colorId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
 			).toArray(),
-			thickness: r.filter(material => current.thicknessId !== null
+			thickness: materialsByService.filter(material => current.thicknessId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.colorId === material.colorId
 			).toArray(),
-			opacity: r.filter(material => current.opacityId !== null
+			opacity: materialsByService.filter(material => current.opacityId !== null
 				&& current.producerId === material.producerId
 				&& current.thicknessId === material.thicknessId
 				&& current.colorId === material.colorId
 			).toArray()
 		};
+	}
 
-		console.log(prop);
-
-		return prop;
+	shouldComponentUpdate(nextProps, nextState): boolean {
+		return nextProps.step === STEP.PROPERTIES;
 	}
 
 	render() {
 		let propertys = this.getProperiesByCurrent();
 
+		let countGroup = (propertys.producer.length ? 1 : 0)
+			+ (propertys.color.length ? 1 : 0)
+			+ (propertys.opacity.length ? 1 : 0)
+			+ (propertys.thickness.length ? 1 : 0 );
+
 		return (
 			<div className={style.property}>
-				<div className={classnames(style.title)}>
+				<div className={style.header}>
 					<Button
-						label="Назад"
+						className={style.back}
+						variant="flat"
 						onClick={() => this.props.actions.app.toSelectServices()}
-					/>
-					<span><b>Подбор параметров</b></span>
-					<div className={style.ar}>
-						{<span>{this.props.services.size
-						&& this.props.step === STEP.PROPERTIES
-						&& this.props.services.get(this.props.orders.filter(item => item.editable).first().editableServicesId).caption}/</span>}
-						{
-							this.props.orders
-								.toArray()
-								.filter(item => item.editable)
-								.map(item => (
-									<span key={item.detailId}>{this.props.details.get(item.detailId).caption}/</span>)
-								)
-						}
+					>
+						<i className="material-icons">arrow_back</i>
+					</Button>
+					<div className={style.title}>
+						<div className={style.bold}>Подбор параметров</div>
+						<div className={style.details}>
+							{
+								this.props.services.size &&
+								this.props.services.get(this.props.orders.filter(item => item.editable).first().editableServicesId).caption
+							}
+							<span> : </span>
+							{
+								this.props.orders
+									.toArray()
+									.filter(item => item.editable)
+									.map(item => this.props.details.get(item.detailId).caption)
+									.join(' / ')
+							}
+						</div>
 					</div>
 				</div>
-				<ul>
-					<div>
-						{propertys.producer.length > 0 &&
-						propertys.producer.map(i => (
-							<div onClick={() => this.selectMaterial(i)}
-								 key={i.producerId}>{this.props.producers.get(i.producerId).caption}</div>
-						))
-						}
+				{!!countGroup &&
+				<div className={style.list}>
+					{propertys.producer.length > 0 &&
+					<div className={style.prop} style={{height: (100 / countGroup) + '%'}}>
+						<div className={style.name}>Производитель:</div>
+						<div className={style.options}>
+							{propertys.producer.map(i => (
+								<div
+									className={style.select}
+									onClick={() => this.selectMaterial(i)}
+									key={i.producerId}>
+									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									{this.props.producers.get(i.producerId).caption}
+									</div>
+							))
+							}
+						</div>
 					</div>
-					<div>
-						{propertys.color.length > 0 &&
-						propertys.color.map(i => (
-							<div onClick={() => this.selectMaterial(i)}
-								 key={i.colorId}>{this.props.colors.get(i.colorId).caption}</div>
-						))
-						}
+					}
+					{propertys.color.length > 0 &&
+					<div className={style.prop} style={{height: (100 / countGroup) + '%'}}>
+						<div className={style.name}>Цвет:</div>
+						<div className={style.options}>
+							{propertys.color.map(i => (
+								<div
+									className={style.select}
+									onClick={() => this.selectMaterial(i)}
+									key={i.colorId}>
+									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									{this.props.colors.get(i.colorId).caption}
+									</div>
+							))
+							}
+						</div>
 					</div>
-					<div>
-						{propertys.opacity.length > 0 &&
-						propertys.opacity.map(i => (
-							<div onClick={() => this.selectMaterial(i)}
-								 key={i.opacityId}>{this.props.opacity.get(i.opacityId).caption}</div>
-						))
-						}
+					}
+					{propertys.opacity.length > 0 &&
+					<div className={style.prop} style={{height: (100 / countGroup) + '%'}}>
+						<div className={style.name}>Светопропускаемость:</div>
+						<div className={style.options}>
+							{propertys.opacity.map(i => (
+								<div
+									className={style.select}
+									onClick={() => this.selectMaterial(i)}
+									key={i.opacityId}>
+									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									{this.props.opacity.get(i.opacityId).caption}
+									</div>
+							))
+							}
+						</div>
 					</div>
-					<div>
-						{propertys.thickness.length > 0 &&
-						propertys.thickness.map(i => (
-							<div onClick={() => this.selectMaterial(i)}
-								 key={i.thicknessId}>{this.props.thickness.get(i.thicknessId).caption}</div>
-						))
-						}
+					}
+					{propertys.thickness.length > 0 &&
+					<div className={style.prop} style={{height: (100 / countGroup) + '%'}}>
+						<div className={style.name}>Толщина:</div>
+						<div className={style.options}>
+							{propertys.thickness.map(i => (
+								<div
+									className={style.select}
+									onClick={() => this.selectMaterial(i)}
+									key={i.thicknessId}>
+									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									{this.props.thickness.get(i.thicknessId).caption}
+									</div>
+							))
+							}
+						</div>
 					</div>
-				</ul>
+					}
+
+				</div>
+				}
+				{!countGroup &&
+				<div className={style.error}>Для данного набора стекол нет подходящего материала</div>
+				}
+				<div className={style.footer}>
+					<Button
+						color="primary"
+						variant="flat"
+						disabled={!countGroup}
+						onClick={() => this.props.actions.app.save(this.props.orders.filter(i => i.editable).first().materialId)}>
+						Сохранить
+					</Button>
+				</div>
 
 
-				<Button
-					label="Сохранить"
-					style={{float: 'right'}}
-					onClick={() => this.props.actions.app.save(this.props.orders.filter(i => i.editable).first().materialId)}/>
 			</div>
 		)
 	}
