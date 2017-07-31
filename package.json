@@ -60,6 +60,7 @@
     "immutable": "^3.8.1",
     "muicss": "^0.9.16",
     "react": "^15.5.4",
+    "react-append-to-body": "^2.0.13",
     "react-dom": "^15.5.4",
     "react-menu-list": "^3.4.0",
     "react-redux": "^5.0.4",

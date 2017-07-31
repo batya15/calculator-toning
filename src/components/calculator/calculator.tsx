@@ -11,6 +11,9 @@ import Places from "./places/places";
 import Services from "./services/services";
 import Properties from "./properties/properties";
 import Totals from "./totals/totals";
+import Orientation from "./orientation/orientation";
+
+
 
 interface IState {
 	stepClass: string,
@@ -60,6 +63,7 @@ class Calculator extends React.Component<Props, IState> {
 	render() {
 		return (
 			<div className={styles.calculator}>
+				<Orientation/>
 				<div className={styles.controls}>
 					<div className={classnames(styles.scroll, this.state.stepClass)}>
 						<div className={classnames(styles.step, styles.areas)}>
