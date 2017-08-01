@@ -9,6 +9,7 @@ var outPath = path.join(__dirname, './dist');
 // plugins
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
     context: sourcePath,
@@ -18,16 +19,19 @@ module.exports = {
             'axios',
 			'classnames',
             'flux-standard-action',
-            'muicss',
+			'immutable',
+			'muicss',
 			'react',
+            'react-append-to-body',
 			'react-dom',
             'react-menu-list',
 			'react-redux',
             'react-redux-typescript',
             'react-router',
+            'react-tooltip',
             'react-select',
 			'redux',
-            'redux-actions',
+            'redux-actions'
         ]
     },
     output: {
@@ -119,6 +123,9 @@ module.exports = {
             filename: 'vendor.bundle.js',
             minChunks: Infinity
         }),
+		new Visualizer({
+			filename: './statistics.html'
+		}),
         new webpack.optimize.AggressiveMergingPlugin(),
         new ExtractTextPlugin({
             filename: 'styles.css',
