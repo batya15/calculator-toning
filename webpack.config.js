@@ -14,7 +14,7 @@ var Visualizer = require('webpack-visualizer-plugin');
 module.exports = {
     context: sourcePath,
     entry: {
-        main: ['babel-polyfill', './index.tsx'],
+        main: ['core-js/fn/promise', 'core-js/fn/symbol', './index.tsx'],
         vendor: [
             'axios',
 			'classnames',
@@ -126,9 +126,6 @@ module.exports = {
             filename: 'vendor.bundle.js',
             minChunks: Infinity
         }),
-		new Visualizer({
-			filename: './statistics.html'
-		}),
         new webpack.optimize.AggressiveMergingPlugin(),
         new ExtractTextPlugin({
             filename: 'styles.css',
@@ -136,6 +133,9 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: 'index.html'
+        }),
+        new Visualizer({
+            filename: './statistics.html'
         })
     ],
     devServer: {
