@@ -14,7 +14,7 @@ var Visualizer = require('webpack-visualizer-plugin');
 module.exports = {
     context: sourcePath,
     entry: {
-        main: './index.tsx',
+        main: ['babel-polyfill', './index.tsx'],
         vendor: [
             'axios',
 			'classnames',
@@ -112,6 +112,9 @@ module.exports = {
                         features: {
                             calc: false
                         }
+                    }),
+                    require('autoprefixer')({
+                        browsers: ['> 1% in RU']
                     }),
                     require('postcss-reporter')(),
                     require('postcss-browser-reporter')({disabled: isProduction}),
