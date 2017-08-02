@@ -11,6 +11,11 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var Visualizer = require('webpack-visualizer-plugin');
 
+if (isProduction) {
+	var copydir = require('copy-dir');
+	copydir.sync(sourcePath + '/assets', outPath + '/assets');
+}
+
 module.exports = {
     context: sourcePath,
     entry: {

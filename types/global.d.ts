@@ -12,7 +12,12 @@ declare module '*.pcss' {
 	export = styles;
 }
 
+declare interface IConfigApp {
+	assets: string;
+}
+
 // for redux devtools extension
 declare interface Window {
+	__config : IConfigApp
 	devToolsExtension?(): (args?: any) => any;
 }

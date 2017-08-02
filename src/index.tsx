@@ -5,6 +5,15 @@ import { Provider } from 'react-redux';
 import Main from 'components/index';
 
 const ROOT_ELEMENT = document.getElementById('calculator-toning');
+
+if (!ROOT_ELEMENT) {
+	console.error("Not found element by id 'calculator-toning'");
+}
+
+window.__config = {
+	assets : ROOT_ELEMENT.dataset.assets || 'assets/'
+};
+
 const store = configureStore();
 
 ReactDOM.render(

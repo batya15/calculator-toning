@@ -15,7 +15,7 @@ export class Request<T> {
 			} else {
 				if (!Request.loading) {
 					Request.loading = true;
-					axios.get('assets/api.json')
+					axios.get(window.__config.assets + 'api.json')
 						.then(response => {
 							Request.cacheJSON = response.data;
 							resolve(Request.cacheJSON[this.url]);
