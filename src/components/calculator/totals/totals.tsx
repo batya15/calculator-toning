@@ -7,8 +7,10 @@ import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import * as Button from 'muicss/lib/react/button';
+import Modal from 'react-modal';
 
 interface IState {
+	openModal: boolean
 }
 
 const mapStateToProps = (rootState: RootState) => ({
@@ -25,8 +27,7 @@ export class Totals extends React.Component<Props, IState> {
 	constructor() {
 		super();
 		this.state = {
-			cl: 'first',
-			price: 0
+			openModal: false
 		};
 	}
 
@@ -44,7 +45,16 @@ export class Totals extends React.Component<Props, IState> {
 				<div className={styles.footer}>
 					<Button color="primary"
 							className={styles.toOrder}
-							onClick={console.log}>Оформить заказ</Button>
+							onClick={() => this.setState({openModal : true})}>Оформить заказ</Button>
+					<Modal
+						isOpen={this.state.openModal}
+						contentLabel="order"
+						className="Modal"
+						overlayClassName="Overlay"
+					>
+						<h1>Modal Content</h1>
+						<p>Etc.</p>
+					</Modal>
 					<div className={styles.note}>
 						*цены являются ориентировочной, точную цену уточняйте у менеджера
 					</div>

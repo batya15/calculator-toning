@@ -23,6 +23,7 @@ module.exports = {
         vendor: [
             'axios',
 			'classnames',
+            'core-js',
             'flux-standard-action',
 			'immutable',
 			'muicss',

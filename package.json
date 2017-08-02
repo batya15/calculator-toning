@@ -68,6 +68,7 @@
     "react-dom": "^15.5.4",
     "react-input-mask": "^1.0.7",
     "react-menu-list": "^3.4.0",
+    "react-modal": "^2.2.2",
     "react-redux": "^5.0.4",
     "react-redux-typescript": "^2.3.0",
     "react-router": "^4.1.1",
