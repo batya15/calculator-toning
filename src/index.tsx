@@ -11,7 +11,8 @@ if (!ROOT_ELEMENT) {
 }
 
 window.__config = {
-	assets : ROOT_ELEMENT.dataset.assets || 'assets/'
+	assets : ROOT_ELEMENT.dataset.assets || 'assets/',
+	bitrixsid: ROOT_ELEMENT.dataset.bitrixsid
 };
 
 const store = configureStore();

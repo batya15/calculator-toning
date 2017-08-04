@@ -8,15 +8,18 @@ import * as Panel from 'muicss/lib/react/panel';
 import Modal from 'react-modal';
 import {MapUser} from "reducers/user";
 import {AppActionsType} from "actions/app";
-
+import axios from 'axios';
 
 interface IState {
-
+	sended: boolean,
+	preload: boolean,
+	error: string
 }
 
 interface IProps {
 	price: number,
 	open: boolean,
+	order: string,
 	close: () => void,
 	user: MapUser,
 	actions: AppActionsType
@@ -26,9 +29,37 @@ export class Order extends React.Component<IProps, IState> {
 	constructor() {
 		super();
 		this.state = {
-			phone: '',
-			price: 0
+			sended: false,
+			preload: false,
+			error: ''
 		};
+	}
+
+	private cleanError() {
+		this.setState({error: ''});
+	}
+
+	private sendOrder() {
+		this.cleanError();
+		if (!this.props.user.get('phone') || /_/.test(this.props.user.get('phone'))) {
+			this.setState({error: 'Укажите номер телефона'});
+		} else {
+			this.setState({preload: true});
+			axios.post('/stekla/atermalnaya/', {
+					sessid: window.__config.bitrixsid,
+					PARAMS_HASH: '',
+					user_name: this.props.user.get('name'),
+					'custom[0]': this.props.user.get('phone'),
+					MESSAGE: this.props.order,
+				})
+				.then(() => {
+					this.setState({sended: true, preload: false});
+				})
+				.catch(err => {
+					this.setState({error: 'Ошибка, попробуйте еще раз...', preload: false});
+				})
+
+		}
 	}
 
 	render() {
@@ -65,6 +96,7 @@ export class Order extends React.Component<IProps, IState> {
 								floatingLabel={true}
 								defaultValue={this.props.user.get('name')}
 								onChange={(e) => {
+									this.cleanError();
 									this.props.actions.changeName(e.target.value)
 								}}
 							/>
@@ -83,6 +115,7 @@ export class Order extends React.Component<IProps, IState> {
 								className={styles.mask}
 								defaultValue={this.props.user.get('phone')}
 								onChange={(e) => {
+									this.cleanError();
 									this.props.actions.changePhone(e.target.value)
 								}}
 								mask="+7 (999) 999-99-99"/>
@@ -90,13 +123,13 @@ export class Order extends React.Component<IProps, IState> {
 
 
 						<div className={styles.error}>
-							Ошибка, попробуйте еще раз...
+							{this.state.error}
 						</div>
 						<Button color="primary"
 								className={styles.submit}
-								onClick={console.log}>Оформить заказ</Button>
+								onClick={() => this.sendOrder()}>Оформить заказ</Button>
 					</div>
-
+					{this.state.preload &&
 					<div className={styles.preloader}>
 						<div className={styles.inner}>
 							<div className={styles.circ1}/>
@@ -105,13 +138,16 @@ export class Order extends React.Component<IProps, IState> {
 							<div className={styles.circ4}/>
 						</div>
 					</div>
+					}
+					{this.state.sended &&
 					<div className={styles.success}>
 						<div className={styles.text}>
-							<div>Спасибо, Имя, что воспользовались нашим сервисом!</div>
+							<div>Спасибо, {this.props.user.get('name')}, что воспользовались нашим сервисом!</div>
 							<div>Наш менеджер в ближайшее время свяжеться с Вами.</div>
 							<div>По номеру {this.props.user.get('phone')}</div>
 						</div>
 					</div>
+					}
 				</Panel>
 			</Modal>
 		)

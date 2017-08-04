@@ -7,16 +7,22 @@ import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import * as Button from 'muicss/lib/react/button';
 import {Order} from "../order/order";
+import {IOrder} from "../../../reducers/orders";
 
 interface IState {
 	openModal: boolean,
-	phone: string
+	order: string
 }
 
 const mapStateToProps = (rootState: RootState) => ({
 	details: rootState.api.details,
 	orders: rootState.orders,
 	materials: rootState.api.materials,
+	services: rootState.api.services,
+	producers: rootState.api.producers,
+	opacity: rootState.api.opacity,
+	thickness: rootState.api.thickness,
+	colors: rootState.api.colors,
 	user: rootState.user
 });
 
@@ -28,9 +34,36 @@ export class Totals extends React.Component<Props, IState> {
 	constructor() {
 		super();
 		this.state = {
-			openModal: true,
-			phone: ''
+			openModal: false,
+			order: ''
 		};
+	}
+
+	private getTitleMaterial(order: IOrder): string {
+		let result = this.props.details.get(order.detailId).caption + ' - ';
+		if (order && order.materialId) {
+			let material = this.props.materials.get(order.materialId);
+			result += 'id: #' + order.materialId + ' / ';
+			result += this.props.services.get(material.serviceId).caption;
+			result += ' / ' + this.props.producers.get(material.producerId).caption;
+			if (material.opacityId) {
+				result += ' / ' + this.props.opacity.get(material.opacityId).caption;
+			}
+			if (material.thicknessId) {
+				result += ' / ' + this.props.thickness.get(material.thicknessId).caption;
+			}
+			if (material.colorId) {
+				result += ' / ' + this.props.colors.get(material.colorId).caption;
+			}
+		}
+		return result;
+	}
+
+	private sendOrder() {
+		this.setState({
+			openModal: true,
+			order: this.props.orders.map(i => this.getTitleMaterial(i)).join('\n')
+		})
 	}
 
 	render() {
@@ -47,9 +80,10 @@ export class Totals extends React.Component<Props, IState> {
 				<div className={styles.footer}>
 					<Button color="primary"
 							className={styles.toOrder}
-							onClick={() => this.setState({openModal: true})}>Оформить заказ</Button>
+							onClick={() => this.sendOrder()}>Оформить заказ</Button>
 					<Order
 						price={price}
+						order={this.state.order}
 						open={this.state.openModal}
 						close={() => this.setState({openModal: false})}
 						user={this.props.user}

@@ -14,6 +14,7 @@ declare module '*.pcss' {
 
 declare interface IConfigApp {
 	assets: string;
+	bitrixsid: string
 }
 
 // for redux devtools extension
