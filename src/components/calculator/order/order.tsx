@@ -45,15 +45,21 @@ export class Order extends React.Component<IProps, IState> {
 			this.setState({error: 'Укажите номер телефона'});
 		} else {
 			this.setState({preload: true});
-			axios.post('/stekla/atermalnaya/', {
-					sessid: window.__config.bitrixsid,
-					PARAMS_HASH: '',
-					user_name: this.props.user.get('name'),
-					'custom[0]': this.props.user.get('phone'),
-					MESSAGE: this.props.order,
-				})
-				.then(() => {
+
+			let params = new URLSearchParams();
+			params.append('submit', 'Y');
+			params.append('sessid', window.__config.bitrixsid);
+			params.append('PARAMS_HASH', '');
+			params.append('user_name', this.props.user.get('name'));
+			params.append('custom[0]', this.props.user.get('phone'));
+			params.append('MESSAGE', this.props.order);
+
+			axios.post('/ajax/form_feedback.php', params)
+				.then((res) => {
 					this.setState({sended: true, preload: false});
+					if (res.data.status === 'status' || res.data.error.length) {
+						this.setState({error: 'Сессия истекла. Обновите страницу...'});
+					}
 				})
 				.catch(err => {
 					this.setState({error: 'Ошибка, попробуйте еще раз...', preload: false});
