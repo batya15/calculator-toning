@@ -119,9 +119,6 @@ module.exports = {
                             calc: false
                         }
                     }),
-                    require('autoprefixer')({
-                        browsers: ['> 1% in RU']
-                    }),
                     require('postcss-reporter')(),
                     require('postcss-browser-reporter')({disabled: isProduction}),
                 ]

@@ -1,5 +1,6 @@
 import {ACTIONS} from "../constants/actions";
 import {createAction} from "redux-actions";
+import {returntypeof} from "react-redux-typescript";
 
 export const editOrders = createAction<number[]>(String(ACTIONS.EDIT_ORDERS));
 export const removeOrders = createAction<number[]>(String(ACTIONS.REMOVE_ORDERS));
@@ -9,8 +10,10 @@ export const selectPlace = createAction(String(ACTIONS.SELECT_PLACES));
 export const selectService = createAction<number>(String(ACTIONS.SELECT_SERVICE));
 export const save = createAction<number>(String(ACTIONS.SAVE));
 export const selectMaterial = createAction<number>(String(ACTIONS.SELECT_MATERIAL));
+export const changeName = createAction<string>(String(ACTIONS.CHANGE_NAME));
+export const changePhone = createAction<string>(String(ACTIONS.CHANGE_PHONE));
 
-export default {
+const AppActions = {
 	editOrders,
 	removeOrders,
 	toSelectDetails,
@@ -18,5 +21,12 @@ export default {
 	selectPlace,
 	selectService,
 	save,
-	selectMaterial
-}
+	selectMaterial,
+	changeName,
+	changePhone
+};
+
+const types =  returntypeof(()=>AppActions);
+export type AppActionsType = typeof types;
+
+export default AppActions;

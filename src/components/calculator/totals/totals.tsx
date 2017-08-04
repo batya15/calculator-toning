@@ -1,17 +1,12 @@
 import * as React from 'react';
 import * as styles from './totals.pcss';
 import * as commonStyles from '../../common.pcss';
-import * as classnames from 'classnames';
 import {connect} from "react-redux";
 import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import * as Button from 'muicss/lib/react/button';
-import * as Input from 'muicss/lib/react/input';
-import * as InputMask from 'react-input-mask';
-import * as Panel from 'muicss/lib/react/panel';
-import Modal from 'react-modal';
-
+import {Order} from "../order/order";
 
 interface IState {
 	openModal: boolean,
@@ -21,7 +16,8 @@ interface IState {
 const mapStateToProps = (rootState: RootState) => ({
 	details: rootState.api.details,
 	orders: rootState.orders,
-	materials: rootState.api.materials
+	materials: rootState.api.materials,
+	user: rootState.user
 });
 
 const dispatchToProps = returntypeof(mapDispatchToProps);
@@ -52,67 +48,13 @@ export class Totals extends React.Component<Props, IState> {
 					<Button color="primary"
 							className={styles.toOrder}
 							onClick={() => this.setState({openModal: true})}>Оформить заказ</Button>
-					<Modal
-						isOpen={this.state.openModal}
-						contentLabel="order"
-						className={styles.modal}
-						overlayClassName={styles.overlay}
-					>
-						<Panel className={styles.panel}>
-							<div className={styles.header}>
-								<span className={styles.title}>Предварительный заказ</span>
-								<Button
-									className={styles.close}
-									variant="flat"
-									onClick={() => this.setState({openModal: false})}>
-									<i className="material-icons">close</i>
-								</Button>
-							</div>
-							<div className={styles.form}>
-								<div className={styles.priceModal}>
-									Общая сумма заказа: <b>{price}р.</b>
-									<div className={styles.note}>
-										*цены являются ориентировочной, точную цену уточняйте у менеджера
-									</div>
-								</div>
-
-								<div className={styles.control}>
-									<Input autoFocus={true} className={styles.mb05rem} label="Имя" floatingLabel={true}/>
-								</div>
-								<div className={classnames(styles.phone, styles.control)}>
-									<Input className={classnames(styles.simple, styles.mb05rem)} value={this.state.phone} onChange={() => {
-									}} label="Телефон" floatingLabel={true}/>
-									<InputMask className={styles.mask}
-											   onChange={(e) => this.setState({phone: e.target.value})}
-											   mask="+7 (999) 999-99-99"/>
-								</div>
-
-
-								<div className={styles.error}>
-									Ошибка, попробуйте еще раз...
-								</div>
-								<Button color="primary"
-										className={styles.submit}
-										onClick={() => this.setState({openModal: true})}>Оформить заказ</Button>
-							</div>
-
-							<div className={styles.preloader}>
-								<div className={styles.inner}>
-									<div className={styles.circ1}/>
-									<div className={styles.circ2}/>
-									<div className={styles.circ3}/>
-									<div className={styles.circ4}/>
-								</div>
-							</div>
-							<div className={styles.success}>
-								<div className={styles.text}>
-									<div>Спасибо, Имя, что воспользовались нашим сервисом!</div>
-									<div>Наш менеджер в ближайшее время свяжеться с Вами.</div>
-									<div>По номеру {this.state.phone}</div>
-								</div>
-							</div>
-						</Panel>
-					</Modal>
+					<Order
+						price={price}
+						open={this.state.openModal}
+						close={() => this.setState({openModal: false})}
+						user={this.props.user}
+						actions={this.props.actions.app}
+					/>
 					<div className={styles.note}>
 						*цены являются ориентировочной, точную цену уточняйте у менеджера
 					</div>
