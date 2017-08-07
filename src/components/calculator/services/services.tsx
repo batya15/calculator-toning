@@ -7,7 +7,15 @@ import {RootState} from "reducers/index";
 import {returntypeof} from "react-redux-typescript";
 import {mapDispatchToProps} from "actions/index";
 import {STEP} from "../../../reducers/step";
-import * as ReactTooltip from 'react-tooltip'
+import * as ReactTooltip from 'react-tooltip';
+import {componentWillAppendToBody} from "react-append-to-body";
+
+class Tooltip extends React.Component<{id: string}, {}> {
+	render () {
+		return (<ReactTooltip place="bottom" id={this.props.id}/>);
+	}
+}
+const TooltipAppendToBody = componentWillAppendToBody(Tooltip)
 
 interface IState {
 	editableServiceId: number
@@ -125,7 +133,7 @@ export class Services extends React.Component<Props, IState> {
 								(?)
 							</span>
 							}
-							<ReactTooltip place="bottom" id={`service_${item.id}`}/>
+							<TooltipAppendToBody id={`service_${item.id}`}/>
 						</div>)
 					)}
 

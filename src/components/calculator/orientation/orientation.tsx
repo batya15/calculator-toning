@@ -25,10 +25,11 @@ export class Orientation extends React.Component<IMainProps, IMainState> {
 	}
 
 	componentDidMount(){
-		window.addEventListener('resize', this.resize)
+		window.addEventListener('resize', this.resize);
+		this.resize();
 	}
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.resize)
+		window.removeEventListener('resize', this.resize);
 	}
 	render() {
 		return (

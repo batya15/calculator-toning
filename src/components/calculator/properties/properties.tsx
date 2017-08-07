@@ -48,7 +48,7 @@ export class Properties extends React.Component<Props, IState> {
 
 		let materialsByService = this.props.materials.filter(m => id === m.serviceId);
 
-		let current = materialsByService.filter(i => i.id === firstEditableOrder.materialId).first();;
+		let current = materialsByService.filter(i => i.id === firstEditableOrder.materialId).first();
 
 		if (!current) {
 			current = materialsByService.first();
@@ -62,22 +62,22 @@ export class Properties extends React.Component<Props, IState> {
 			producer: materialsByService.filter(material => current.colorId === material.colorId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
-			).toArray(),
+			).toArray().sort((a, b) => a.id - b.id),
 			color: materialsByService.filter(material => current.colorId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
-			).toArray(),
+			).toArray().sort((a, b) => a.id - b.id),
 			thickness: materialsByService.filter(material => current.thicknessId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.colorId === material.colorId
-			).toArray(),
+			).toArray().sort((a, b) => a.id - b.id),
 			opacity: materialsByService.filter(material => current.opacityId !== null
 				&& current.producerId === material.producerId
 				&& current.thicknessId === material.thicknessId
 				&& current.colorId === material.colorId
-			).toArray()
+			).toArray().sort((a, b) => a.id - b.id)
 		};
 	}
 

@@ -92,8 +92,22 @@ export class Places extends React.Component<Props, IState> {
 		return result;
 	}
 
-	private applyMaterial(id: number[], materialId: number) {
-		this.props.actions.app.editOrders(id);
+	private applyMaterial(ids: number[], materialId: number, currentId: number) {
+		let selected = ids.map(i => i);
+		selected.push(currentId);
+
+		let state = this.state.selectedIds;
+
+		for (let key in state) {
+			state[key] = selected.some(i => i.toString() === key)
+		}
+
+		selected.forEach(i => {
+			state[i] = true;
+		});
+
+		this.setState({...state});
+		this.props.actions.app.editOrders(ids);
 		this.props.actions.app.save(materialId);
 	}
 
@@ -142,18 +156,7 @@ export class Places extends React.Component<Props, IState> {
 									{this.getTitleMaterial(item)}
 								</div>
 								<div className={classnames(styles.controls)} onClick={e => e.stopPropagation()}>
-									<Button
-										size="small"
-										color="primary"
-										variant="flat"
-										className={styles.btn}
-										onClick={(e) => {
-											e.stopPropagation();
-											this.editByIds([item.id])
-										}}
-									>
-										<i className="material-icons">mode_edit</i>
-									</Button>
+									{hasMaterial &&
 									<MenuButton
 										ref={'menuButton' + item.id}
 										ButtonComponent='span'
@@ -163,16 +166,10 @@ export class Places extends React.Component<Props, IState> {
 													 onClick={() => this.refs['menuButton' + item.id]['close']()}>
 													<div
 														className={styles.item}
-														onClick={() => this.editByIds([item.id])}>Редактировать
-													</div>
-													{hasMaterial &&
-													<div
-														className={styles.item}
 														onClick={() => this.props.actions.app.removeOrders([item.id])}>
 														Удалить заказ
 													</div>
-													}
-													{hasMaterial &&
+
 													<div
 														className={styles.item}
 														onClick={() => {
@@ -181,22 +178,23 @@ export class Places extends React.Component<Props, IState> {
 																	.filter(i => i.serviceIDs.indexOf(this.props.materials.get(this.props.orders.get(item.id).materialId).serviceId) >= 0)
 																	.toArray()
 																	.map(i => i.id),
-																this.props.orders.get(item.id).materialId
+																this.props.orders.get(item.id).materialId,
+																item.id
 															)
 														}}>
 														Приминить ко все стеклам
 													</div>
-													}
-													{hasMaterial && this.props.details
+													{this.props.details
 														.toArray()
 														.filter(i =>
-														i.id !== item.id
-														&& i.serviceIDs.indexOf(this.props.materials.get(this.props.orders.get(item.id).materialId).serviceId) >= 0)
+															i.id !== item.id
+															&& (this.props.orders.get(i.id) ? this.props.orders.get(i.id).materialId !== this.props.orders.get(item.id).materialId : true)
+															&& i.serviceIDs.indexOf(this.props.materials.get(this.props.orders.get(item.id).materialId).serviceId) >= 0)
 														.map(i => (
 															<div
 																key={item.id + i.id}
 																className={styles.item}
-																onClick={() => this.applyMaterial([i.id], this.props.orders.get(item.id).materialId)}>
+																onClick={() => this.applyMaterial([i.id], this.props.orders.get(item.id).materialId, item.id)}>
 																Приминить на {i.caption}
 															</div>))
 													}
@@ -210,6 +208,7 @@ export class Places extends React.Component<Props, IState> {
 											variant="flat"
 										><i className="material-icons">menu</i></Button>
 									</MenuButton>
+									}
 								</div>
 							</li>
 						);
