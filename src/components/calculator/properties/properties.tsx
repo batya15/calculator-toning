@@ -63,36 +63,33 @@ export class Properties extends React.Component<Props, IState> {
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
 			).toArray().sort((a, b) => {
-				if (this.props.producers.get(a.producerId).caption < this.props.producers.get(b.producerId).caption) return -1;
-				if (this.props.producers.get(a.producerId).caption > this.props.producers.get(b.producerId).caption) return 1;
-				return 0;
+				return this.props.producers.get(a.producerId).caption.length - this.props.producers.get(b.producerId).caption.length ||
+					this.props.producers.get(a.producerId).caption
+						.localeCompare(this.props.producers.get(b.producerId).caption);
 			}),
 			color: materialsByService.filter(material => current.colorId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.thicknessId === material.thicknessId
 			).toArray().sort((a, b) => {
-				if (this.props.colors.get(a.colorId).caption < this.props.colors.get(b.colorId).caption) return -1;
-				if (this.props.colors.get(a.colorId).caption > this.props.colors.get(b.colorId).caption) return 1;
-				return 0;
+				return this.props.colors.get(a.colorId).caption.length - this.props.colors.get(b.colorId).caption.length ||
+					this.props.colors.get(a.colorId).caption.localeCompare(this.props.colors.get(b.colorId).caption);
 			}),
 			thickness: materialsByService.filter(material => current.thicknessId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
 				&& current.colorId === material.colorId
 			).toArray().sort((a, b) => {
-				if (this.props.thickness.get(a.thicknessId).caption < this.props.thickness.get(b.thicknessId).caption) return -1;
-				if (this.props.thickness.get(a.thicknessId).caption > this.props.thickness.get(b.thicknessId).caption) return 1;
-				return 0;
+				return this.props.thickness.get(a.thicknessId).caption.length - this.props.thickness.get(b.thicknessId).caption.length ||
+					this.props.thickness.get(a.thicknessId).caption.localeCompare(this.props.thickness.get(b.thicknessId).caption);
 			}),
 			opacity: materialsByService.filter(material => current.opacityId !== null
 				&& current.producerId === material.producerId
 				&& current.thicknessId === material.thicknessId
 				&& current.colorId === material.colorId
 			).toArray().sort((a, b) => {
-				if (this.props.opacity.get(a.opacityId).caption < this.props.opacity.get(b.opacityId).caption) return -1;
-				if (this.props.opacity.get(a.opacityId).caption > this.props.opacity.get(b.opacityId).caption) return 1;
-				return 0;
+				return this.props.opacity.get(a.opacityId).caption.length - this.props.opacity.get(b.opacityId).caption.length ||
+					this.props.opacity.get(a.opacityId).caption.localeCompare(this.props.opacity.get(b.opacityId).caption);
 			}),
 		};
 	}

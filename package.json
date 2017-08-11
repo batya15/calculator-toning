@@ -61,6 +61,7 @@
     "core-js": "^2.4.1",
     "flux-standard-action": "^1.2.0",
     "immutable": "^3.8.1",
+    "locale-compare-polyfill": "0.0.2",
     "muicss": "^0.9.16",
     "react": "^15.5.4",
     "react-append-to-body": "^2.0.13",

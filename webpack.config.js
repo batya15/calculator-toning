@@ -19,7 +19,7 @@ if (isProduction) {
 module.exports = {
     context: sourcePath,
     entry: {
-        main: ['core-js/fn/promise', 'core-js/fn/symbol', './index.tsx'],
+        main: ['core-js/fn/promise', 'locale-compare-polyfill', 'core-js/fn/symbol', './index.tsx'],
         vendor: [
             'axios',
 			'classnames',
