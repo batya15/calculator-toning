@@ -1,6 +1,7 @@
 import {ACTIONS} from "../constants/actions";
 import {createAction} from "redux-actions";
 import {returntypeof} from "react-redux-typescript";
+import {MapDetails, MapMaterial} from "../reducers/api/index";
 
 export const editOrders = createAction<number[]>(String(ACTIONS.EDIT_ORDERS));
 export const removeOrders = createAction<number[]>(String(ACTIONS.REMOVE_ORDERS));
@@ -12,6 +13,7 @@ export const save = createAction<number>(String(ACTIONS.SAVE));
 export const selectMaterial = createAction<number>(String(ACTIONS.SELECT_MATERIAL));
 export const changeName = createAction<string>(String(ACTIONS.CHANGE_NAME));
 export const changePhone = createAction<string>(String(ACTIONS.CHANGE_PHONE));
+export const loadStorage = createAction<{details: MapDetails, materials: MapMaterial}>(String(ACTIONS.LOAD_STORAGE));
 
 const AppActions = {
 	editOrders,
@@ -23,6 +25,7 @@ const AppActions = {
 	save,
 	selectMaterial,
 	changeName,
+	loadStorage,
 	changePhone
 };
 

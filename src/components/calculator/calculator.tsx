@@ -21,7 +21,9 @@ interface IState {
 }
 
 const mapStateToProps = (rootState: RootState) => ({
-	step: rootState.step
+	step: rootState.step,
+	details: rootState.api.details,
+	materials: rootState.api.materials
 });
 
 const dispatchToProps = returntypeof(mapDispatchToProps);
@@ -43,7 +45,13 @@ class Calculator extends React.Component<Props, IState> {
 			this.props.actions.api.apiNeedServices(),
 			this.props.actions.api.apiNeedDetails(),
 			this.props.actions.api.apiNeedMaterials()
-		]).then(() => this.setState({loaded: true}));
+		]).then(() => {
+			this.props.actions.app.loadStorage({
+				details: this.props.details,
+				materials: this.props.materials
+			});
+			this.setState({loaded: true});
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -61,7 +69,7 @@ class Calculator extends React.Component<Props, IState> {
 	}
 
 	render() {
-		return (
+				return (
 			<div className={styles.calculator}>
 				<Orientation/>
 				<div className={styles.controls}>

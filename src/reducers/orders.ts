@@ -1,6 +1,8 @@
 import {handleActions} from 'redux-actions';
 import ACTIONS from '../constants/actions';
 import {Map} from 'immutable';
+import {MapDetails, MapMaterial} from "./api/index";
+import details from "./api/details";
 
 export interface IOrder {
 	detailId: number;
@@ -64,11 +66,29 @@ export default handleActions<MapOrder>({
 		});
 	},
 	[ACTIONS.SAVE]: (old, data: {payload: number}) => {
-		return old.map(i => {
+		let orders = old.map(i => {
 			if (i.editable) {
 				return {...i, materialId: data.payload};
 			}
 			return i;
 		});
+		localStorage.orders = JSON.stringify(orders.toJS());
+		return orders;
 	},
+	[ACTIONS.LOAD_STORAGE] : (old, data: {payload : {details: MapDetails, materials: MapMaterial}}) => {
+		let storage = {};
+		let result = Map();
+		try {
+			storage = JSON.parse(localStorage.orders);
+		} catch (e) {}
+		for (let key in storage) {
+			if (storage.hasOwnProperty(key)
+				&& data.payload.details.has(storage[key].detailId)
+				&& data.payload.materials.has(storage[key].materialId)
+			) {
+				result = result.set(parseInt(key), storage[key])
+			}
+		}
+		return result;
+	}
 }, Map<number, IOrder>());

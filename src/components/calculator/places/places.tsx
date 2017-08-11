@@ -122,10 +122,6 @@ export class Places extends React.Component<Props, IState> {
 	}
 
 	private removeOrders (ids: number[]): void {
-		console.log({...this.state, selectedIds: ids.reduce((init, id) => {
-			init[id] = false;
-			return init;
-		}, {})});
 		this.setState({...this.state, selectedIds: ids.reduce((init, id)=> {
 			init[id] = false;
 			return init;
@@ -135,6 +131,7 @@ export class Places extends React.Component<Props, IState> {
 
 	render() {
 		let countSelected = Places.objectValues(this.state.selectedIds).filter(i => i).length;
+
 		return (
 			<div className={styles.areas}>
 				<div className={styles.title}>Выбор стекла</div>
