@@ -96,17 +96,13 @@ export class Places extends React.Component<Props, IState> {
 		let selected = ids.map(i => i);
 		selected.push(currentId);
 
-		let state = this.state.selectedIds;
-
-		for (let key in state) {
-			state[key] = selected.some(i => i.toString() === key)
-		}
+		let selectedIdsState = this.state.selectedIds;
 
 		selected.forEach(i => {
-			state[i] = true;
+			selectedIdsState[i] = true;
 		});
 
-		this.setState({...state});
+		this.setState({selectedIds : selectedIdsState});
 		this.props.actions.app.editOrders(ids);
 		this.props.actions.app.save(materialId);
 	}
@@ -123,6 +119,18 @@ export class Places extends React.Component<Props, IState> {
 
 	shouldComponentUpdate(nextProps, nextState): boolean {
 		return nextProps.step === STEP.DETAILS;
+	}
+
+	private removeOrders (ids: number[]): void {
+		console.log({...this.state, selectedIds: ids.reduce((init, id) => {
+			init[id] = false;
+			return init;
+		}, {})});
+		this.setState({...this.state, selectedIds: ids.reduce((init, id)=> {
+			init[id] = false;
+			return init;
+		}, {})});
+		this.props.actions.app.removeOrders(ids)
 	}
 
 	render() {
@@ -166,12 +174,6 @@ export class Places extends React.Component<Props, IState> {
 													 onClick={() => this.refs['menuButton' + item.id]['close']()}>
 													<div
 														className={styles.item}
-														onClick={() => this.props.actions.app.removeOrders([item.id])}>
-														Удалить заказ
-													</div>
-
-													<div
-														className={styles.item}
 														onClick={() => {
 															this.applyMaterial(
 																this.props.details
@@ -198,6 +200,11 @@ export class Places extends React.Component<Props, IState> {
 																Приминить на {i.caption}
 															</div>))
 													}
+													<div
+														className={styles.item}
+														onClick={() => this.removeOrders([item.id])}>
+														Удалить заказ
+													</div>
 												</div>
 											</Dropdown>
 										}
