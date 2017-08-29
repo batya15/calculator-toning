@@ -57,16 +57,32 @@ export class Properties extends React.Component<Props, IState> {
 			}
 		}
 
+		let producer: Api.IMaterial[] = [];
+		materialsByService.toArray().sort((a, b) => {
+			return this.props.producers.get(a.producerId).caption.length - this.props.producers.get(b.producerId).caption.length ||
+				this.props.producers.get(a.producerId).caption
+					.localeCompare(this.props.producers.get(b.producerId).caption);
+		}).forEach(i => {
+			if (!producer.some(m => m.producerId === i.producerId)) {
+				producer.push(i);
+			} else {
+				let materials = producer.filter(m=> m.producerId === i.producerId);
+				if (materials.length > 0) {
+					let material = materials[0];
+					if (i.colorId === current.colorId
+						&& i.opacityId === current.opacityId
+						&& i.thicknessId === current.thicknessId) {
+						producer[producer.indexOf(material)] = i;
+					}
+				}
+
+			}
+		});
+
+
 		return {
 			current: current,
-			producer: materialsByService.filter(material => current.colorId === material.colorId
-				&& current.opacityId === material.opacityId
-				&& current.thicknessId === material.thicknessId
-			).toArray().sort((a, b) => {
-				return this.props.producers.get(a.producerId).caption.length - this.props.producers.get(b.producerId).caption.length ||
-					this.props.producers.get(a.producerId).caption
-						.localeCompare(this.props.producers.get(b.producerId).caption);
-			}),
+			producer: producer,
 			color: materialsByService.filter(material => current.colorId !== null
 				&& current.producerId === material.producerId
 				&& current.opacityId === material.opacityId
@@ -145,9 +161,12 @@ export class Properties extends React.Component<Props, IState> {
 									className={style.select}
 									onClick={() => this.selectMaterial(i)}
 									key={i.producerId}>
-									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									<div className={classnames({
+										[style.radio]: true,
+										[style.checked]: propertys.current.id === i.id
+									})}/>
 									{this.props.producers.get(i.producerId).caption}
-									</div>
+								</div>
 							))
 							}
 						</div>
@@ -162,9 +181,12 @@ export class Properties extends React.Component<Props, IState> {
 									className={style.select}
 									onClick={() => this.selectMaterial(i)}
 									key={i.colorId}>
-									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									<div className={classnames({
+										[style.radio]: true,
+										[style.checked]: propertys.current.id === i.id
+									})}/>
 									{this.props.colors.get(i.colorId).caption}
-									</div>
+								</div>
 							))
 							}
 						</div>
@@ -179,9 +201,12 @@ export class Properties extends React.Component<Props, IState> {
 									className={style.select}
 									onClick={() => this.selectMaterial(i)}
 									key={i.opacityId}>
-									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									<div className={classnames({
+										[style.radio]: true,
+										[style.checked]: propertys.current.id === i.id
+									})}/>
 									{this.props.opacity.get(i.opacityId).caption}
-									</div>
+								</div>
 							))
 							}
 						</div>
@@ -196,9 +221,12 @@ export class Properties extends React.Component<Props, IState> {
 									className={style.select}
 									onClick={() => this.selectMaterial(i)}
 									key={i.thicknessId}>
-									<div className={classnames({[style.radio] : true, [style.checked] : propertys.current.id === i.id})}/>
+									<div className={classnames({
+										[style.radio]: true,
+										[style.checked]: propertys.current.id === i.id
+									})}/>
 									{this.props.thickness.get(i.thicknessId).caption}
-									</div>
+								</div>
 							))
 							}
 						</div>
