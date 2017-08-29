@@ -10,12 +10,13 @@ import {STEP} from "../../../reducers/step";
 import * as ReactTooltip from 'react-tooltip';
 import {componentWillAppendToBody} from "react-append-to-body";
 
-class Tooltip extends React.Component<{id: string}, {}> {
-	render () {
-		return (<ReactTooltip place="bottom" id={this.props.id}/>);
+class Tooltip extends React.Component<{ id: string }, {}> {
+	render() {
+		return (<ReactTooltip place="bottom" style={{maxWidth: '270px'}} id={this.props.id}/>);
 	}
 }
-const TooltipAppendToBody = componentWillAppendToBody(Tooltip)
+
+const TooltipAppendToBody = componentWillAppendToBody(Tooltip);
 
 interface IState {
 	editableServiceId: number
@@ -112,29 +113,49 @@ export class Services extends React.Component<Props, IState> {
 				</div>
 				{this.props.services
 					.toArray()
-					.filter(item => availableServiceIds.has(item.id))
-					.map(item => (
-						<div
-							key={item.id}
-							className={styles.service}
-							onClick={() => this.selectedService(item.id)}
-						>
-							<div className={classnames({
-								[styles.checkbox]: true,
-								[styles.checked]: item.id === this.state.editableServiceId
-							})}
-							/>
-							{item.caption}
-							{item.description &&
-							<span
-								data-for={`service_${item.id}`}
-								data-tip={item.description}
-								className={styles.help}>
-								(?)
-							</span>
+					.map(item => {
+							let available: boolean = availableServiceIds.has(item.id);
+							let problemDetails = '';
+							if (!available) {
+								problemDetails = this.props.orders
+									.filter(o => o.editable && this.props.details.get(o.detailId).serviceIDs.indexOf(item.id) < 0)
+									.map(o => this.props.details.get(o.detailId).caption)
+									.join(', ')
+									.toLowerCase();
+
 							}
-							<TooltipAppendToBody id={`service_${item.id}`}/>
-						</div>)
+							return (
+								<div
+									key={item.id}
+									className={styles.service}
+								>
+									{!available &&
+									<div className={styles.block}
+										 data-for={`service_block_${item.id}`}
+										 data-tip={`Недоступен из-за: ${problemDetails}`}>
+
+									</div>
+									}
+									<div onClick={() => this.selectedService(item.id)}>
+										<div className={classnames({
+											[styles.checkbox]: true,
+											[styles.checked]: item.id === this.state.editableServiceId
+										})}
+										/>
+										{item.caption}
+										{item.description &&
+										<span
+											data-for={`service_${item.id}`}
+											data-tip={item.description}
+											className={styles.help}>
+											(?)
+										</span>
+										}
+									</div>
+									<TooltipAppendToBody id={`service_${item.id}`}/>
+									<TooltipAppendToBody id={`service_block_${item.id}`}/>
+								</div>)
+						}
 					)}
 
 			</div>

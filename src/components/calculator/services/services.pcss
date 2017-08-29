@@ -33,9 +33,19 @@
 		line-height: 3.5rem;
 		transition: background-color .3s;
 		cursor: pointer;
+		position: relative;
 
 		&:hover {
 			background-color: #eeeeee;
+		}
+
+		& .block {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(255, 255, 255, .5);
 		}
 
 		& .help {
@@ -43,6 +53,8 @@
 			margin-left: .5rem;
 			font-weight: bold;
 		}
+
+
 
 	}
 }
