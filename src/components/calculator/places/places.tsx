@@ -129,6 +129,14 @@ export class Places extends React.Component<Props, IState> {
 		this.props.actions.app.removeOrders(ids)
 	}
 
+	componentWillReceiveProps(nextProps): void {
+		if (nextProps.step === STEP.DETAILS && this.props.step === STEP.PROPERTIES) {
+			this.setState({
+				selectedIds: {}
+			})
+		}
+	}
+
 	render() {
 		let countSelected = Places.objectValues(this.state.selectedIds).filter(i => i).length;
 
